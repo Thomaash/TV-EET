@@ -1,0 +1,199 @@
+package tomas_vycital.eet.android_app.receipt;
+
+import android.os.Environment;
+import android.os.Handler;
+import android.util.SparseIntArray;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import tomas_vycital.eet.android_app.Messages;
+import tomas_vycital.eet.android_app.Settings;
+import tomas_vycital.eet.android_app.VAT;
+import tomas_vycital.eet.android_app.items.Item;
+import tomas_vycital.eet.android_app.items.ItemList;
+import tomas_vycital.eet.android_app.printer.Printer;
+import tomas_vycital.eet.android_app.printer.PrinterUtils;
+import tomas_vycital.eet.lib.EETReceipt;
+
+/**
+ * Holds bought items
+ */
+
+public class Receipt implements ItemList {
+    private final Handler handler;
+    EETReceipt eetReceipt;
+    private List<Item> items;
+    private int multiplier;
+
+    public Receipt(Handler handler) {
+        this.items = new ArrayList<>();
+        this.handler = handler;
+        this.clear();
+    }
+
+    public void add(Item item) {
+        this.changed();
+        this.items.add(item);
+    }
+
+    public void remove(int i) {
+        this.changed();
+        this.items.remove(i);
+    }
+
+    public void setNegative(boolean negative) {
+        this.changed();
+        this.multiplier = negative ? -1 : 1;
+    }
+
+    public boolean isEmpty() {
+        return this.items.isEmpty();
+    }
+
+    public String getReceiptStr() {
+        String negative = this.multiplier == 1 ? "" : "-";
+        String str = Settings.getHeading() + "\n"
+                + PrinterUtils.getSeparatorNl()
+                + "DIČ: " + Settings.getDIC() + "\n"
+                + PrinterUtils.getSeparatorNl();
+        HashMap<String, Integer> amounts = new HashMap<>();
+        List<Item> items = new ArrayList<>();
+
+        int sumWithVAT = 0;
+        int sumWithoutVAT = 0;
+
+        for (int i = 0; i < this.items.size(); ++i) {
+            Item item = this.items.get(i);
+            Integer current = amounts.get(item.getName());
+            if (current == null) {
+                current = 0;
+                items.add(item);
+            }
+
+            amounts.put(item.getName(), current + 1);
+            sumWithVAT += item.getPrice();
+            sumWithoutVAT += item.getPrice() * (1 - (float) item.getVATPercentage() / 100);
+        }
+
+        Collections.sort(items);
+        for (int i = 0; i < items.size(); ++i) {
+            Item item = items.get(i);
+            int amount = amounts.get(item.getName());
+            str += PrinterUtils.align(amount + " ks: " + item.getName(), negative + item.getPriceStr()) + "\n";
+        }
+
+        str += PrinterUtils.getSeparatorNl();
+        str += "Součet bez DPH: " + negative + Item.priceFormat.format(sumWithoutVAT / 100.0) + "\n";
+        str += "           DPH: " + negative + Item.priceFormat.format((sumWithVAT - sumWithoutVAT) / 100.0) + "\n";
+        str += "        Součet: " + negative + Item.priceFormat.format(sumWithVAT / 100.0) + "\n";
+
+        if (this.eetReceipt != null) {
+            str += "\n";
+            str += "BKP: " + this.eetReceipt.getBKP() + "\n";
+            if (this.eetReceipt.getFIK() == null) {
+                str += "PKP: " + this.eetReceipt.getPKP() + "\n";
+            } else {
+                str += "FIK: " + this.eetReceipt.getFIK() + "\n";
+            }
+            str += "Režim tržby: " + Settings.getModeStr() + "\n";
+        }
+        str += PrinterUtils.getSeparatorNl();
+
+        str += Settings.getFooting() + "\n";
+
+        // Limit the receipt to the actual width of the physical receipt
+        return str.replaceAll("(.{" + Settings.getReceiptWidth() + "})\\n?", "$1\n");
+    }
+
+    @Override
+    public int size() {
+        return this.items.size();
+    }
+
+    @Override
+    public Item get(int i) {
+        return this.items.get(i);
+    }
+
+    public void submit(Handler handler) throws IOException, UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+        if (this.eetReceipt == null) {
+            int celkTrzba = 0;
+            SparseIntArray zaklDan = new SparseIntArray();
+
+            for (int i = 0; i < this.items.size(); ++i) {
+                Item item = this.items.get(i);
+                celkTrzba += item.getPrice();
+                zaklDan.put(item.getVATPercentage(), zaklDan.get(item.getVATPercentage()) + item.getPrice());
+            }
+
+            this.eetReceipt = (new EETReceipt())
+                    .setPrvniZaslani(true)
+                    .setCelkTrzba(celkTrzba * this.multiplier)
+                    .setDan1((int) (zaklDan.get(1) * VAT.basic.get()) * this.multiplier)
+                    .setDan2((int) (zaklDan.get(2) * VAT.reduced1.get()) * this.multiplier)
+                    .setDan3((int) (zaklDan.get(3) * VAT.reduced2.get()) * this.multiplier)
+                    .setDatTrzby(new Date())
+                    .setDicPopl(Settings.getDIC())
+                    .setIdPokl(Settings.getIdPokl())
+                    .setIdProvoz(Settings.getIdProvoz())
+                    .setOvereni(Settings.getVerifying())
+                    .setPoradCis("0/6460/ZQ42")
+                    .setRezim(0)
+                    .setZaklDan1(zaklDan.get(1) * this.multiplier)
+                    .setZaklDan2(zaklDan.get(2) * this.multiplier)
+                    .setZaklDan3(zaklDan.get(3) * this.multiplier)
+                    .setZaklNepodlDph(zaklDan.get(0) * this.multiplier)
+                    .setP12(this.getKey(), "eet".toCharArray())
+            ;
+        } else {
+            this.eetReceipt.setPrvniZaslani(false);
+        }
+
+        (new Submit(this, handler)).start();
+    }
+
+    public void print(Handler handler, Printer printer) {
+        (new Print(this, handler, printer)).start();
+    }
+
+    private InputStream getKey() throws FileNotFoundException {
+        return new FileInputStream(Environment.getExternalStorageDirectory().getPath() + "/EET Keys/EET_CA1_Playground-CZ1212121218.p12");
+    }
+
+    public void clear() {
+        this.items.clear();
+        this.changed();
+    }
+
+    private void changed() {
+        this.eetReceipt = null;
+        this.multiplier = 1;
+        this.handler.sendEmptyMessage(Messages.receiptPriceChanged.ordinal());
+    }
+
+    private int getPrice() {
+        int price = 0;
+
+        for (Item item : this.items) {
+            price += item.getPrice();
+        }
+
+        return price;
+    }
+
+    public String getPriceStr() {
+        return Item.priceFormat.format(this.getPrice() / 100.0);
+    }
+}

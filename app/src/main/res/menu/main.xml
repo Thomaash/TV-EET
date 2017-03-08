@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_price"
+        android:orderInCategory="0"
+        android:title="Celková cena"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_print"
+        android:orderInCategory="100"
+        android:title="Vytisknout účtenku"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_submit"
+        android:orderInCategory="100"
+        android:title="Odeslat tržbu"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_submit_negative"
+        android:orderInCategory="100"
+        android:title="Odeslat zrušení třžby"
+        app:showAsAction="never" />
+</menu>
