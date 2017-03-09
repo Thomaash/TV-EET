@@ -3,7 +3,7 @@ package tomas_vycital.eet.android_app.receipt;
 import android.os.Handler;
 
 import tomas_vycital.eet.android_app.Messages;
-import tomas_vycital.eet.android_app.Settings;
+import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EET;
 
 /**

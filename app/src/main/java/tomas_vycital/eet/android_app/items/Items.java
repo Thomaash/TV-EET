@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import tomas_vycital.eet.android_app.Settings;
 import tomas_vycital.eet.android_app.VAT;
+import tomas_vycital.eet.android_app.settings.Settings;
 
 /**
  * Created by tom on 18.2.17.

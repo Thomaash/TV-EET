@@ -1,16 +1,21 @@
-package tomas_vycital.eet.android_app;
+package tomas_vycital.eet.android_app.settings;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import tomas_vycital.eet.android_app.R;
+import tomas_vycital.eet.android_app.printer.BTPrinter;
 
 /**
  * Created by tom on 3.3.17.
@@ -28,13 +33,18 @@ public class Settings implements View.OnClickListener {
         defaults.put("receiptWidth", 32);
         defaults.put("server", Server.play.getID());
         defaults.put("verifying", true);
+        defaults.put("codepage", 0);
+        defaults.put("charset", Charset.ascii.getStr());
     }
 
     private final View layout;
+    private final BTPrinter printer;
 
-    Settings(LinearLayout settings) {
+    public Settings(Button settingsButton, LinearLayout settings, BTPrinter printer) {
         this.layout = settings;
+        this.printer = printer;
 
+        // Settings values
         ((EditText) this.layout.findViewById(R.id.setting_dic)).setText(Settings.getDIC());
         ((EditText) this.layout.findViewById(R.id.setting_heading)).setText(Settings.getHeading());
         ((EditText) this.layout.findViewById(R.id.setting_footing)).setText(Settings.getFooting());
@@ -50,9 +60,28 @@ public class Settings implements View.OnClickListener {
                 break;
         }
         ((Switch) this.layout.findViewById(R.id.settings_verifying)).setChecked(Settings.getVerifying());
+        ((EditText) this.layout.findViewById(R.id.settings_codepage)).setText("" + Settings.getCodepage());
+        switch (Settings.getCharset()) {
+            case ascii:
+                ((RadioButton) this.layout.findViewById(R.id.settings_charset_ascii)).setChecked(true);
+                break;
+            case iso88592:
+                ((RadioButton) this.layout.findViewById(R.id.settings_charset_iso88592)).setChecked(true);
+                break;
+            case cp852:
+                ((RadioButton) this.layout.findViewById(R.id.settings_charset_cp852)).setChecked(true);
+                break;
+            case windows1250:
+                ((RadioButton) this.layout.findViewById(R.id.settings_charset_windows1250)).setChecked(true);
+                break;
+        }
+
+        // Onclick listeners
+        settingsButton.setOnClickListener(this);
+        this.layout.findViewById(R.id.settings_codepage_test).setOnClickListener(this);
     }
 
-    static void setup(SharedPreferences prefs) {
+    public static void setup(SharedPreferences prefs) {
         Settings.prefs = prefs;
     }
 
@@ -120,31 +149,71 @@ public class Settings implements View.OnClickListener {
         return "běžný";
     }
 
+    public static int getCodepage() {
+        return Settings.getInteger("codepage");
+    }
+
+    public static Charset getCharset() {
+        return Charset.fromStr(Settings.getString("charset"));
+    }
 
     @SuppressLint("ApplySharedPref")
     @Override
     public void onClick(View v) {
-        Snackbar.make(this.layout, "Ukládá se…", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        switch (v.getId()) {
+            case R.id.settings_button:
+                Snackbar.make(this.layout, "Ukládá se…", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-        SharedPreferences.Editor editor = Settings.prefs.edit();
-        this.saveString(editor, R.id.setting_dic, "DIC");
-        this.saveString(editor, R.id.setting_heading, "heading");
-        this.saveString(editor, R.id.setting_footing, "footing");
-        this.saveInteger(editor, R.id.settings_receipt_width, "receiptWidth");
-        this.saveString(editor, R.id.settings_id_pokl, "idPokl");
-        this.saveString(editor, R.id.settings_id_provoz, "idProvoz");
-        switch (((RadioGroup) this.layout.findViewById(R.id.settings_server)).getCheckedRadioButtonId()) {
-            case R.id.settings_server_play:
-                editor.putInt("server", Server.play.getID());
+                SharedPreferences.Editor editor = Settings.prefs.edit();
+                this.saveString(editor, R.id.setting_dic, "DIC");
+                this.saveString(editor, R.id.setting_heading, "heading");
+                this.saveString(editor, R.id.setting_footing, "footing");
+                this.saveInteger(editor, R.id.settings_receipt_width, "receiptWidth");
+                this.saveString(editor, R.id.settings_id_pokl, "idPokl");
+                this.saveString(editor, R.id.settings_id_provoz, "idProvoz");
+                switch (((RadioGroup) this.layout.findViewById(R.id.settings_server)).getCheckedRadioButtonId()) {
+                    case R.id.settings_server_play:
+                        editor.putInt("server", Server.play.getID());
+                        break;
+                    case R.id.settings_server_prod:
+                        editor.putInt("server", Server.prod.getID());
+                        break;
+                }
+                this.saveBoolean(editor, R.id.settings_verifying, "verifying");
+                this.saveInteger(editor, "codepage", this.getUnsavedCodepage());
+                editor.putString("charset", this.getUnsavedCharset().getStr());
+                editor.commit();
+
+                Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 break;
-            case R.id.settings_server_prod:
-                editor.putInt("server", Server.prod.getID());
+            case R.id.settings_codepage_test:
+                try {
+                    this.printer.testCP(this.getUnsavedCodepage(), this.getUnsavedCharset());
+                } catch (IOException ignored) {
+                }
                 break;
         }
-        this.saveBoolean(editor, R.id.settings_verifying, "verifying");
-        editor.commit();
+    }
 
-        Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    private int getUnsavedCodepage() {
+        try {
+            return Integer.valueOf(((EditText) this.layout.findViewById(R.id.settings_codepage)).getText().toString());
+        } catch (Exception ignored) {
+        }
+        return (int) Settings.defaults.get("codepage");
+    }
+
+    private Charset getUnsavedCharset() {
+        switch (((RadioGroup) this.layout.findViewById(R.id.settings_charset)).getCheckedRadioButtonId()) {
+            case R.id.settings_charset_iso88592:
+                return Charset.iso88592;
+            case R.id.settings_charset_cp852:
+                return Charset.cp852;
+            case R.id.settings_charset_windows1250:
+                return Charset.windows1250;
+            default: // R.id.settings_charset_ascii
+                return Charset.ascii;
+        }
     }
 
     private void saveBoolean(SharedPreferences.Editor editor, int rID, String prefID) {
@@ -159,27 +228,7 @@ public class Settings implements View.OnClickListener {
         editor.putInt(prefID, Integer.valueOf(((EditText) this.layout.findViewById(rID)).getText().toString()));
     }
 
-    public enum Server {
-        play(0), prod(1);
-
-        private final int id;
-
-        Server(int id) {
-            this.id = id;
-        }
-
-        public static Server fromID(int id) {
-            for (Server server : Server.values()) {
-                if (server.id == id) {
-                    return server;
-                }
-            }
-            return null;
-        }
-
-        public int getID() {
-            return this.id;
-        }
-
+    private void saveInteger(SharedPreferences.Editor editor, String prefID, Integer value) {
+        editor.putInt(prefID, value);
     }
 }

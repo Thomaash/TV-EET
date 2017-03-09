@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import tomas_vycital.eet.android_app.Messages;
-import tomas_vycital.eet.android_app.Settings;
 import tomas_vycital.eet.android_app.VAT;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.ItemList;
 import tomas_vycital.eet.android_app.printer.Printer;
 import tomas_vycital.eet.android_app.printer.PrinterUtils;
+import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EETReceipt;
 
 /**

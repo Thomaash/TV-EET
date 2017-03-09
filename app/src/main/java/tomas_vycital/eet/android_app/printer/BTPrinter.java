@@ -5,9 +5,11 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
+
+import tomas_vycital.eet.android_app.settings.Charset;
+import tomas_vycital.eet.android_app.settings.Settings;
 
 /**
  * Created by tom on 4.3.17.
@@ -17,12 +19,29 @@ public class BTPrinter implements Printer {
     private BluetoothSocket socket;
     private OutputStream outputStream;
 
+    public void testCP() throws IOException {
+        this.testCP(Settings.getCodepage(), Settings.getCharset());
+    }
+
+    public void testCP(int codepage, Charset charset) throws IOException {
+        if (this.outputStream == null) {
+            throw new IOException();
+        }
+
+        this.setCodepage(codepage);
+        this.outputStream.write(charset.toBytes(charset.getStr() + " " + codepage + "\n" + "ÁáČčĎďÉéĚěÍíŇňÓóŘřŠšŤťÚúŮůÝýŽž\n"));
+    }
+
+    private void setCodepage(int codepage) throws IOException {
+        this.outputStream.write(new byte[]{0x1B, 't', (byte) codepage});
+    }
+
     @Override
     public void print(String text) throws IOException {
         if (this.outputStream == null) {
             throw new IOException();
         }
-        this.outputStream.write(PrinterUtils.toASCII(text).getBytes());
+        this.outputStream.write(Settings.getCharset().toBytes(text));
     }
 
     public BluetoothDevice[] list() {
@@ -46,11 +65,11 @@ public class BTPrinter implements Printer {
         this.socket = device.createRfcommSocketToServiceRecord(uuid);
         this.socket.connect();
         this.outputStream = this.socket.getOutputStream();
+        this.setCodepage(Settings.getCodepage());
     }
 
     public void disconnect() throws IOException {
         this.outputStream.close();
         this.socket.close();
     }
-
 }
