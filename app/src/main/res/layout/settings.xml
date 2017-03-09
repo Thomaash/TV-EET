@@ -260,6 +260,31 @@
                             />
                     </LinearLayout>
                 </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Klíč"
+                        android:textAppearance="@android:style/TextAppearance.Material.Title"
+                        />
+                    <TextView
+                        android:id="@+id/settings_nokeys"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vložte svůj klíč (soubor .p12) do složky „EET Keys“ v úložišti telefonu."
+                        />
+                    <RadioGroup
+                        android:id="@+id/settings_keys"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        >
+                    </RadioGroup>
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>

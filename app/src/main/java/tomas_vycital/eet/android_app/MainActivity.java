@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         assert settingsButton != null;
         LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
         assert settingsValues != null;
-        new Settings(settingsButton, settingsValues, this.printer);
+        new Settings(this, settingsButton, settingsValues, this.printer);
 
         Thread thread = new Thread(new Runnable() {
             @Override

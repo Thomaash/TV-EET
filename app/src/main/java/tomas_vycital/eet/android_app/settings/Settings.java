@@ -1,7 +1,9 @@
 package tomas_vycital.eet.android_app.settings;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -22,8 +26,10 @@ import tomas_vycital.eet.android_app.printer.BTPrinter;
  */
 
 public class Settings implements View.OnClickListener {
+    private static final FilenameFilter keyFilter;
     private static HashMap<String, Object> defaults;
     private static SharedPreferences prefs;
+    private static String keysDir = Environment.getExternalStorageDirectory().toString() + "/EET Keys";
 
     static {
         defaults = new HashMap<>();
@@ -35,12 +41,22 @@ public class Settings implements View.OnClickListener {
         defaults.put("verifying", true);
         defaults.put("codepage", 0);
         defaults.put("charset", Charset.ascii.getStr());
+        defaults.put("keyFileName", null);
+
+        keyFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.matches("^.*\\.p12$");
+            }
+        };
     }
 
+    private final Context context;
     private final View layout;
     private final BTPrinter printer;
 
-    public Settings(Button settingsButton, LinearLayout settings, BTPrinter printer) {
+    public Settings(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer) {
+        this.context = context;
         this.layout = settings;
         this.printer = printer;
 
@@ -74,6 +90,24 @@ public class Settings implements View.OnClickListener {
             case windows1250:
                 ((RadioButton) this.layout.findViewById(R.id.settings_charset_windows1250)).setChecked(true);
                 break;
+        }
+
+        // Keys
+        String oldName = Settings.getKeyName();
+        RadioGroup keys = (RadioGroup) this.layout.findViewById(R.id.settings_keys);
+        File dir = new File(Settings.keysDir);
+        for (File file : dir.listFiles(Settings.keyFilter)) {
+            String name = file.getName();
+            RadioButton radioButton = new RadioButton(this.context);
+            radioButton.setText(name);
+            keys.addView(radioButton);
+            if (name.equals(oldName)) {
+                radioButton.setChecked(true);
+            }
+
+            // Hide info and show radio button(s)
+            keys.setVisibility(View.VISIBLE);
+            this.layout.findViewById(R.id.settings_nokeys).setVisibility(View.GONE);
         }
 
         // Onclick listeners
@@ -115,6 +149,14 @@ public class Settings implements View.OnClickListener {
 
     public static void setLastMAC(String mac) {
         Settings.prefs.edit().putString("lastMAC", mac).apply();
+    }
+
+    private static String getKeyName() {
+        return Settings.getString("keyFileName");
+    }
+
+    public static String getKeyPath() {
+        return Settings.keysDir + "/" + Settings.getKeyName();
     }
 
     public static Server getServer() {
@@ -180,8 +222,9 @@ public class Settings implements View.OnClickListener {
                         break;
                 }
                 this.saveBoolean(editor, R.id.settings_verifying, "verifying");
-                this.saveInteger(editor, "codepage", this.getUnsavedCodepage());
+                editor.putInt("codepage", this.getUnsavedCodepage());
                 editor.putString("charset", this.getUnsavedCharset().getStr());
+                editor.putString("keyFileName", ((RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(R.id.settings_keys)).getCheckedRadioButtonId())).getText().toString());
                 editor.commit();
 
                 Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -226,9 +269,5 @@ public class Settings implements View.OnClickListener {
 
     private void saveInteger(SharedPreferences.Editor editor, int rID, String prefID) {
         editor.putInt(prefID, Integer.valueOf(((EditText) this.layout.findViewById(rID)).getText().toString()));
-    }
-
-    private void saveInteger(SharedPreferences.Editor editor, String prefID, Integer value) {
-        editor.putInt(prefID, value);
     }
 }
