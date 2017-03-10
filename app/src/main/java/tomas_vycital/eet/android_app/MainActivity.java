@@ -177,8 +177,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             this.receipt.setNegative(negative);
             this.receipt.submit(this.handler);
-        } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | IOException | NoSuchAlgorithmException e) {
+        } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | NoSuchAlgorithmException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            Snackbar.make(view, "Nepodařilo se načíst klíč", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -407,11 +409,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void ocSubmit(View view) {
-        try {
-            this.receipt.submit(this.handler);
-        } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
-            Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        }
+        this.submitReceipt(view, false);
     }
 
     public void ocPrint(View view) {

@@ -14,6 +14,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -155,8 +157,12 @@ public class Settings implements View.OnClickListener {
         return Settings.getString("keyFileName");
     }
 
-    public static String getKeyPath() {
+    private static String getKeyPath() {
         return Settings.keysDir + "/" + Settings.getKeyName();
+    }
+
+    public static FileInputStream getKeyIS() throws FileNotFoundException {
+        return new FileInputStream(Settings.getKeyPath());
     }
 
     public static Server getServer() {

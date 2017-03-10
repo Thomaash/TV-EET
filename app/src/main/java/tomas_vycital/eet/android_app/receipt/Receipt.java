@@ -1,13 +1,9 @@
 package tomas_vycital.eet.android_app.receipt;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.util.SparseIntArray;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
@@ -155,7 +151,7 @@ public class Receipt implements ItemList {
                     .setZaklDan2(zaklDan.get(2) * this.multiplier)
                     .setZaklDan3(zaklDan.get(3) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(0) * this.multiplier)
-                    .setP12(this.getKey(), "eet".toCharArray())
+                    .setP12(Settings.getKeyIS(), "eet".toCharArray())
             ;
         } else {
             this.eetReceipt.setPrvniZaslani(false);
@@ -166,10 +162,6 @@ public class Receipt implements ItemList {
 
     public void print(Handler handler, Printer printer) {
         (new Print(this, handler, printer)).start();
-    }
-
-    private InputStream getKey() throws FileNotFoundException {
-        return new FileInputStream(Environment.getExternalStorageDirectory().getPath() + "/EET Keys/EET_CA1_Playground-CZ1212121218.p12");
     }
 
     public void clear() {
