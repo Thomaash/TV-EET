@@ -13,11 +13,11 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/settings_button"
+            android:id="@+id/settings_save"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:text="Uložit"
             />
     </LinearLayout>
@@ -284,6 +284,46 @@
                         android:visibility="gone"
                         >
                     </RadioGroup>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Záloha"
+                        android:textAppearance="@android:style/TextAppearance.Material.Title"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+                        <Button
+                            android:id="@+id/settings_backup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="Zálohovat"
+                            />
+                        <RadioGroup
+                            android:id="@+id/settings_backups"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            >
+                        </RadioGroup>
+                        <Button
+                            android:id="@+id/settings_restore"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="Obnovit"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
                 </TableRow>
             </TableLayout>
         </LinearLayout>

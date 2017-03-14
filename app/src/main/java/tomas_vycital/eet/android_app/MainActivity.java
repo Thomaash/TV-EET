@@ -37,6 +37,7 @@ import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 import tomas_vycital.eet.android_app.receipt.Receipt;
 import tomas_vycital.eet.android_app.settings.Settings;
+import tomas_vycital.eet.android_app.settings.SettingsOCL;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Items items;
@@ -107,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         receiptItems.setAdapter(MainActivity.this.receiptItemsAdapter);
 
         // Settings
-        Button settingsButton = (Button) MainActivity.this.findViewById(R.id.settings_button);
+        Button settingsButton = (Button) MainActivity.this.findViewById(R.id.settings_save);
         assert settingsButton != null;
         LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
         assert settingsValues != null;
-        new Settings(this, settingsButton, settingsValues, this.printer);
+        new SettingsOCL(this, settingsButton, settingsValues, this.printer);
 
         Thread thread = new Thread(new Runnable() {
             @Override
