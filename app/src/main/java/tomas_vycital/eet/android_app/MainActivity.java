@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AvailableItemGridAdapter availableItemsAdapter;
     private ReceiptItemGridAdapter receiptItemsAdapter;
+    private SettingsOCL settingsOCL;
 
     private NavigationView navigationView;
     private FloatingActionButton fab;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         assert settingsButton != null;
         LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
         assert settingsValues != null;
-        new SettingsOCL(this, settingsButton, settingsValues, this.printer);
+        this.settingsOCL = new SettingsOCL(this, settingsButton, settingsValues, this.printer);
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -282,6 +283,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.printer_include:
                 this.refreshPrinterInfo();
+                break;
+            case R.id.settings_include:
+                this.settingsOCL.refreshFS();
                 break;
         }
 

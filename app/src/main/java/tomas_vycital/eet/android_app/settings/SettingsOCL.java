@@ -76,7 +76,7 @@ public class SettingsOCL implements View.OnClickListener {
                 this.saveBoolean(editor, R.id.settings_verifying, "verifying");
                 editor.putInt("codepage", this.getUnsavedCodepage());
                 editor.putString("charset", this.getUnsavedCharset().getStr());
-                editor.putString("keyFileName", ((RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(R.id.settings_keys)).getCheckedRadioButtonId())).getText().toString());
+                editor.putString("keyFileName", this.getRadioGroupValue(R.id.settings_keys));
                 editor.apply();
 
                 Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -172,6 +172,11 @@ public class SettingsOCL implements View.OnClickListener {
         }
 
         // Radio buttons
+        this.refreshFS();
+    }
+
+    public void refreshFS() {
+        // Radio buttons
         int keyButtons = this.generateRadioButtons(R.id.settings_keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName());
         if (keyButtons > 0) {
             this.layout.findViewById(R.id.settings_keys).setVisibility(View.VISIBLE);
@@ -206,6 +211,11 @@ public class SettingsOCL implements View.OnClickListener {
         }
 
         return count;
+    }
+
+    private String getRadioGroupValue(int groupRID) {
+        RadioButton radioButton = (RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(groupRID)).getCheckedRadioButtonId());
+        return radioButton == null ? null : radioButton.getText().toString();
     }
 
     private int getUnsavedCodepage() {
