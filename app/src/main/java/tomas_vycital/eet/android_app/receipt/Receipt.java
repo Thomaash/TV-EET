@@ -91,9 +91,9 @@ public class Receipt implements ItemList {
         }
 
         str += PrinterUtils.getSeparatorNl();
-        str += "Součet bez DPH: " + negative + Item.priceFormat.format(sumWithoutVAT / 100.0) + "\n";
-        str += "           DPH: " + negative + Item.priceFormat.format((sumWithVAT - sumWithoutVAT) / 100.0) + "\n";
-        str += "        Součet: " + negative + Item.priceFormat.format(sumWithVAT / 100.0) + "\n";
+        str += PrinterUtils.align("Součet bez DPH:", negative + Item.priceFormat.format(sumWithoutVAT / 100.0) + " kč\n");
+        str += PrinterUtils.align("           DPH:", negative + Item.priceFormat.format((sumWithVAT - sumWithoutVAT) / 100.0) + " kč\n");
+        str += PrinterUtils.align("        Součet:", negative + Item.priceFormat.format(sumWithVAT / 100.0) + " kč\n");
 
         if (this.eetReceipt != null) {
             str += "\n";
