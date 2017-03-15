@@ -24,7 +24,7 @@ public class Items implements ItemList {
         try {
             // Saved items
             items = this.fromJSON(Settings.getItems());
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             // Example items
             items = Arrays.asList(
                     new Item("Example 1", 3899, VAT.basic),
@@ -76,7 +76,7 @@ public class Items implements ItemList {
         return object;
     }
 
-    private List<Item> fromJSON(String json) throws JSONException {
+    private List<Item> fromJSON(String json) throws JSONException, NullPointerException {
         JSONObject object = new JSONObject(json);
         JSONArray array = (JSONArray) object.get("items");
         List<Item> items = new ArrayList<>();
