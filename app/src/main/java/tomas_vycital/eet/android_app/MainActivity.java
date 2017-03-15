@@ -37,7 +37,7 @@ import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 import tomas_vycital.eet.android_app.receipt.Receipt;
 import tomas_vycital.eet.android_app.settings.Settings;
-import tomas_vycital.eet.android_app.settings.SettingsOCL;
+import tomas_vycital.eet.android_app.settings.SettingsGUI;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Items items;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AvailableItemGridAdapter availableItemsAdapter;
     private ReceiptItemGridAdapter receiptItemsAdapter;
-    private SettingsOCL settingsOCL;
+    private SettingsGUI settingsGUI;
 
     private NavigationView navigationView;
     private FloatingActionButton fab;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         assert settingsButton != null;
         LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
         assert settingsValues != null;
-        this.settingsOCL = new SettingsOCL(this, settingsButton, settingsValues, this.printer);
+        this.settingsGUI = new SettingsGUI(this, settingsButton, settingsValues, this.printer);
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.refreshPrinterInfo();
                 break;
             case R.id.settings_include:
-                this.settingsOCL.refreshFS();
+                this.settingsGUI.refreshFS();
                 break;
         }
 

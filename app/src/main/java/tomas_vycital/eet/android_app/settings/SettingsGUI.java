@@ -31,12 +31,12 @@ import tomas_vycital.eet.android_app.printer.BTPrinter;
  * Created by tom on 3.3.17.
  */
 
-public class SettingsOCL implements View.OnClickListener {
+public class SettingsGUI implements View.OnClickListener {
     private final Context context;
     private final View layout;
     private final BTPrinter printer;
 
-    public SettingsOCL(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer) {
+    public SettingsGUI(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer) {
         this.context = context;
         this.layout = settings;
         this.printer = printer;
