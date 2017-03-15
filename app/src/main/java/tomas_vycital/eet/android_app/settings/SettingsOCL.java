@@ -41,7 +41,7 @@ public class SettingsOCL implements View.OnClickListener {
         this.layout = settings;
         this.printer = printer;
 
-        this.load();
+        this.refresh();
 
         // Onclick listeners
         settingsButton.setOnClickListener(this);
@@ -125,17 +125,17 @@ public class SettingsOCL implements View.OnClickListener {
                     reader.endObject();
                     editor.commit();
 
-                    this.load();
-
                     Snackbar.make(this.layout, "Obnoveno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } catch (Exception e) {
                     Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 break;
         }
+
+        this.refresh();
     }
 
-    private void load() {
+    private void refresh() {
         // Settings values
         ((EditText) this.layout.findViewById(R.id.setting_dic)).setText(Settings.getDIC());
         ((EditText) this.layout.findViewById(R.id.setting_heading)).setText(Settings.getHeading());
@@ -187,18 +187,22 @@ public class SettingsOCL implements View.OnClickListener {
     private int generateRadioButtons(int viewID, String dirStr, FilenameFilter filter, String oldName) {
         int count = 0;
         RadioGroup group = (RadioGroup) this.layout.findViewById(viewID);
+        group.removeAllViews();
         File dir = new File(dirStr);
         dir.mkdirs();
-        for (File file : dir.listFiles(filter)) {
-            String name = file.getName();
-            RadioButton radioButton = new RadioButton(this.context);
-            radioButton.setText(name);
-            group.addView(radioButton);
-            if (name.equals(oldName)) {
-                radioButton.setChecked(true);
-            }
+        File[] files = dir.listFiles(filter);
+        if (files != null) {
+            for (File file : files) {
+                String name = file.getName();
+                RadioButton radioButton = new RadioButton(this.context);
+                radioButton.setText(name);
+                group.addView(radioButton);
+                if (name.equals(oldName)) {
+                    radioButton.setChecked(true);
+                }
 
-            ++count;
+                ++count;
+            }
         }
 
         return count;
