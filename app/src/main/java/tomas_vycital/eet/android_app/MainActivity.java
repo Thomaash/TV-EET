@@ -278,6 +278,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         assert include != null;
         include.setVisibility(View.VISIBLE);
 
+        // Show actions
+        switch (id) {
+            case R.id.printer_include:
+                this.refreshPrinterInfo();
+                break;
+        }
+
         // Show hide FAB
         switch (id) {
             case R.id.items_include:
@@ -287,6 +294,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 this.fab.hide();
         }
+    }
+
+    private void refreshPrinterInfo() {
+        BluetoothDevice device = this.printer.getDevice();
+        TextView info = (TextView) this.findViewById(R.id.printer_info);
+        assert info != null;
+        info.setText(
+                device == null
+                        ? "Nepřipojeno"
+                        : "Připojeno: " + device.getName() + " (" + device.getAddress() + ")"
+        );
     }
 
     private void showOnly(int includeID, int itemID) {
@@ -315,12 +333,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } catch (IOException e) {
                         Snackbar.make(list, "K tiskárně se nepodařilo připojit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
+
+                    MainActivity.this.refreshPrinterInfo();
                 }
             });
 
             list.addView(btn);
         }
         Snackbar.make(view, "Nalezeno: " + devices.length, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void ocPrinterTest(View view) {
+        try {
+            this.printer.printSelfTest();
+            Snackbar.make(view, "Tiskne se", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        } catch (IOException e) {
+            Snackbar.make(view, "Nepodařilo se vytisknout", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
     }
 
     public void ocPrinterDisconnect(View view) {
@@ -330,6 +359,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (IOException e) {
             Snackbar.make(view, "Od tiskárny se nepodařilo odpojit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
+
+        this.refreshPrinterInfo();
     }
 
     public void editItem(Item item) {

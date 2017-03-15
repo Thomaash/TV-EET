@@ -18,6 +18,7 @@ import tomas_vycital.eet.android_app.settings.Settings;
 public class BTPrinter implements Printer {
     private BluetoothSocket socket;
     private OutputStream outputStream;
+    private BluetoothDevice device;
 
     public void testCP() throws IOException {
         this.testCP(Settings.getCodepage(), Settings.getCharset());
@@ -32,8 +33,16 @@ public class BTPrinter implements Printer {
         this.outputStream.write(charset.toBytes(charset.getStr() + " " + codepage + "\n" + "ÁáČčĎďÉéĚěÍíŇňÓóŘřŠšŤťÚúŮůÝýŽž\n"));
     }
 
+    public void printSelfTest() throws IOException {
+        this.outputStream.write(new byte[]{0x1f, 0x11, 0x04});
+    }
+
     private void setCodepage(int codepage) throws IOException {
         this.outputStream.write(new byte[]{0x1B, 't', (byte) codepage});
+    }
+
+    public BluetoothDevice getDevice() {
+        return this.device;
     }
 
     @Override
@@ -66,10 +75,12 @@ public class BTPrinter implements Printer {
         this.socket.connect();
         this.outputStream = this.socket.getOutputStream();
         this.setCodepage(Settings.getCodepage());
+        this.device = device;
     }
 
     public void disconnect() throws IOException {
         this.outputStream.close();
         this.socket.close();
+        this.device = null;
     }
 }

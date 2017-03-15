@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/colorPrimary"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        >
         <Button
             android:id="@+id/printer_list"
             style="?android:attr/buttonBarButtonStyle"
@@ -17,8 +18,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="ocPrinterList"
-            android:text="Vyhledat" />
-
+            android:text="Vyhledat"
+            />
+        <Button
+            android:id="@+id/printer_test"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="ocPrinterTest"
+            android:text="Otestovat"
+            />
         <Button
             android:id="@+id/printer_disconnect"
             style="?android:attr/buttonBarButtonStyle"
@@ -26,17 +36,34 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="ocPrinterDisconnect"
-            android:text="Odpojit"/>
-
+            android:text="Odpojit"
+            />
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/printers_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/printer_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="?attr/dialogPreferredPadding"
+                android:text="Nepřipojeno"
+                />
+            <LinearLayout
+                android:id="@+id/printers_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
