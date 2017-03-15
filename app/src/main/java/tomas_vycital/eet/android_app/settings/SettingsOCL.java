@@ -157,6 +157,9 @@ public class SettingsOCL implements View.OnClickListener {
             case ascii:
                 ((RadioButton) this.layout.findViewById(R.id.settings_charset_ascii)).setChecked(true);
                 break;
+            case utf8:
+                ((RadioButton) this.layout.findViewById(R.id.settings_charset_utf8)).setChecked(true);
+                break;
             case iso88592:
                 ((RadioButton) this.layout.findViewById(R.id.settings_charset_iso88592)).setChecked(true);
                 break;
@@ -211,6 +214,8 @@ public class SettingsOCL implements View.OnClickListener {
 
     private Charset getUnsavedCharset() {
         switch (((RadioGroup) this.layout.findViewById(R.id.settings_charset)).getCheckedRadioButtonId()) {
+            case R.id.settings_charset_utf8:
+                return Charset.utf8;
             case R.id.settings_charset_iso88592:
                 return Charset.iso88592;
             case R.id.settings_charset_cp852:

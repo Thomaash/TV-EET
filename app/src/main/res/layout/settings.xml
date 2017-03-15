@@ -233,6 +233,12 @@
                                 android:text="ASCII"
                                 />
                             <RadioButton
+                                android:id="@+id/settings_charset_utf8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="UTF-8"
+                                />
+                            <RadioButton
                                 android:id="@+id/settings_charset_iso88592"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

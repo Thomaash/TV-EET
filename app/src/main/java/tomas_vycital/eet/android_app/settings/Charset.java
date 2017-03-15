@@ -4,7 +4,7 @@ package tomas_vycital.eet.android_app.settings;
  * Created by tom on 9.3.17.
  */
 public enum Charset {
-    ascii("ASCII"), iso88592("ISO-8859-2"), windows1250("Windows-1250"), cp852("CP-852");
+    ascii("ASCII"), utf8("UTF-8"), iso88592("ISO-8859-2"), windows1250("Windows-1250"), cp852("CP-852");
 
     private final String str;
     private final java.nio.charset.Charset charset;
