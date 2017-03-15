@@ -1,5 +1,5 @@
 # TV EET
-Opensource EET řešení
+Svobodné EET řešení
 
 ## Instalace
 Repozitář obsahuje Gradle projekt. Tento projekt je možné importovat do libovolného IDE s podporou Gradlu nebo používat přímo pomocí příkazů Gradlu.
