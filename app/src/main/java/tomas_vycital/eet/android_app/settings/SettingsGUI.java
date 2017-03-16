@@ -80,6 +80,8 @@ public class SettingsGUI implements View.OnClickListener {
                 editor.apply();
 
                 Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                this.refresh();
                 break;
             case R.id.settings_codepage_test:
                 try {
@@ -103,6 +105,8 @@ public class SettingsGUI implements View.OnClickListener {
                 } catch (Exception e) {
                     Snackbar.make(this.layout, "Záloha se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
+
+                this.refresh();
                 break;
             case R.id.settings_restore:
                 try {
@@ -129,10 +133,10 @@ public class SettingsGUI implements View.OnClickListener {
                 } catch (Exception e) {
                     Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
+
+                this.refresh();
                 break;
         }
-
-        this.refresh();
     }
 
     private void refresh() {
