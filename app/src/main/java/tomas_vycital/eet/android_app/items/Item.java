@@ -26,23 +26,27 @@ public class Item implements Comparable<Item> {
         this.vat = vat;
     }
 
-    public Item(String name, String price, VAT vat) {
-        String[] priceParts = price.replaceAll("[^\\d,.]", "").split("[,.]");
-        switch (priceParts[1].length()) {
-            case 0:
-                priceParts[1] = "0";
-                break;
-            case 1:
-                priceParts[1] += "0";
-                break;
-            case 2:
-                break;
-            default:
-                priceParts[1] = priceParts[1].substring(0, 2);
+    public Item(String name, String priceStr, VAT vat) {
+        String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
+        int price = Integer.valueOf(priceParts[0]) * 100;
+        if (priceParts.length > 1) {
+            switch (priceParts[1].length()) {
+                case 0:
+                    priceParts[1] = "0";
+                    break;
+                case 1:
+                    priceParts[1] += "0";
+                    break;
+                case 2:
+                    break;
+                default:
+                    priceParts[1] = priceParts[1].substring(0, 2);
+            }
+            price += Integer.valueOf(priceParts[1]);
         }
 
         this.name = name;
-        this.price = Integer.valueOf(priceParts[0]) * 100 + Integer.valueOf(priceParts[1]);
+        this.price = price;
         this.vat = vat;
     }
 
