@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         assert settingsButton != null;
         LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
         assert settingsValues != null;
-        this.settingsGUI = new SettingsGUI(this, settingsButton, settingsValues, this.printer);
+        this.settingsGUI = new SettingsGUI(this, settingsButton, settingsValues, this.printer, this.items);
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void ocChangeItem(View view) {
-        this.ocDeleteItem(view);
+        this.items.remove(this.currentItem);
         this.ocAddItem(view);
     }
 

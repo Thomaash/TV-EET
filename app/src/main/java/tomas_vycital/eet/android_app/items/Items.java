@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,28 +19,33 @@ public class Items implements ItemList {
     private final List<Item> items;
 
     public Items() {
-        List<Item> items;
+        this.items = new ArrayList<>();
         try {
             // Saved items
-            items = this.fromJSON(Settings.getItems());
+            this.loadSaved();
         } catch (JSONException | NullPointerException e) {
             // Example items
-            items = Arrays.asList(
-                    new Item("Example 1", 3899, VAT.basic),
-                    new Item("Example 2", 3500, VAT.basic),
-                    new Item("Example 3", 5000, VAT.basic),
-                    new Item("Example 4", 6600, VAT.exempt),
-                    new Item("Example 5", 5000, VAT.basic),
-                    new Item("Example 6", 4500, VAT.basic),
-                    new Item("Example 7", 1200, VAT.basic),
-                    new Item("Example 8", 1350, VAT.reduced1),
-                    new Item("Example 9", 1500, VAT.basic),
-                    new Item("Example 10", 1100, VAT.basic),
-                    new Item("Example 11", 4300, VAT.reduced2),
-                    new Item("Example 12", 10000, VAT.basic)
-            );
+            this.items.add(new Item("Example 1", 3899, VAT.basic));
+            this.items.add(new Item("Example 2", 3500, VAT.basic));
+            this.items.add(new Item("Example 3", 5000, VAT.basic));
+            this.items.add(new Item("Example 4", 6600, VAT.exempt));
+            this.items.add(new Item("Example 5", 5000, VAT.basic));
+            this.items.add(new Item("Example 6", 4500, VAT.basic));
+            this.items.add(new Item("Example 7", 1200, VAT.basic));
+            this.items.add(new Item("Example 8", 1350, VAT.reduced1));
+            this.items.add(new Item("Example 9", 1500, VAT.basic));
+            this.items.add(new Item("Example 10", 1100, VAT.basic));
+            this.items.add(new Item("Example 11", 4300, VAT.reduced2));
+            this.items.add(new Item("Example 12", 10000, VAT.basic));
+            Collections.sort(this.items);
         }
-        this.items = items;
+    }
+
+    public void loadSaved() throws JSONException, NullPointerException {
+        this.items.clear();
+        for (Item item : this.fromJSON(Settings.getItems())) {
+            this.items.add(item);
+        }
         Collections.sort(this.items);
     }
 

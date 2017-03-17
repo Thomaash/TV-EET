@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import tomas_vycital.eet.android_app.R;
+import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
 /**
@@ -35,11 +36,13 @@ public class SettingsGUI implements View.OnClickListener {
     private final Context context;
     private final View layout;
     private final BTPrinter printer;
+    private final Items items;
 
-    public SettingsGUI(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer) {
+    public SettingsGUI(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer, Items items) {
         this.context = context;
         this.layout = settings;
         this.printer = printer;
+        this.items = items;
 
         this.refresh();
 
@@ -128,6 +131,8 @@ public class SettingsGUI implements View.OnClickListener {
                     }
                     reader.endObject();
                     editor.commit();
+
+                    this.items.loadSaved();
 
                     Snackbar.make(this.layout, "Obnoveno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } catch (Exception e) {
