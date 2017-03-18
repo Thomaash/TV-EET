@@ -56,7 +56,7 @@ public class Item implements Comparable<Item> {
         this.vat = VAT.fromID((Integer) object.get("VAT"));
     }
 
-    JSONObject toJSON() throws JSONException {
+    public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put("name", this.name);
         json.put("price", this.price);

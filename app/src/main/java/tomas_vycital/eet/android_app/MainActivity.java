@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import tomas_vycital.eet.android_app.history.HistoryGUI;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AvailableItemGridAdapter availableItemsAdapter;
     private ReceiptItemGridAdapter receiptItemsAdapter;
     private SettingsGUI settingsGUI;
+    private HistoryGUI historyGUI;
 
     private NavigationView navigationView;
     private FloatingActionButton fab;
@@ -97,23 +99,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.navigationView.setNavigationItemSelectedListener(this);
 
         // Available items
-        GridView availableItems = (GridView) MainActivity.this.findViewById(R.id.item_grid);
-        MainActivity.this.availableItemsAdapter = new AvailableItemGridAdapter(MainActivity.this, MainActivity.this.items, MainActivity.this.receipt);
+        GridView availableItems = (GridView) this.findViewById(R.id.item_grid);
+        this.availableItemsAdapter = new AvailableItemGridAdapter(this, this.items, this.receipt);
         assert availableItems != null;
-        availableItems.setAdapter(MainActivity.this.availableItemsAdapter);
+        availableItems.setAdapter(this.availableItemsAdapter);
 
         // Receipt
-        GridView receiptItems = (GridView) MainActivity.this.findViewById(R.id.menu_receipt_items);
-        MainActivity.this.receiptItemsAdapter = new ReceiptItemGridAdapter(MainActivity.this, MainActivity.this.receipt);
+        GridView receiptItems = (GridView) this.findViewById(R.id.menu_receipt_items);
+        this.receiptItemsAdapter = new ReceiptItemGridAdapter(this, this.receipt);
         assert receiptItems != null;
-        receiptItems.setAdapter(MainActivity.this.receiptItemsAdapter);
+        receiptItems.setAdapter(this.receiptItemsAdapter);
 
         // Settings
-        Button settingsButton = (Button) MainActivity.this.findViewById(R.id.settings_save);
+        Button settingsButton = (Button) this.findViewById(R.id.settings_save);
         assert settingsButton != null;
-        LinearLayout settingsValues = (LinearLayout) MainActivity.this.findViewById(R.id.settings_values);
+        LinearLayout settingsValues = (LinearLayout) this.findViewById(R.id.settings_values);
         assert settingsValues != null;
         this.settingsGUI = new SettingsGUI(this, settingsButton, settingsValues, this.printer, this.items);
+
+        // History
+        this.historyGUI = new HistoryGUI(this, this.findViewById(R.id.history_include));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -238,6 +243,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.receiptUpdated();
                 this.showOnly(R.id.receipt_include);
                 break;
+            case R.id.menu_history:
+                this.showOnly(R.id.history_include);
+                break;
             case R.id.menu_printer:
                 this.showOnly(R.id.printer_include);
                 break;
@@ -286,6 +294,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.settings_include:
                 this.settingsGUI.refreshFS();
+                break;
+            case R.id.history_include:
+                this.historyGUI.refresh();
                 break;
         }
 
@@ -455,5 +466,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void ocClearReceipt(View view) {
         MainActivity.this.newReceipt();
         Snackbar.make(view, "Účtenka byla vyprázdněna", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void setReceipt(Receipt receipt) {
+        this.receipt.copy(receipt);
+        this.receiptUpdated();
     }
 }

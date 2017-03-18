@@ -29,6 +29,7 @@ class Submit implements Runnable {
                     EET.sendProd(this.receipt.eetReceipt);
                     break;
             }
+            Receipts.addReceipt(this.receipt);
             this.handler.sendMessage(Messages.generateMessage(new Exception("Tržba byla úspěšně nahlášena")));
         } catch (Exception e) {
             this.handler.sendMessage(Messages.generateMessage(e));

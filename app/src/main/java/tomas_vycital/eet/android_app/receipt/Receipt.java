@@ -3,11 +3,16 @@ package tomas_vycital.eet.android_app.receipt;
 import android.os.Handler;
 import android.util.SparseIntArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,10 +33,12 @@ import tomas_vycital.eet.lib.EETReceipt;
  */
 
 public class Receipt implements ItemList {
+    private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
     private final Handler handler;
     EETReceipt eetReceipt;
     private List<Item> items;
     private int multiplier;
+    private Date submitTime;
 
     public Receipt(Handler handler) {
         this.items = new ArrayList<>();
@@ -187,5 +194,33 @@ public class Receipt implements ItemList {
 
     public String getPriceStr() {
         return Item.priceFormat.format(this.getPrice() / 100.0);
+    }
+
+    public Date getSubmitTime() {
+        return this.submitTime;
+    }
+
+    void setSubmitTime(Date submitTime) {
+        this.submitTime = submitTime;
+    }
+
+    public void copy(Receipt receipt) {
+        this.clear();
+        // @todo
+    }
+
+    JSONObject toJSON() throws JSONException {
+        JSONObject receipt = new JSONObject();
+
+        JSONArray items = new JSONArray();
+        for (Item item : this.items) {
+            items.put(item.toJSON());
+        }
+
+        receipt.put("multiplier", this.multiplier);
+        receipt.put("submitTime", Receipt.jsonDateFormat.format(this.submitTime));
+        receipt.put("items", items);
+
+        return receipt;
     }
 }
