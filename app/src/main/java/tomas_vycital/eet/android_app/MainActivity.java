@@ -41,6 +41,7 @@ import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 import tomas_vycital.eet.android_app.receipt.Receipt;
+import tomas_vycital.eet.android_app.receipt.Receipts;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.android_app.settings.SettingsGUI;
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.setSupportActionBar(toolbar);
 
         Settings.setup(this.getSharedPreferences("settings", MODE_PRIVATE));
+        Receipts.setup(this);
 
         this.items = new Items();
         this.printer = new BTPrinter();

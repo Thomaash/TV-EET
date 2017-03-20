@@ -31,19 +31,22 @@ public class HistoryGUI implements CalendarView.OnDateChangeListener {
     }
 
     @Override
-    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
         this.receipts.removeAllViews();
-        for (JSONObject jsonReceipt : Receipts.getReceipts()) {
-            try {
-                Receipt receipt = new Receipt(jsonReceipt);
-                this.receipts.addView(new HistoryReceipt(
-                        this.ma,
-                        jsonReceipt,
-                        receipt.getSubmitTime(),
-                        receipt.getPriceStr()
-                ).getView());
-            } catch (JSONException | ParseException ignored) {
+        try {
+            for (JSONObject jsonReceipt : Receipts.getReceipts(year, month, day)) {
+                try {
+                    Receipt receipt = new Receipt(jsonReceipt);
+                    this.receipts.addView(new HistoryReceipt(
+                            this.ma,
+                            jsonReceipt,
+                            receipt.getSubmitTime(),
+                            receipt.getPriceStr()
+                    ).getView());
+                } catch (JSONException | ParseException ignored) {
+                }
             }
+        } catch (JSONException ignored) {
         }
     }
 
