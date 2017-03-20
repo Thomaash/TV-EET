@@ -50,7 +50,7 @@ public class Item implements Comparable<Item> {
         this.vat = vat;
     }
 
-    Item(JSONObject object) throws JSONException {
+    public Item(JSONObject object) throws JSONException {
         this.name = (String) object.get("name");
         this.price = (int) object.get("price");
         this.vat = VAT.fromID((Integer) object.get("VAT"));

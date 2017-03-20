@@ -5,6 +5,11 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+
 import tomas_vycital.eet.android_app.MainActivity;
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.receipt.Receipt;
@@ -28,8 +33,17 @@ public class HistoryGUI implements CalendarView.OnDateChangeListener {
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
         this.receipts.removeAllViews();
-        for (Receipt receipt : Receipts.getReceipts()) {
-            this.receipts.addView((new HistoryReceipt(this.ma, receipt)).getView());
+        for (JSONObject jsonReceipt : Receipts.getReceipts()) {
+            try {
+                Receipt receipt = new Receipt(jsonReceipt);
+                this.receipts.addView(new HistoryReceipt(
+                        this.ma,
+                        jsonReceipt,
+                        receipt.getSubmitTime(),
+                        receipt.getPriceStr()
+                ).getView());
+            } catch (JSONException | ParseException ignored) {
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +45,11 @@ public class Receipt implements ItemList {
         this.items = new ArrayList<>();
         this.handler = handler;
         this.clear();
+    }
+
+    public Receipt(JSONObject receipt) throws JSONException, ParseException {
+        this((Handler) null);
+        this.fromJSON(receipt);
     }
 
     public void add(Item item) {
@@ -179,7 +185,9 @@ public class Receipt implements ItemList {
     private void changed() {
         this.eetReceipt = null;
         this.multiplier = 1;
-        this.handler.sendEmptyMessage(Messages.receiptPriceChanged.ordinal());
+        if (this.handler != null) {
+            this.handler.sendEmptyMessage(Messages.receiptPriceChanged.ordinal());
+        }
     }
 
     private int getPrice() {
@@ -204,11 +212,6 @@ public class Receipt implements ItemList {
         this.submitTime = submitTime;
     }
 
-    public void copy(Receipt receipt) {
-        this.clear();
-        // @todo
-    }
-
     JSONObject toJSON() throws JSONException {
         JSONObject receipt = new JSONObject();
 
@@ -222,5 +225,16 @@ public class Receipt implements ItemList {
         receipt.put("items", items);
 
         return receipt;
+    }
+
+    public void fromJSON(JSONObject receipt) throws JSONException, ParseException {
+        this.multiplier = (int) receipt.get("multiplier");
+        this.submitTime = Receipt.jsonDateFormat.parse((String) receipt.get("submitTime"));
+
+        this.items.clear();
+        JSONArray items = receipt.getJSONArray("items");
+        for (int i = 0; i < items.length(); ++i) {
+            this.items.add(new Item((JSONObject) items.get(i)));
+        }
     }
 }

@@ -1,6 +1,7 @@
 package tomas_vycital.eet.android_app.receipt;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,15 +12,14 @@ import java.util.List;
  */
 
 public class Receipts {
-    private static List<Receipt> receipts = new ArrayList<>();
+    private static List<JSONObject> receipts = new ArrayList<>();
 
     static void addReceipt(Receipt receipt) throws JSONException {
         receipt.setSubmitTime(new Date());
-        receipt.toJSON().toString();
-        Receipts.receipts.add(receipt);
+        Receipts.receipts.add(receipt.toJSON());
     }
 
-    public static Receipt[] getReceipts() {
-        return Receipts.receipts.toArray(new Receipt[0]);
+    public static JSONObject[] getReceipts() {
+        return Receipts.receipts.toArray(new JSONObject[0]);
     }
 }

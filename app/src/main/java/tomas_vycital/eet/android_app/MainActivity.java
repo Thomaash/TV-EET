@@ -26,11 +26,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.text.ParseException;
 
 import tomas_vycital.eet.android_app.history.HistoryGUI;
 import tomas_vycital.eet.android_app.items.Item;
@@ -468,8 +472,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Snackbar.make(view, "Účtenka byla vyprázdněna", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    public void setReceipt(Receipt receipt) {
-        this.receipt.copy(receipt);
+    public void setReceipt(JSONObject receipt) throws JSONException, ParseException {
+        this.receipt.fromJSON(receipt);
         this.receiptUpdated();
+        this.showOnly(R.id.receipt_items_include);
     }
 }
