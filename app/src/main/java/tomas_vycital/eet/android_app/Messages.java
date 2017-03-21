@@ -7,7 +7,7 @@ import android.os.Message;
  */
 
 public enum Messages {
-    exception, receiptPriceChanged;
+    exception, receiptChanged, btPrinterChanged, btNotEnabled;
 
     public static Message generateMessage(Exception e) {
         Message msg = new Message();

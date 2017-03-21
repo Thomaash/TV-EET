@@ -9,7 +9,7 @@ import tomas_vycital.eet.android_app.settings.Settings;
 public class PrinterUtils {
     private final static int minSpace = 2;
 
-    public static String getSeparator() {
+    private static String getSeparator() {
         return new String(new char[Settings.getReceiptWidth()]).replace("\0", "-");
     }
 

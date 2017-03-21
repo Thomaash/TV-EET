@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context="tomas_vycital.eet.android_app.printer.PrinterFragment"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,30 +14,27 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/printer_list"
+            android:id="@+id/scan"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocPrinterList"
             android:text="Vyhledat"
             />
         <Button
-            android:id="@+id/printer_test"
+            android:id="@+id/test"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocPrinterTest"
             android:text="Otestovat"
             />
         <Button
-            android:id="@+id/printer_disconnect"
+            android:id="@+id/disconnect"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocPrinterDisconnect"
             android:text="Odpojit"
             />
     </LinearLayout>
@@ -49,7 +48,7 @@
             android:orientation="vertical"
             >
             <TextView
-                android:id="@+id/printer_info"
+                android:id="@+id/info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -57,7 +56,7 @@
                 android:text="Nepřipojeno"
                 />
             <LinearLayout
-                android:id="@+id/printers_list"
+                android:id="@+id/printers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

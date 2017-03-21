@@ -10,4 +10,5 @@
     <dimen name="fabN_margin">24dp</dimen>
     <dimen name="item_height">96dp</dimen>
     <dimen name="item_text_size">15dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -30,15 +30,15 @@ class Submit implements Runnable {
                     break;
             }
             Receipts.addReceipt(this.receipt);
+            this.receipt.clear();
             this.handler.sendMessage(Messages.generateMessage(new Exception("Tržba byla úspěšně nahlášena")));
         } catch (Exception e) {
             this.handler.sendMessage(Messages.generateMessage(e));
         }
     }
 
-    Thread start() {
+    void start() {
         Thread thread = new Thread(this);
         thread.start();
-        return thread;
     }
 }

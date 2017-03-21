@@ -15,10 +15,10 @@ import java.util.HashMap;
 
 public class Settings {
     static final FilenameFilter keyFilter;
-    static FilenameFilter backupFilter;
-    static String keysDir = Environment.getExternalStorageDirectory().toString() + "/TV EET/Keys";
-    static String backupsDir = Environment.getExternalStorageDirectory().toString() + "/TV EET/Backups";
-    static HashMap<String, Object> defaults;
+    static final FilenameFilter backupFilter;
+    static final String keysDir = Environment.getExternalStorageDirectory().toString() + "/TV EET/Keys";
+    static final String backupsDir = Environment.getExternalStorageDirectory().toString() + "/TV EET/Backups";
+    static final HashMap<String, Object> defaults;
     static SharedPreferences prefs;
 
     static {

@@ -36,8 +36,8 @@ import tomas_vycital.eet.lib.EETReceipt;
 public class Receipt implements ItemList {
     private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
     private final Handler handler;
+    private final List<Item> items;
     EETReceipt eetReceipt;
-    private List<Item> items;
     private int multiplier;
     private Date submitTime;
 
@@ -57,14 +57,14 @@ public class Receipt implements ItemList {
         this.items.add(item);
     }
 
-    public void remove(int i) {
+    public Item remove(int i) {
         this.changed();
-        this.items.remove(i);
+        return this.items.remove(i);
     }
 
-    public void setNegative(boolean negative) {
+    public void toggleNegative() {
         this.changed();
-        this.multiplier = negative ? -1 : 1;
+        this.multiplier *= -1;
     }
 
     public boolean isEmpty() {
@@ -179,14 +179,14 @@ public class Receipt implements ItemList {
 
     public void clear() {
         this.items.clear();
+        this.multiplier = 1;
         this.changed();
     }
 
     private void changed() {
         this.eetReceipt = null;
-        this.multiplier = 1;
         if (this.handler != null) {
-            this.handler.sendEmptyMessage(Messages.receiptPriceChanged.ordinal());
+            this.handler.sendEmptyMessage(Messages.receiptChanged.ordinal());
         }
     }
 
@@ -201,7 +201,7 @@ public class Receipt implements ItemList {
     }
 
     public String getPriceStr() {
-        return Item.priceFormat.format(this.getPrice() / 100.0);
+        return Item.priceFormat.format(this.multiplier * this.getPrice() / 100.0);
     }
 
     public Date getSubmitTime() {

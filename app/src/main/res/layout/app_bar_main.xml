@@ -1,98 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
+    android:fitsSystemWindows="true"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        >
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
         </android.support.design.widget.AppBarLayout>
-
         <FrameLayout
-            android:id="@+id/main_frame"
+            android:id="@+id/fragments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include
-                android:id="@+id/items_include"
-                layout="@layout/items"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
-            <include
-                android:id="@+id/receipt_items_include"
-                layout="@layout/receipt_items"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
-            <include
-                android:id="@+id/settings_include"
-                layout="@layout/settings"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
-            <include
-                android:id="@+id/printer_include"
-                layout="@layout/printer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
-            <include
-                android:id="@+id/edit_item_include"
-                layout="@layout/edit_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
-            <include
-                android:id="@+id/receipt_include"
-                layout="@layout/receipt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-            <include
-                android:id="@+id/history_include"
-                layout="@layout/history"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
-
+            android:layout_height="match_parent"
+            >
         </FrameLayout>
     </LinearLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabPrint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="?android:attr/actionModePasteDrawable" />
-
+        app:srcCompat="?android:attr/actionModePasteDrawable"
+        />
 </android.support.design.widget.CoordinatorLayout>

@@ -42,7 +42,7 @@
             android:textSize="@dimen/item_text_size" />
 
         <TextView
-            android:id="@+id/dph"
+            android:id="@+id/vat"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"

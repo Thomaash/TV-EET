@@ -69,6 +69,7 @@ class DBHelper extends SQLiteOpenHelper {
                 jsons.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         return jsons;
     }

@@ -1,12 +1,9 @@
 package tomas_vycital.eet.android_app.receipt;
 
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 
 import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.printer.Printer;
-import tomas_vycital.eet.lib.EET;
 
 /**
  * Created by tom on 2.3.17.
@@ -31,9 +28,8 @@ class Print implements Runnable {
         }
     }
 
-    Thread start() {
+    void start() {
         Thread thread = new Thread(this);
         thread.start();
-        return thread;
     }
 }

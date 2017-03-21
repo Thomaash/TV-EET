@@ -14,7 +14,7 @@ import tomas_vycital.eet.android_app.VAT;
  */
 
 public class Item implements Comparable<Item> {
-    public static DecimalFormat priceFormat = new DecimalFormat("0.00");
+    public static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
     private final int price;
     private final String name;
@@ -86,10 +86,6 @@ public class Item implements Comparable<Item> {
 
     public int getVATPercentage() {
         return this.vat.getPercentage();
-    }
-
-    public String getDPHStr() {
-        return this.vat.toString();
     }
 
     public String getBrief() {

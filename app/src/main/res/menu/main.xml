@@ -8,18 +8,8 @@
         android:title="Celková cena"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_print"
+        android:id="@+id/action_receipt_negative"
         android:orderInCategory="100"
-        android:title="Vytisknout účtenku"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_submit"
-        android:orderInCategory="100"
-        android:title="Odeslat tržbu"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_submit_negative"
-        android:orderInCategory="100"
-        android:title="Odeslat zrušení třžby"
+        android:title="Přepnout zrušení tržby"
         app:showAsAction="never" />
 </menu>

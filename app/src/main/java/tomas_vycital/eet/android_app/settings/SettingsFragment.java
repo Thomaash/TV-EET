@@ -2,12 +2,15 @@ package tomas_vycital.eet.android_app.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.JsonReader;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -25,6 +28,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import tomas_vycital.eet.android_app.R;
+import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
@@ -32,25 +36,44 @@ import tomas_vycital.eet.android_app.printer.BTPrinter;
  * Created by tom on 3.3.17.
  */
 
-public class SettingsGUI implements View.OnClickListener {
-    private final Context context;
-    private final View layout;
-    private final BTPrinter printer;
-    private final Items items;
+public class SettingsFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
+    private Context context;
+    private View layout;
+    private BTPrinter printer;
+    private Items items;
 
-    public SettingsGUI(Context context, Button settingsButton, LinearLayout settings, BTPrinter printer, Items items) {
-        this.context = context;
-        this.layout = settings;
-        this.printer = printer;
-        this.items = items;
+    public SettingsFragment() {
+        // Required empty public constructor
+    }
 
-        this.refresh();
+    public static SettingsFragment newInstance(BTPrinter printer, Items items) {
+        SettingsFragment fragment = new SettingsFragment();
+        fragment.printer = printer;
+        fragment.items = items;
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.context = this.getContext();
+        this.layout = inflater.inflate(R.layout.settings, container, false);
+
+        this.refreshAll();
 
         // Onclick listeners
-        settingsButton.setOnClickListener(this);
+        this.layout.findViewById(R.id.settings_save).setOnClickListener(this);
         this.layout.findViewById(R.id.settings_codepage_test).setOnClickListener(this);
         this.layout.findViewById(R.id.settings_backup).setOnClickListener(this);
         this.layout.findViewById(R.id.settings_restore).setOnClickListener(this);
+
+        // Inflate the layout for this fragment
+        return this.layout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.refresh();
     }
 
     @Override
@@ -84,7 +107,7 @@ public class SettingsGUI implements View.OnClickListener {
 
                 Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-                this.refresh();
+                this.refreshAll();
                 break;
             case R.id.settings_codepage_test:
                 try {
@@ -109,7 +132,7 @@ public class SettingsGUI implements View.OnClickListener {
                     Snackbar.make(this.layout, "Záloha se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
-                this.refresh();
+                this.refreshAll();
                 break;
             case R.id.settings_restore:
                 try {
@@ -139,12 +162,12 @@ public class SettingsGUI implements View.OnClickListener {
                     Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
-                this.refresh();
+                this.refreshAll();
                 break;
         }
     }
 
-    private void refresh() {
+    private void refreshAll() {
         // Settings values
         ((EditText) this.layout.findViewById(R.id.setting_dic)).setText(Settings.getDIC());
         ((EditText) this.layout.findViewById(R.id.setting_heading)).setText(Settings.getHeading());
@@ -181,10 +204,15 @@ public class SettingsGUI implements View.OnClickListener {
         }
 
         // Radio buttons
-        this.refreshFS();
+        this.refresh();
     }
 
-    public void refreshFS() {
+    public void refresh() {
+        // Continue only if the fragment is initialized
+        if (this.getView() == null) {
+            return;
+        }
+
         // Radio buttons
         int keyButtons = this.generateRadioButtons(R.id.settings_keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName());
         if (keyButtons > 0) {
@@ -196,6 +224,11 @@ public class SettingsGUI implements View.OnClickListener {
             this.layout.findViewById(R.id.settings_backups).setVisibility(View.VISIBLE);
             this.layout.findViewById(R.id.settings_restore).setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean fab() {
+        return false;
     }
 
     private int generateRadioButtons(int viewID, String dirStr, FilenameFilter filter, String oldName) {
@@ -222,6 +255,7 @@ public class SettingsGUI implements View.OnClickListener {
         return count;
     }
 
+    @Nullable
     private String getRadioGroupValue(int groupRID) {
         RadioButton radioButton = (RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(groupRID)).getCheckedRadioButtonId());
         return radioButton == null ? null : radioButton.getText().toString();

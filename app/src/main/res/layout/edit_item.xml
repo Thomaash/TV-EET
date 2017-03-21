@@ -1,137 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/edit_item_layout"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    tools:context="tomas_vycital.eet.android_app.items.EditItemFragment"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:background="?android:attr/colorPrimary"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        >
         <Button
-            android:id="@+id/edit_item_change"
+            android:id="@+id/change"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocChangeItem"
-            android:text="Změň" />
-
+            android:text="Změň"
+            />
         <Button
-            android:id="@+id/edit_item_add"
+            android:id="@+id/add"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocAddItem"
-            android:text="Přidej" />
-
+            android:text="Přidej"
+            />
         <Button
-            android:id="@+id/edit_item_delete"
+            android:id="@+id/delete"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="ocDeleteItem"
-            android:text="Vymaž" />
-
+            android:text="Vymaž"
+            />
     </LinearLayout>
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:stretchColumns="0,1">
-
+        android:stretchColumns="0,1"
+        >
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            >
             <TextView
-                android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/edit_item_name"
-                android:text="Název" />
-
+                android:labelFor="@+id/name"
+                android:text="Název"
+                />
             <EditText
-                android:id="@+id/edit_item_name"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
-
+                />
         </TableRow>
-
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            >
             <TextView
-                android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/edit_item_price"
-                android:text="Cena" />
-
+                android:labelFor="@+id/price"
+                android:text="Cena"
+                />
             <EditText
-                android:id="@+id/edit_item_price"
+                android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="numberDecimal" />
-
+                android:inputType="numberDecimal"
+                />
         </TableRow>
-
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            >
             <TextView
-                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DPH" />
-
+                android:text="DPH"
+                />
             <RadioGroup
-                android:id="@+id/edit_item_vat"
+                android:id="@+id/vat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                >
                 <RadioButton
-                    android:id="@+id/edit_item_vat_basic"
+                    android:id="@+id/vat_basic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="21%" />
-
+                    android:text="21%"
+                    />
                 <RadioButton
-                    android:id="@+id/edit_item_vat_reduced1"
+                    android:id="@+id/vat_reduced1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="15%" />
-
+                    android:text="15%"
+                    />
                 <RadioButton
-                    android:id="@+id/edit_item_vat_reduced2"
+                    android:id="@+id/vat_reduced2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="10%" />
-
+                    android:text="10%"
+                    />
                 <RadioButton
-                    android:id="@+id/edit_item_vat_exempt"
+                    android:id="@+id/vat_exempt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0" />
+                    android:text="0"
+                    />
             </RadioGroup>
         </TableRow>
     </TableLayout>
-
 </LinearLayout>
