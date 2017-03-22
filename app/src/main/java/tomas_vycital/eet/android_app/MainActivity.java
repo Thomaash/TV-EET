@@ -37,6 +37,7 @@ import tomas_vycital.eet.android_app.printer.PrinterFragment;
 import tomas_vycital.eet.android_app.receipt.Receipt;
 import tomas_vycital.eet.android_app.receipt.ReceiptFragment;
 import tomas_vycital.eet.android_app.receipt.Receipts;
+import tomas_vycital.eet.android_app.settings.BackupsFragment;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.android_app.settings.SettingsFragment;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private HistoryFragment historyFragment;
     private PrinterFragment printerFragment;
     private SettingsFragment settingsFragment;
+    private BackupsFragment backupsFragment;
     private EditItemFragment editItemFragment;
 
     @Override
@@ -103,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.receiptFragment = ReceiptFragment.newInstance(this.receipt, this.printer, handler);
         this.historyFragment = HistoryFragment.newInstance(this);
         this.printerFragment = PrinterFragment.newInstance(this.printer, handler);
-        this.settingsFragment = SettingsFragment.newInstance(this.printer, items);
+        this.settingsFragment = SettingsFragment.newInstance(this.printer);
+        this.backupsFragment = BackupsFragment.newInstance(items);
         this.editItemFragment = EditItemFragment.newInstance(items);
 
         // Default fragment (all items)
@@ -211,6 +214,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_settings:
                 this.showOnly(this.settingsFragment);
+                break;
+            case R.id.menu_backups:
+                this.showOnly(this.backupsFragment);
                 break;
             case R.id.menu_edit_item:
                 this.editItem(null);

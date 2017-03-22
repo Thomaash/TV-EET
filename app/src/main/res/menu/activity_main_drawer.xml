@@ -25,17 +25,22 @@
             />
         <item
             android:id="@+id/menu_printer"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@android:drawable/ic_menu_share"
             android:title="Tiskárna"
             />
         <item
             android:id="@+id/menu_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@android:drawable/ic_menu_manage"
             android:title="Nastavení"
             />
         <item
+            android:id="@+id/menu_backups"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="Zálohy"
+            />
+        <item
             android:id="@+id/menu_edit_item"
-            android:icon="@android:drawable/ic_input_add"
+            android:icon="@android:drawable/ic_menu_add"
             android:title="Nové zboží"
             />
     </group>

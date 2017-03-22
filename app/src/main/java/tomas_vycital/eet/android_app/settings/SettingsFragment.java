@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +14,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
-import org.json.JSONObject;
-
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.RefreshableFragment;
-import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
 /**
@@ -40,16 +30,14 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     private Context context;
     private View layout;
     private BTPrinter printer;
-    private Items items;
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
-    public static SettingsFragment newInstance(BTPrinter printer, Items items) {
+    public static SettingsFragment newInstance(BTPrinter printer) {
         SettingsFragment fragment = new SettingsFragment();
         fragment.printer = printer;
-        fragment.items = items;
         return fragment;
     }
 
@@ -63,8 +51,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         // Onclick listeners
         this.layout.findViewById(R.id.settings_save).setOnClickListener(this);
         this.layout.findViewById(R.id.settings_codepage_test).setOnClickListener(this);
-        this.layout.findViewById(R.id.settings_backup).setOnClickListener(this);
-        this.layout.findViewById(R.id.settings_restore).setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return this.layout;
@@ -114,55 +100,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                     this.printer.testCP(this.getUnsavedCodepage(), this.getUnsavedCharset());
                 } catch (IOException ignored) {
                 }
-                break;
-            case R.id.settings_backup:
-                try {
-                    (new File(Settings.backupsDir)).mkdirs();
-                    File file = new File(Settings.backupsDir + "/" + String.format("%tFT%<tR%<tZ", Calendar.getInstance(TimeZone.getDefault())) + ".json");
-                    Writer writer = new BufferedWriter(new FileWriter(file));
-                    writer.write(
-                            (new JSONObject(
-                                    Settings.prefs.getAll()
-                            )).toString()
-                    );
-                    writer.close();
-
-                    Snackbar.make(this.layout, "Zazálohováno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                } catch (Exception e) {
-                    Snackbar.make(this.layout, "Záloha se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-
-                this.refreshAll();
-                break;
-            case R.id.settings_restore:
-                try {
-                    String fileName = ((RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(R.id.settings_backups)).getCheckedRadioButtonId())).getText().toString();
-                    JsonReader reader = new JsonReader(new FileReader(Settings.backupsDir + "/" + fileName));
-
-                    editor = Settings.prefs.edit();
-                    reader.beginObject();
-                    while (reader.hasNext()) {
-                        String name = reader.nextName();
-                        Object defaultValue = Settings.defaults.get(name);
-                        if (defaultValue instanceof Integer) {
-                            editor.putInt(name, reader.nextInt());
-                        } else if (defaultValue instanceof Boolean) {
-                            editor.putBoolean(name, reader.nextBoolean());
-                        } else { // String
-                            editor.putString(name, reader.nextString());
-                        }
-                    }
-                    reader.endObject();
-                    editor.commit();
-
-                    this.items.loadSaved();
-
-                    Snackbar.make(this.layout, "Obnoveno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                } catch (Exception e) {
-                    Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-
-                this.refreshAll();
                 break;
         }
     }
@@ -218,11 +155,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         if (keyButtons > 0) {
             this.layout.findViewById(R.id.settings_keys).setVisibility(View.VISIBLE);
             this.layout.findViewById(R.id.settings_nokeys).setVisibility(View.GONE);
-        }
-        int backupButtons = this.generateRadioButtons(R.id.settings_backups, Settings.backupsDir, Settings.backupFilter, null);
-        if (backupButtons > 0) {
-            this.layout.findViewById(R.id.settings_backups).setVisibility(View.VISIBLE);
-            this.layout.findViewById(R.id.settings_restore).setVisibility(View.VISIBLE);
         }
     }
 

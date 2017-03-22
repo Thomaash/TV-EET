@@ -200,126 +200,91 @@
                         android:layout_weight="1"
                         />
                 </TableRow>
-                <TextView
+            </TableLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Kódování"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                >
+                <EditText
+                    android:id="@+id/settings_codepage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Kódování"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:orientation="vertical"
-                    >
-                    <EditText
-                        android:id="@+id/settings_codepage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="number"
-                        />
-                    <RadioGroup
-                        android:id="@+id/settings_charset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
-                        <RadioButton
-                            android:id="@+id/settings_charset_ascii"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="ASCII"
-                            />
-                        <RadioButton
-                            android:id="@+id/settings_charset_utf8"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="UTF-8"
-                            />
-                        <RadioButton
-                            android:id="@+id/settings_charset_iso88592"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="ISO-8859-2"
-                            />
-                        <RadioButton
-                            android:id="@+id/settings_charset_cp852"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="CP-852"
-                            />
-                        <RadioButton
-                            android:id="@+id/settings_charset_windows1250"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Windows-1250"
-                            />
-                    </RadioGroup>
-                    <Button
-                        android:id="@+id/settings_codepage_test"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="Vytisknout test"
-                        />
-                </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Klíč"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
-                    />
-                <TextView
-                    android:id="@+id/settings_nokeys"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:text="Vložte svůj klíč (soubor .p12) do složky „EET Keys“ v úložišti telefonu."
+                    android:layout_weight="1"
+                    android:inputType="number"
                     />
                 <RadioGroup
-                    android:id="@+id/settings_keys"
+                    android:id="@+id/settings_charset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:visibility="gone"
                     >
+                    <RadioButton
+                        android:id="@+id/settings_charset_ascii"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ASCII"
+                        />
+                    <RadioButton
+                        android:id="@+id/settings_charset_utf8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="UTF-8"
+                        />
+                    <RadioButton
+                        android:id="@+id/settings_charset_iso88592"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ISO-8859-2"
+                        />
+                    <RadioButton
+                        android:id="@+id/settings_charset_cp852"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CP-852"
+                        />
+                    <RadioButton
+                        android:id="@+id/settings_charset_windows1250"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Windows-1250"
+                        />
                 </RadioGroup>
-                <TextView
+                <Button
+                    android:id="@+id/settings_codepage_test"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Záloha"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Vytisknout test"
                     />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:orientation="vertical"
-                    >
-                    <Button
-                        android:id="@+id/settings_backup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="Zálohovat"
-                        />
-                    <RadioGroup
-                        android:id="@+id/settings_backups"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        >
-                    </RadioGroup>
-                    <Button
-                        android:id="@+id/settings_restore"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="Obnovit"
-                        android:visibility="gone"
-                        />
-                </LinearLayout>
-            </TableLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Klíč"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                />
+            <TextView
+                android:id="@+id/settings_nokeys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="Vložte svůj klíč (soubor .p12) do složky „EET Keys“ v úložišti telefonu."
+                />
+            <RadioGroup
+                android:id="@+id/settings_keys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:visibility="gone"
+                >
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
