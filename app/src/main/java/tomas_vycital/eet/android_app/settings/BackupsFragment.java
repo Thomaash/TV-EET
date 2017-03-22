@@ -3,17 +3,15 @@ package tomas_vycital.eet.android_app.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 
 import org.json.JSONObject;
 
@@ -40,6 +38,7 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
     private Items items;
 
     private RadioGroup backups;
+    private Button restore;
 
     public BackupsFragment() {
         // Required empty public constructor
@@ -58,12 +57,13 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
 
         // Views
         this.backups = (RadioGroup) this.layout.findViewById(R.id.backups);
+        this.restore = (Button) this.layout.findViewById(R.id.restore);
 
         // Onclick listeners
         this.layout.findViewById(R.id.backup).setOnClickListener(this);
-        this.layout.findViewById(R.id.restore).setOnClickListener(this);
+        this.restore.setOnClickListener(this);
 
-        this.refreshAll();
+        this.refresh();
 
         // Inflate the layout for this fragment
         return this.layout;
@@ -97,7 +97,7 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
                     Snackbar.make(this.layout, "Záloha se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
-                this.refreshAll();
+                this.refresh();
                 break;
             case R.id.restore:
                 try {
@@ -118,7 +118,7 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
                         }
                     }
                     reader.endObject();
-                    editor.commit();
+                    editor.apply();
 
                     this.items.loadSaved();
 
@@ -127,14 +127,9 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
                     Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
-                this.refreshAll();
+                this.refresh();
                 break;
         }
-    }
-
-    private void refreshAll() {
-        // Radio buttons
-        this.refresh();
     }
 
     public void refresh() {
@@ -144,11 +139,11 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         }
 
         // Radio buttons
-        int backupButtons = this.generateRadioButtons(R.id.backups, Settings.backupsDir, Settings.backupFilter, null);
+        int backupButtons = this.generateRadioButtons(this.backups, Settings.backupsDir, Settings.backupFilter, null);
         if (backupButtons > 0) {
-            this.layout.findViewById(R.id.restore).setEnabled(true);
+            this.restore.setEnabled(true);
         } else {
-            this.layout.findViewById(R.id.restore).setEnabled(false);
+            this.restore.setEnabled(false);
         }
     }
 
@@ -157,9 +152,8 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         return false;
     }
 
-    private int generateRadioButtons(int viewID, String dirStr, FilenameFilter filter, String oldName) {
+    private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {
         int count = 0;
-        RadioGroup group = (RadioGroup) this.layout.findViewById(viewID);
         group.removeAllViews();
         File dir = new File(dirStr);
         dir.mkdirs();
@@ -179,46 +173,5 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         }
 
         return count;
-    }
-
-    @Nullable
-    private String getRadioGroupValue(int groupRID) {
-        RadioButton radioButton = (RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(groupRID)).getCheckedRadioButtonId());
-        return radioButton == null ? null : radioButton.getText().toString();
-    }
-
-    private int getUnsavedCodepage() {
-        try {
-            return Integer.valueOf(((EditText) this.layout.findViewById(R.id.settings_codepage)).getText().toString());
-        } catch (Exception ignored) {
-        }
-        return (int) Settings.defaults.get("codepage");
-    }
-
-    private Charset getUnsavedCharset() {
-        switch (((RadioGroup) this.layout.findViewById(R.id.settings_charset)).getCheckedRadioButtonId()) {
-            case R.id.settings_charset_utf8:
-                return Charset.utf8;
-            case R.id.settings_charset_iso88592:
-                return Charset.iso88592;
-            case R.id.settings_charset_cp852:
-                return Charset.cp852;
-            case R.id.settings_charset_windows1250:
-                return Charset.windows1250;
-            default: // R.id.settings_charset_ascii
-                return Charset.ascii;
-        }
-    }
-
-    private void saveBoolean(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putBoolean(prefID, ((Switch) this.layout.findViewById(rID)).isChecked());
-    }
-
-    private void saveString(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putString(prefID, ((EditText) this.layout.findViewById(rID)).getText().toString());
-    }
-
-    private void saveInteger(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putInt(prefID, Integer.valueOf(((EditText) this.layout.findViewById(rID)).getText().toString()));
     }
 }

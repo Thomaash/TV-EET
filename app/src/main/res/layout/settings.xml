@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings_layout"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/settings_save"
+            android:id="@+id/save"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +29,7 @@
         android:layout_weight="1"
         >
         <LinearLayout
-            android:id="@+id/settings_values"
+            android:id="@+id/values"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -37,12 +37,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/setting_heading"
+                android:labelFor="@+id/heading"
                 android:text="Záhlaví účtenky"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 />
             <EditText
-                android:id="@+id/setting_heading"
+                android:id="@+id/heading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -52,12 +52,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/setting_footing"
+                android:labelFor="@+id/footing"
                 android:text="Zápatí účtenky"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 />
             <EditText
-                android:id="@+id/setting_footing"
+                android:id="@+id/footing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -76,12 +76,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/setting_dic"
+                        android:labelFor="@+id/dic"
                         android:text="DIČ"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <EditText
-                        android:id="@+id/setting_dic"
+                        android:id="@+id/dic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -96,12 +96,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/settings_receipt_width"
+                        android:labelFor="@+id/receipt_width"
                         android:text="Šířka účtenky"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <EditText
-                        android:id="@+id/settings_receipt_width"
+                        android:id="@+id/receipt_width"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -116,12 +116,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/settings_id_pokl"
+                        android:labelFor="@+id/id_pokl"
                         android:text="ID pokladny"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <EditText
-                        android:id="@+id/settings_id_pokl"
+                        android:id="@+id/id_pokl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -137,12 +137,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/settings_id_provoz"
+                        android:labelFor="@+id/id_provoz"
                         android:text="ID provozu"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <EditText
-                        android:id="@+id/settings_id_provoz"
+                        android:id="@+id/id_provoz"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -158,23 +158,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/settings_server"
+                        android:labelFor="@+id/server"
                         android:text="Server"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <RadioGroup
-                        android:id="@+id/settings_server"
+                        android:id="@+id/server"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
                         <RadioButton
-                            android:id="@+id/settings_server_play"
+                            android:id="@+id/server_play"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Playground"
                             />
                         <RadioButton
-                            android:id="@+id/settings_server_prod"
+                            android:id="@+id/server_prod"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Produkční"
@@ -189,12 +189,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:labelFor="@+id/settings_verifying"
+                        android:labelFor="@+id/verifying"
                         android:text="Ověřovací mód"
                         android:textAppearance="@android:style/TextAppearance.Material.Title"
                         />
                     <Switch
-                        android:id="@+id/settings_verifying"
+                        android:id="@+id/verifying"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -214,50 +214,50 @@
                 android:orientation="vertical"
                 >
                 <EditText
-                    android:id="@+id/settings_codepage"
+                    android:id="@+id/codepage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
                     />
                 <RadioGroup
-                    android:id="@+id/settings_charset"
+                    android:id="@+id/charset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
                     <RadioButton
-                        android:id="@+id/settings_charset_ascii"
+                        android:id="@+id/charset_ascii"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ASCII"
                         />
                     <RadioButton
-                        android:id="@+id/settings_charset_utf8"
+                        android:id="@+id/charset_utf8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="UTF-8"
                         />
                     <RadioButton
-                        android:id="@+id/settings_charset_iso88592"
+                        android:id="@+id/charset_iso88592"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ISO-8859-2"
                         />
                     <RadioButton
-                        android:id="@+id/settings_charset_cp852"
+                        android:id="@+id/charset_cp852"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="CP-852"
                         />
                     <RadioButton
-                        android:id="@+id/settings_charset_windows1250"
+                        android:id="@+id/charset_windows1250"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Windows-1250"
                         />
                 </RadioGroup>
                 <Button
-                    android:id="@+id/settings_codepage_test"
+                    android:id="@+id/codepage_test"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
@@ -271,14 +271,14 @@
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 />
             <TextView
-                android:id="@+id/settings_nokeys"
+                android:id="@+id/nokeys"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:text="Vložte svůj klíč (soubor .p12) do složky „EET Keys“ v úložišti telefonu."
                 />
             <RadioGroup
-                android:id="@+id/settings_keys"
+                android:id="@+id/keys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
