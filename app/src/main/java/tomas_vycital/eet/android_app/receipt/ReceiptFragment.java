@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -74,6 +75,8 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
                 }
                 try {
                     this.receipt.submit(this.handler);
+                } catch (FileNotFoundException e) {
+                    Snackbar.make(v, "Nebyl nalezen certifikát (.p12)", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
                     Snackbar.make(v, "Nepodařilo se nahlásit tržbu", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
