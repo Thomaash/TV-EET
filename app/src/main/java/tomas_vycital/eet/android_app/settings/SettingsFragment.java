@@ -23,10 +23,6 @@ import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
-/**
- * Created by tom on 3.3.17.
- */
-
 public class SettingsFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
     private Context context;
     private View layout;
@@ -113,12 +109,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 Snackbar.make(this.layout, "Ukládá se…", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 editor = Settings.prefs.edit();
-                this.saveString(editor, R.id.dic, "DIC");
-                this.saveString(editor, R.id.heading, "heading");
-                this.saveString(editor, R.id.footing, "footing");
-                this.saveInteger(editor, R.id.receipt_width, "receiptWidth");
-                this.saveString(editor, R.id.id_pokl, "idPokl");
-                this.saveString(editor, R.id.id_provoz, "idProvoz");
+                this.saveString(editor, this.dic, "DIC");
+                this.saveString(editor, this.heading, "heading");
+                this.saveString(editor, this.footing, "footing");
+                this.saveInteger(editor, this.receiptWidth, "receiptWidth");
+                this.saveString(editor, this.idPokl, "idPokl");
+                this.saveString(editor, this.idProvoz, "idProvoz");
                 switch (this.server.getCheckedRadioButtonId()) {
                     case R.id.server_play:
                         editor.putInt("server", Server.play.getID());
@@ -127,10 +123,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                         editor.putInt("server", Server.prod.getID());
                         break;
                 }
-                this.saveBoolean(editor, R.id.verifying, "verifying");
+                this.saveBoolean(editor, this.verifying, "verifying");
                 editor.putInt("codepage", this.getUnsavedCodepage());
                 editor.putString("charset", this.getUnsavedCharset().getStr());
-                editor.putString("keyFileName", this.getRadioGroupValue(R.id.keys));
+                editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
                 editor.apply();
 
                 Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -193,7 +189,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         }
 
         // Radio buttons
-        int keyButtons = this.generateRadioButtons(R.id.keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName());
+        int keyButtons = this.generateRadioButtons(this.keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName());
         if (keyButtons > 0) {
             this.keys.setVisibility(View.VISIBLE);
             this.nokeys.setVisibility(View.GONE);
@@ -205,9 +201,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         return false;
     }
 
-    private int generateRadioButtons(int viewID, String dirStr, FilenameFilter filter, String oldName) {
+    private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {
         int count = 0;
-        RadioGroup group = (RadioGroup) this.layout.findViewById(viewID);
         group.removeAllViews();
         File dir = new File(dirStr);
         dir.mkdirs();
@@ -230,8 +225,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Nullable
-    private String getRadioGroupValue(int groupRID) {
-        RadioButton radioButton = (RadioButton) this.layout.findViewById(((RadioGroup) this.layout.findViewById(groupRID)).getCheckedRadioButtonId());
+    private String getRadioGroupValue(RadioGroup view) {
+        RadioButton radioButton = (RadioButton) this.layout.findViewById(view.getCheckedRadioButtonId());
         return radioButton == null ? null : radioButton.getText().toString();
     }
 
@@ -258,15 +253,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    private void saveBoolean(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putBoolean(prefID, ((Switch) this.layout.findViewById(rID)).isChecked());
+    private void saveBoolean(SharedPreferences.Editor editor, Switch view, String prefID) {
+        editor.putBoolean(prefID, view.isChecked());
     }
 
-    private void saveString(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putString(prefID, ((EditText) this.layout.findViewById(rID)).getText().toString());
+    private void saveString(SharedPreferences.Editor editor, EditText view, String prefID) {
+        editor.putString(prefID, view.getText().toString());
     }
 
-    private void saveInteger(SharedPreferences.Editor editor, int rID, String prefID) {
-        editor.putInt(prefID, Integer.valueOf(((EditText) this.layout.findViewById(rID)).getText().toString()));
+    private void saveInteger(SharedPreferences.Editor editor, EditText view, String prefID) {
+        editor.putInt(prefID, Integer.valueOf(view.getText().toString()));
     }
 }
