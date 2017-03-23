@@ -32,7 +32,6 @@ import tomas_vycital.eet.lib.EETReceipt;
 /**
  * Holds bought items
  */
-
 public class Receipt implements ItemList {
     private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
     private final Handler handler;
@@ -67,11 +66,11 @@ public class Receipt implements ItemList {
         this.multiplier *= -1;
     }
 
-    public boolean isEmpty() {
+    boolean isEmpty() {
         return this.items.isEmpty();
     }
 
-    public String getReceiptStr() {
+    String getReceiptStr() {
         String negative = this.multiplier == 1 ? "" : "-";
         String str = Settings.getHeading() + "\n"
                 + PrinterUtils.getSeparatorNl()
@@ -136,7 +135,7 @@ public class Receipt implements ItemList {
         return this.items.get(i);
     }
 
-    public void submit(Handler handler) throws IOException, UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+    void submit(Handler handler) throws IOException, UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
         if (this.eetReceipt == null) {
             int celkTrzba = 0;
             SparseIntArray zaklDan = new SparseIntArray();
@@ -173,7 +172,7 @@ public class Receipt implements ItemList {
         (new Submit(this, handler)).start();
     }
 
-    public void print(Handler handler, Printer printer) {
+    void print(Handler handler, Printer printer) {
         (new Print(this, handler, printer)).start();
     }
 
@@ -228,10 +227,11 @@ public class Receipt implements ItemList {
     }
 
     public void fromJSON(JSONObject receipt) throws JSONException, ParseException {
+        this.clear();
+
         this.multiplier = (int) receipt.get("multiplier");
         this.submitTime = Receipt.jsonDateFormat.parse((String) receipt.get("submitTime"));
 
-        this.items.clear();
         JSONArray items = receipt.getJSONArray("items");
         for (int i = 0; i < items.length(); ++i) {
             this.items.add(new Item((JSONObject) items.get(i)));

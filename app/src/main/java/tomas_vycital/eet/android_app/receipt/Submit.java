@@ -6,9 +6,6 @@ import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EET;
 
-/**
- * Created by tom on 2.3.17.
- */
 class Submit implements Runnable {
     private final Receipt receipt;
     private final Handler handler;
@@ -30,7 +27,6 @@ class Submit implements Runnable {
                     break;
             }
             Receipts.addReceipt(this.receipt);
-            this.receipt.clear();
             this.handler.sendMessage(Messages.generateMessage(new Exception("Tržba byla úspěšně nahlášena")));
         } catch (Exception e) {
             this.handler.sendMessage(Messages.generateMessage(e));

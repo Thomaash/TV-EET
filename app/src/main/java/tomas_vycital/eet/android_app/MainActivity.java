@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.this.receiptUpdated();
                 MainActivity.this.showOnly(MainActivity.this.receiptFragment, R.id.menu_receipt);
             }
         });
@@ -159,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case btNotEnabled:
                 Snackbar.make(this.getWindow().getDecorView().getRootView(), "Není zapnutý Bluetooth", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 break;
+            case clearReceipt:
+                this.receipt.clear();
+                break;
         }
     }
 
@@ -203,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.showOnly(this.receiptItemsFragment);
                 break;
             case R.id.menu_receipt:
-                this.receiptUpdated();
                 this.showOnly(this.receiptFragment);
                 break;
             case R.id.menu_history:
@@ -268,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setReceipt(JSONObject receipt) throws JSONException, ParseException {
         this.receipt.fromJSON(receipt);
-        this.receiptUpdated();
         this.showOnly(this.receiptItemsFragment);
     }
 }

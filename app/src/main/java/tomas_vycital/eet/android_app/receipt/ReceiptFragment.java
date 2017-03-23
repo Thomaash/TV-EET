@@ -15,13 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
-
-/**
- * Created by tom on 3.3.17.
- */
 
 public class ReceiptFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
     private BTPrinter printer;
@@ -50,6 +47,7 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
         this.refresh();
 
         // Onclick listeners
+        layout.findViewById(R.id.clear).setOnClickListener(this);
         layout.findViewById(R.id.submit).setOnClickListener(this);
         layout.findViewById(R.id.print).setOnClickListener(this);
 
@@ -66,6 +64,9 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.clear:
+                this.handler.sendEmptyMessage(Messages.clearReceipt.ordinal());
+                break;
             case R.id.submit:
                 if (this.receipt.isEmpty()) {
                     Snackbar.make(v, "Účtenka je prázdná", Snackbar.LENGTH_LONG).setAction("Action", null).show();
