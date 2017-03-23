@@ -275,7 +275,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="Vložte svůj klíč (soubor .p12) do složky „EET Keys“ v úložišti telefonu."
+                android:text="Vložte svůj klíč (soubor .p12) do složky „TV EET/Keys“ v úložišti telefonu.\n\nPS: Pokud složku v PC nevidíte, restartujte telefon."
                 />
             <RadioGroup
                 android:id="@+id/keys"
