@@ -69,12 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Settings.setup(this.getSharedPreferences("settings", MODE_PRIVATE));
         Receipts.setup(this);
 
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                MainActivity.this.handleMessage(msg);
-            }
-        };
+        Handler handler = new MessageHandler(this);
         Items items = new Items();
         this.printer = new BTPrinter(handler);
         this.receipt = new Receipt(handler);
@@ -143,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         thread.start();
     }
 
-    private void handleMessage(Message msg) {
+    void handleMessage(Message msg) {
         switch (Messages.values()[msg.what]) {
             case exception:
                 Exception e = (Exception) msg.obj;
