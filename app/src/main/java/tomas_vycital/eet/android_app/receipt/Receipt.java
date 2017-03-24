@@ -1,6 +1,7 @@
 package tomas_vycital.eet.android_app.receipt;
 
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 
 import org.json.JSONArray;
@@ -39,6 +40,9 @@ public class Receipt implements ItemList {
     EETReceipt eetReceipt;
     private int multiplier;
     private Date submitTime;
+    private String bkp;
+    private String fik;
+    private String pkp;
 
     public Receipt(Handler handler) {
         this.items = new ArrayList<>();
@@ -53,6 +57,15 @@ public class Receipt implements ItemList {
 
     static Date parseDate(String string) throws ParseException {
         return Receipt.jsonDateFormat.parse(string);
+    }
+
+    @Nullable
+    private static String getStringOrNull(JSONObject receipt, String name) {
+        try {
+            return receipt.getString(name);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     public void add(Item item) {
@@ -111,13 +124,13 @@ public class Receipt implements ItemList {
         str += PrinterUtils.align("           DPH:", negative + Item.priceFormat.format((sumWithVAT - sumWithoutVAT) / 100.0) + " kč\n");
         str += PrinterUtils.align("        Součet:", negative + Item.priceFormat.format(sumWithVAT / 100.0) + " kč\n");
 
-        if (this.eetReceipt != null) {
+        if (this.bkp != null && this.pkp != null) {
             str += "\n";
-            str += "BKP: " + this.eetReceipt.getBKP() + "\n";
-            if (this.eetReceipt.getFIK() == null) {
-                str += "PKP: " + this.eetReceipt.getPKP() + "\n";
+            str += "BKP: " + this.bkp + "\n";
+            if (this.fik == null) {
+                str += "PKP: " + this.pkp + "\n";
             } else {
-                str += "FIK: " + this.eetReceipt.getFIK() + "\n";
+                str += "FIK: " + this.fik + "\n";
             }
             str += "Režim tržby: " + Settings.getModeStr() + "\n";
         }
@@ -188,6 +201,9 @@ public class Receipt implements ItemList {
 
     private void changed() {
         this.eetReceipt = null;
+        this.bkp = null;
+        this.pkp = null;
+        this.fik = null;
         if (this.handler != null) {
             this.handler.sendEmptyMessage(Messages.receiptChanged.ordinal());
         }
@@ -225,6 +241,9 @@ public class Receipt implements ItemList {
 
         receipt.put("multiplier", this.multiplier);
         receipt.put("submitTime", Receipt.jsonDateFormat.format(this.submitTime));
+        receipt.put("bkp", this.bkp);
+        receipt.put("pkp", this.pkp);
+        receipt.put("fik", this.fik);
         receipt.put("items", items);
 
         return receipt;
@@ -235,10 +254,31 @@ public class Receipt implements ItemList {
 
         this.multiplier = (int) receipt.get("multiplier");
         this.submitTime = Receipt.parseDate((String) receipt.get("submitTime"));
+        this.bkp = Receipt.getStringOrNull(receipt, "bkp");
+        this.pkp = Receipt.getStringOrNull(receipt, "pkp");
+        this.fik = Receipt.getStringOrNull(receipt, "fik");
 
         JSONArray items = receipt.getJSONArray("items");
         for (int i = 0; i < items.length(); ++i) {
             this.items.add(new Item((JSONObject) items.get(i)));
         }
+    }
+
+    void onSubmit() {
+        this.bkp = this.eetReceipt.getBKP();
+        this.fik = this.eetReceipt.getFIK();
+        this.pkp = this.eetReceipt.getPKP();
+    }
+
+    boolean isClearable() {
+        return this.items.size() > 0;
+    }
+
+    boolean isSubmittable() {
+        return this.pkp == null && this.items.size() > 0;
+    }
+
+    boolean isPrintable() {
+        return this.items.size() > 0;
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -26,6 +27,9 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
     private Receipt receipt;
     private Handler handler;
     private TextView textView;
+    private Button clear;
+    private Button submit;
+    private Button print;
 
     public ReceiptFragment() {
         // Required empty public constructor
@@ -44,13 +48,16 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
         View layout = inflater.inflate(R.layout.receipt, container, false);
 
         this.textView = (TextView) layout.findViewById(R.id.receipt);
+        this.clear = (Button) layout.findViewById(R.id.clear);
+        this.submit = (Button) layout.findViewById(R.id.submit);
+        this.print = (Button) layout.findViewById(R.id.print);
 
         this.refresh();
 
         // Onclick listeners
-        layout.findViewById(R.id.clear).setOnClickListener(this);
-        layout.findViewById(R.id.submit).setOnClickListener(this);
-        layout.findViewById(R.id.print).setOnClickListener(this);
+        this.clear.setOnClickListener(this);
+        this.submit.setOnClickListener(this);
+        this.print.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return layout;
@@ -93,6 +100,9 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
             return;
         }
         this.textView.setText(this.receipt.getReceiptStr());
+        this.clear.setEnabled(this.receipt.isClearable());
+        this.submit.setEnabled(this.receipt.isSubmittable());
+        this.print.setEnabled(this.receipt.isPrintable());
     }
 
     @Override
