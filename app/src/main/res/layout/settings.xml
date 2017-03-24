@@ -17,7 +17,7 @@
         <Button
             android:id="@+id/save"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Uložit"
@@ -26,204 +26,298 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         >
-        <LinearLayout
-            android:id="@+id/values"
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:stretchColumns="0,1"
             >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/heading"
-                android:text="Záhlaví účtenky"
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                />
-            <EditText
-                android:id="@+id/heading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/footing"
-                android:text="Zápatí účtenky"
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                />
-            <EditText
-                android:id="@+id/footing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                />
-            <TableLayout
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:stretchColumns="0,1"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 >
-                <TableRow
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/dic"
-                        android:text="DIČ"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <EditText
-                        android:id="@+id/dic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="textMultiLine"
-                        android:maxLines="1"
-                        />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/receipt_width"
-                        android:text="Šířka účtenky"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <EditText
-                        android:id="@+id/receipt_width"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="počet znaků pro zarovnání"
-                        android:inputType="number"
-                        />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/id_pokl"
-                        android:text="ID pokladny"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <EditText
-                        android:id="@+id/id_pokl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint=""
-                        android:inputType="text"
-                        />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/id_provoz"
-                        android:text="ID provozu"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <EditText
-                        android:id="@+id/id_provoz"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint=""
-                        android:inputType="text"
-                        />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/server"
-                        android:text="Server"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <RadioGroup
-                        android:id="@+id/server"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
-                        <RadioButton
-                            android:id="@+id/server_play"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Playground"
-                            />
-                        <RadioButton
-                            android:id="@+id/server_prod"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Produkční"
-                            />
-                    </RadioGroup>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:labelFor="@+id/verifying"
-                        android:text="Ověřovací mód"
-                        android:textAppearance="@android:style/TextAppearance.Material.Title"
-                        />
-                    <Switch
-                        android:id="@+id/verifying"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        />
-                </TableRow>
-            </TableLayout>
-            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/heading"
+                    android:text="Záhlaví účtenky"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+            </TableRow>
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Kódování"
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                />
-            <LinearLayout
+                >
+                <EditText
+                    android:id="@+id/heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    />
+            </TableRow>
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/footing"
+                    android:text="Zápatí účtenky"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <EditText
+                    android:id="@+id/footing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/dic"
+                    android:text="DIČ"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <EditText
+                    android:id="@+id/dic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:maxLines="1"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/receipt_width"
+                    android:text="Šířka účtenky"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <EditText
+                    android:id="@+id/receipt_width"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="počet znaků pro zarovnání"
+                    android:inputType="number"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/id_pokl"
+                    android:text="ID pokladny"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <EditText
+                    android:id="@+id/id_pokl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/id_provoz"
+                    android:text="ID provozu"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <EditText
+                    android:id="@+id/id_provoz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/server"
+                    android:text="Server"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <RadioGroup
+                    android:id="@+id/server"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <RadioButton
+                        android:id="@+id/server_play"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Playground"
+                        />
+                    <RadioButton
+                        android:id="@+id/server_prod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Produkční"
+                        />
+                </RadioGroup>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/verifying"
+                    android:text="Ověřovací mód"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <Switch
+                    android:id="@+id/verifying"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/key_password"
+                    android:text="Heslo ke klíči"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+                <EditText
+                    android:id="@+id/key_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:text="Klíč"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/nokeys"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:text="Vložte svůj klíč (soubor .p12) do složky „TV EET/Keys“ v úložišti telefonu.\n\nPS: Pokud složku v PC nevidíte, restartujte telefon."
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <RadioGroup
+                    android:id="@+id/keys"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:visibility="gone"
+                    >
+                </RadioGroup>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/codepage"
+                    android:text="Kódování"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
                 <EditText
                     android:id="@+id/codepage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_span="2"
                     android:layout_weight="1"
                     android:inputType="number"
                     />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
                 <RadioGroup
                     android:id="@+id/charset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_span="2"
                     >
                     <RadioButton
                         android:id="@+id/charset_ascii"
@@ -256,35 +350,20 @@
                         android:text="Windows-1250"
                         />
                 </RadioGroup>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
                 <Button
                     android:id="@+id/codepage_test"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_span="2"
                     android:layout_weight="0"
                     android:text="Vytisknout test"
                     />
-            </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Klíč"
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                />
-            <TextView
-                android:id="@+id/nokeys"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="Vložte svůj klíč (soubor .p12) do složky „TV EET/Keys“ v úložišti telefonu.\n\nPS: Pokud složku v PC nevidíte, restartujte telefon."
-                />
-            <RadioGroup
-                android:id="@+id/keys"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:visibility="gone"
-                >
-            </RadioGroup>
-        </LinearLayout>
+            </TableRow>
+        </TableLayout>
     </ScrollView>
 </LinearLayout>
