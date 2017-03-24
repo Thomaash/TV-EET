@@ -9,10 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tom on 20.3.17.
- */
-
 class DBHelper extends SQLiteOpenHelper {
     DBHelper(Context context, String name, int version) {
         super(context, name, null, version);
@@ -63,14 +59,42 @@ class DBHelper extends SQLiteOpenHelper {
                 "id ASC",
                 null
         );
+        List<String> jsons = this.cursorToList(cursor);
+        cursor.close();
+
+        return jsons;
+    }
+
+    List<String> getAll() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                "receipts_history",
+                new String[]{"json"},
+                null,
+                null,
+                null,
+                null,
+                "id ASC",
+                null
+        );
+        List<String> jsons = this.cursorToList(cursor);
+        cursor.close();
+
+        return jsons;
+    }
+
+    private List<String> cursorToList(Cursor cursor) {
         List<String> jsons = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 jsons.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        cursor.close();
-
         return jsons;
+    }
+
+    void clear() {
+        this.getReadableDatabase().execSQL("DELETE FROM receipts_history;");
     }
 }

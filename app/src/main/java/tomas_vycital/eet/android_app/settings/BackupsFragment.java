@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +12,26 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.Writer;
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.TimeZone;
 
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.items.Items;
-
-/**
- * Created by tom on 3.3.17.
- */
+import tomas_vycital.eet.android_app.receipt.Receipts;
 
 public class BackupsFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
     private Context context;
@@ -77,8 +78,6 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
 
     @Override
     public void onClick(View v) {
-        SharedPreferences.Editor editor;
-
         switch (v.getId()) {
             case R.id.backup:
                 try {
@@ -86,49 +85,84 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
                     File file = new File(Settings.backupsDir + "/" + String.format("%tFT%<tR%<tZ", Calendar.getInstance(TimeZone.getDefault())) + ".json");
                     Writer writer = new BufferedWriter(new FileWriter(file));
                     writer.write(
-                            (new JSONObject(
-                                    Settings.prefs.getAll()
-                            )).toString()
+                            (new JSONObject())
+                                    .put("version", 1)
+                                    .put("settings", new JSONObject(Settings.prefs.getAll()))
+                                    .put("history", new JSONArray(Receipts.getReceipts()))
+                                    .toString()
                     );
                     writer.close();
 
-                    Snackbar.make(this.layout, "Zazálohováno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Zazálohováno");
                 } catch (Exception e) {
-                    Snackbar.make(this.layout, "Záloha se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Záloha se nezdařilo");
                 }
 
                 this.refresh();
                 break;
             case R.id.restore:
                 try {
-                    String fileName = ((RadioButton) this.layout.findViewById(this.backups.getCheckedRadioButtonId())).getText().toString();
-                    JsonReader reader = new JsonReader(new FileReader(Settings.backupsDir + "/" + fileName));
-
-                    editor = Settings.prefs.edit();
-                    reader.beginObject();
-                    while (reader.hasNext()) {
-                        String name = reader.nextName();
-                        Object defaultValue = Settings.defaults.get(name);
-                        if (defaultValue instanceof Integer) {
-                            editor.putInt(name, reader.nextInt());
-                        } else if (defaultValue instanceof Boolean) {
-                            editor.putBoolean(name, reader.nextBoolean());
-                        } else { // String
-                            editor.putString(name, reader.nextString());
-                        }
-                    }
-                    reader.endObject();
-                    editor.apply();
-
+                    this.restore(Settings.backupsDir + "/" + ((RadioButton) this.layout.findViewById(this.backups.getCheckedRadioButtonId())).getText().toString());
                     this.items.loadSaved();
 
-                    Snackbar.make(this.layout, "Obnoveno", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Obnoveno");
+                } catch (JSONException | ParseException e) {
+                    this.info("Obnovení se nezdařilo: soubor neobsahuje čitelnou zálohu");
+                } catch (FileNotFoundException e) {
+                    this.info("Obnovení se nezdařilo: soubor se zálohou nelze přečíst");
                 } catch (Exception e) {
-                    Snackbar.make(this.layout, "Obnovení se nezdařilo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Obnovení se nezdařilo");
                 }
 
                 this.refresh();
                 break;
+        }
+    }
+
+    private void restore(String path) throws FileNotFoundException, JSONException, ParseException {
+        JSONObject json = new JSONObject((new Scanner(new File(path))).useDelimiter("\\A").next());
+        int version = json.getInt("version");
+        switch (version) {
+            case 1:
+                this.restore1(json);
+                break;
+            default:
+                if (version > 1) {
+                    this.info("Obnovení se nezdařilo: záloha byla vytvořena novější verzí aplikace, aktualizujte aplikaci a zkuste to znovu");
+                } else {
+                    this.info("Obnovení se nezdařilo: neznámá verze zálohy");
+                }
+        }
+    }
+
+    private void restore1(JSONObject json) throws JSONException, ParseException {
+        this.restore1Settings(json.getJSONObject("settings"));
+        this.restore1History(json.getJSONArray("history"));
+    }
+
+    private void restore1Settings(JSONObject json) throws JSONException {
+        Iterator<String> iter = json.keys();
+        SharedPreferences.Editor editor = Settings.prefs.edit();
+
+        while (iter.hasNext()) {
+            String key = iter.next();
+            Object defaultValue = Settings.defaults.get(key);
+            if (defaultValue instanceof Integer) {
+                editor.putInt(key, json.getInt(key));
+            } else if (defaultValue instanceof Boolean) {
+                editor.putBoolean(key, json.getBoolean(key));
+            } else { // String
+                editor.putString(key, json.getString(key));
+            }
+        }
+
+        editor.apply();
+    }
+
+    private void restore1History(JSONArray json) throws JSONException, ParseException {
+        Receipts.clear();
+        for (int i = 0; i < json.length(); ++i) {
+            Receipts.addReceipt(json.getJSONObject(i));
         }
     }
 
@@ -173,5 +207,9 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         }
 
         return count;
+    }
+
+    private void info(String text) {
+        Snackbar.make(this.layout, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 }

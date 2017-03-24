@@ -6,14 +6,11 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-/**
- * Created by tom on 18.3.17.
- */
 
 public class Receipts {
     private static DBHelper db;
@@ -28,16 +25,37 @@ public class Receipts {
         Receipts.db.addDay(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), receipt.toJSON().toString());
     }
 
+    public static void addReceipt(JSONObject json) throws JSONException, ParseException {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(Receipt.parseDate(json.getString("submitTime")));
+
+        Receipts.db.addDay(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), json.toString());
+    }
+
+    public static void clear() {
+        Receipts.db.clear();
+    }
+
     @NonNull
     public static JSONObject[] getReceipts(int year, int month, int day) throws JSONException {
-        List<JSONObject> jsons = new ArrayList<>();
-        for (String receipt : Receipts.db.getDay(year, month, day)) {
-            jsons.add(new JSONObject(receipt));
-        }
-        return jsons.toArray(new JSONObject[0]);
+        return Receipts.stringsToJSONs(Receipts.db.getDay(year, month, day));
+    }
+
+    @NonNull
+    public static JSONObject[] getReceipts() throws JSONException {
+        return Receipts.stringsToJSONs(Receipts.db.getAll());
     }
 
     public static void setup(Context context) {
         Receipts.db = new DBHelper(context, "receipts_history", 1);
+    }
+
+    @NonNull
+    private static JSONObject[] stringsToJSONs(List<String> receipts) throws JSONException {
+        List<JSONObject> jsons = new ArrayList<>();
+        for (String receipt : receipts) {
+            jsons.add(new JSONObject(receipt));
+        }
+        return jsons.toArray(new JSONObject[0]);
     }
 }

@@ -51,6 +51,10 @@ public class Receipt implements ItemList {
         this.fromJSON(receipt);
     }
 
+    static Date parseDate(String string) throws ParseException {
+        return Receipt.jsonDateFormat.parse(string);
+    }
+
     public void add(Item item) {
         this.changed();
         this.items.add(item);
@@ -230,7 +234,7 @@ public class Receipt implements ItemList {
         this.clear();
 
         this.multiplier = (int) receipt.get("multiplier");
-        this.submitTime = Receipt.jsonDateFormat.parse((String) receipt.get("submitTime"));
+        this.submitTime = Receipt.parseDate((String) receipt.get("submitTime"));
 
         JSONArray items = receipt.getJSONArray("items");
         for (int i = 0; i < items.length(); ++i) {
