@@ -19,10 +19,6 @@ import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.settings.Settings;
 
-/**
- * Created by tom on 18.3.17.
- */
-
 public class PrinterFragment extends Fragment implements RefreshableFragment, View.OnClickListener {
     private BTPrinter printer;
     private Handler handler;
@@ -129,8 +125,6 @@ public class PrinterFragment extends Fragment implements RefreshableFragment, Vi
                 } catch (IOException e) {
                     Snackbar.make(v, "Od tiskárny se nepodařilo odpojit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
-
-                this.handler.sendEmptyMessage(Messages.btPrinterChanged.ordinal());
                 break;
         }
     }

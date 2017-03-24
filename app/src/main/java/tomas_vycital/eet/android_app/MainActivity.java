@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case receiptChanged:
                 this.receiptUpdated();
                 break;
+            case btPrinterChanged:
+                this.printerFragment.refresh();
+                break;
             case btNotEnabled:
                 Snackbar.make(this.getWindow().getDecorView().getRootView(), "Není zapnutý Bluetooth", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 break;

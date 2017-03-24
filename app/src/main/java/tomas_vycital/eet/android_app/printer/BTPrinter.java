@@ -14,10 +14,6 @@ import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.settings.Charset;
 import tomas_vycital.eet.android_app.settings.Settings;
 
-/**
- * Created by tom on 4.3.17.
- */
-
 public class BTPrinter implements Printer {
     private final BluetoothAdapter adapter;
     private final Handler handler;
@@ -114,6 +110,8 @@ public class BTPrinter implements Printer {
         this.outputStream = this.socket.getOutputStream();
         this.setCodepage(Settings.getCodepage());
         this.device = device;
+
+        this.handler.sendEmptyMessage(Messages.btPrinterChanged.ordinal());
     }
 
     void disconnect() throws IOException {
@@ -124,5 +122,7 @@ public class BTPrinter implements Printer {
             this.socket.close();
         }
         this.device = null;
+
+        this.handler.sendEmptyMessage(Messages.btPrinterChanged.ordinal());
     }
 }
