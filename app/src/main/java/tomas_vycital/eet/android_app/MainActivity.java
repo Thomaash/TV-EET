@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.editItemFragment = EditItemFragment.newInstance(items);
 
         // Default fragment (all items)
-        this.showOnly(this.availableItemsFragment);
+        this.showOnly(this.availableItemsFragment, R.id.menu_items);
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void editItem(Item item) {
         this.editItemFragment.edit(item);
-        this.showOnly(this.editItemFragment);
+        this.showOnly(this.editItemFragment, R.id.menu_edit_item);
     }
 
     public void setReceipt(JSONObject receipt) throws JSONException, ParseException {
