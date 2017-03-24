@@ -174,7 +174,7 @@ public class Receipt implements ItemList {
                     .setIdPokl(Settings.getIdPokl())
                     .setIdProvoz(Settings.getIdProvoz())
                     .setOvereni(Settings.getVerifying())
-                    .setPoradCis("0/6460/ZQ42")
+                    .setPoradCis(String.valueOf(System.currentTimeMillis()))
                     .setRezim(0)
                     .setZaklDan1(zaklDan.get(1) * this.multiplier)
                     .setZaklDan2(zaklDan.get(2) * this.multiplier)
