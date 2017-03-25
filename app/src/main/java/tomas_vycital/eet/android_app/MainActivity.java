@@ -265,6 +265,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setReceipt(JSONObject receipt) throws JSONException, ParseException {
         this.receipt.fromJSON(receipt);
-        this.showOnly(this.receiptItemsFragment);
+        this.showOnly(this.receiptItemsFragment, R.id.menu_receipt_items);
     }
 }
