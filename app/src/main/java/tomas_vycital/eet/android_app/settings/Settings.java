@@ -3,15 +3,27 @@ package tomas_vycital.eet.android_app.settings;
 import android.content.SharedPreferences;
 import android.os.Environment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
 import java.util.HashMap;
 
-/**
- * Created by tom on 3.3.17.
- */
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 
 public class Settings {
     static final FilenameFilter keyFilter;
@@ -20,6 +32,7 @@ public class Settings {
     static final String backupsDir = Environment.getExternalStorageDirectory().toString() + "/TV EET/Backups";
     static final HashMap<String, Object> defaults;
     static SharedPreferences prefs;
+    static Encryption encryption;
 
     static {
         defaults = new HashMap<>();
@@ -49,6 +62,7 @@ public class Settings {
 
     public static void setup(SharedPreferences prefs) {
         Settings.prefs = prefs;
+        Settings.encryption = new Encryption();
     }
 
     public static String getDIC() {
@@ -133,5 +147,13 @@ public class Settings {
 
     public static Charset getCharset() {
         return Charset.fromStr(Settings.getString("charset"));
+    }
+
+    public static String getKeyPassword() throws UnreadableKeyPassword {
+        try {
+            return Settings.encryption.decryptData(new Encryption.IVE(new JSONObject(Settings.getString("keyPassword"))));
+        } catch (UnrecoverableEntryException | NoSuchAlgorithmException | KeyStoreException | NoSuchPaddingException | NoSuchProviderException | IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | JSONException | InvalidAlgorithmParameterException | NullPointerException e) {
+            throw new UnreadableKeyPassword();
+        }
     }
 }

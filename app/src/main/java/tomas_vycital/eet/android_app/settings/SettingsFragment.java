@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +14,29 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
-import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
-public class SettingsFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
+public class SettingsFragment extends BaseFragment implements View.OnClickListener {
     private Context context;
-    private View layout;
     private BTPrinter printer;
 
     private RadioGroup server;
@@ -44,6 +55,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     private RadioButton charsetISO88592;
     private RadioButton charsetCP852;
     private RadioButton charsetWindows1250;
+    private EditText keyPassword;
     private RadioGroup keys;
     private TextView nokeys;
     private RadioGroup charset;
@@ -80,6 +92,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         this.charsetISO88592 = (RadioButton) this.layout.findViewById(R.id.charset_iso88592);
         this.charsetCP852 = (RadioButton) this.layout.findViewById(R.id.charset_cp852);
         this.charsetWindows1250 = (RadioButton) this.layout.findViewById(R.id.charset_windows1250);
+        this.keyPassword = (EditText) this.layout.findViewById(R.id.key_password);
         this.keys = (RadioGroup) this.layout.findViewById(R.id.keys);
         this.nokeys = (TextView) this.layout.findViewById(R.id.nokeys);
         this.charset = (RadioGroup) this.layout.findViewById(R.id.charset);
@@ -126,10 +139,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 this.saveBoolean(editor, this.verifying, "verifying");
                 editor.putInt("codepage", this.getUnsavedCodepage());
                 editor.putString("charset", this.getUnsavedCharset().getStr());
+                try {
+                    this.savePassword(editor, this.keyPassword, "keyPassword");
+                } catch (IOException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | UnrecoverableEntryException | NoSuchProviderException | NoSuchPaddingException | KeyStoreException | IllegalBlockSizeException | SignatureException | JSONException e) {
+                    this.info("Nepodařilo se uložit heslo ke klíči");
+                }
                 editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
                 editor.apply();
 
-                Snackbar.make(this.layout, "Uloženo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                this.info("Uloženo");
 
                 this.refreshAll();
                 break;
@@ -263,5 +281,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
     private void saveInteger(SharedPreferences.Editor editor, EditText view, String prefID) {
         editor.putInt(prefID, Integer.valueOf(view.getText().toString()));
+    }
+
+    private void savePassword(SharedPreferences.Editor editor, EditText view, String prefID) throws IOException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, SignatureException, KeyStoreException, IllegalBlockSizeException, JSONException {
+        String text = view.getText().toString();
+        if (text.length() > 0) { // Passwords are not shown to the user so do not rewrite it if it is empty
+            editor.putString(prefID, Settings.encryption.encryptText(text).toJSON().toString());
+        }
     }
 }

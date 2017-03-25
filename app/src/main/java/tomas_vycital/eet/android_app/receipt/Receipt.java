@@ -23,6 +23,7 @@ import java.util.List;
 
 import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.VAT;
+import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.ItemList;
 import tomas_vycital.eet.android_app.printer.Printer;
@@ -152,7 +153,7 @@ public class Receipt implements ItemList {
         return this.items.get(i);
     }
 
-    void submit(Handler handler) throws IOException, UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+    void submit(Handler handler) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, UnreadableKeyPassword, IOException {
         if (this.eetReceipt == null) {
             int celkTrzba = 0;
             SparseIntArray zaklDan = new SparseIntArray();
@@ -180,7 +181,7 @@ public class Receipt implements ItemList {
                     .setZaklDan2(zaklDan.get(2) * this.multiplier)
                     .setZaklDan3(zaklDan.get(3) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(0) * this.multiplier)
-                    .setP12(Settings.getKeyIS(), "eet".toCharArray())
+                    .setP12(Settings.getKeyIS(), Settings.getKeyPassword().toCharArray())
             ;
         } else {
             this.eetReceipt.setPrvniZaslani(false);

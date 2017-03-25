@@ -3,7 +3,6 @@ package tomas_vycital.eet.android_app.receipt;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.R;
-import tomas_vycital.eet.android_app.RefreshableFragment;
+import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
-public class ReceiptFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
+public class ReceiptFragment extends BaseFragment implements View.OnClickListener {
     private BTPrinter printer;
     private Receipt receipt;
     private Handler handler;
@@ -45,12 +45,12 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.receipt, container, false);
+        this.layout = inflater.inflate(R.layout.receipt, container, false);
 
-        this.textView = (TextView) layout.findViewById(R.id.receipt);
-        this.clear = (Button) layout.findViewById(R.id.clear);
-        this.submit = (Button) layout.findViewById(R.id.submit);
-        this.print = (Button) layout.findViewById(R.id.print);
+        this.textView = (TextView) this.layout.findViewById(R.id.receipt);
+        this.clear = (Button) this.layout.findViewById(R.id.clear);
+        this.submit = (Button) this.layout.findViewById(R.id.submit);
+        this.print = (Button) this.layout.findViewById(R.id.print);
 
         this.refresh();
 
@@ -60,7 +60,7 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
         this.print.setOnClickListener(this);
 
         // Inflate the layout for this fragment
-        return layout;
+        return this.layout;
     }
 
     @Override
@@ -86,6 +86,8 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener, R
                     Snackbar.make(v, "Nebyl nalezen certifikát (.p12)", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
                     Snackbar.make(v, "Nepodařilo se nahlásit tržbu", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                } catch (UnreadableKeyPassword unreadableKeyPassword) {
+                    this.info("Nepodařilo se přečíst heslo ke klíči");
                 }
                 break;
             case R.id.print:
