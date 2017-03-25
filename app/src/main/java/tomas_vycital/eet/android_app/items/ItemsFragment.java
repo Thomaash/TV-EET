@@ -2,17 +2,16 @@ package tomas_vycital.eet.android_app.items;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
-import tomas_vycital.eet.android_app.RefreshableFragment;
 
-public class ItemsFragment extends Fragment implements RefreshableFragment {
+public class ItemsFragment extends BaseFragment {
     private ItemList items;
     private ItemsListenerFactory clicks;
     private ItemsFragmentRecyclerViewAdapter adapter;
@@ -33,16 +32,16 @@ public class ItemsFragment extends Fragment implements RefreshableFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        this.layout = inflater.inflate(R.layout.fragment_item_list, container, false);
 
         // Set the adapter
-        Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
+        Context context = this.layout.getContext();
+        RecyclerView recyclerView = (RecyclerView) this.layout;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         this.adapter = new ItemsFragmentRecyclerViewAdapter(this.items, this.clicks);
         recyclerView.setAdapter(this.adapter);
 
-        return view;
+        return this.layout;
     }
 
     @Override

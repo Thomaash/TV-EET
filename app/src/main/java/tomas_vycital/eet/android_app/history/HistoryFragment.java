@@ -2,7 +2,6 @@ package tomas_vycital.eet.android_app.history;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,13 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.MainActivity;
 import tomas_vycital.eet.android_app.R;
-import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.receipt.Receipt;
 import tomas_vycital.eet.android_app.receipt.Receipts;
 
-public class HistoryFragment extends Fragment implements RefreshableFragment, CalendarView.OnDateChangeListener {
+public class HistoryFragment extends BaseFragment implements CalendarView.OnDateChangeListener {
     private LinearLayout receipts;
     private MainActivity ma;
 
@@ -38,29 +37,20 @@ public class HistoryFragment extends Fragment implements RefreshableFragment, Ca
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.history, container, false);
+        this.layout = inflater.inflate(R.layout.history, container, false);
 
         // Views
-        this.receipts = (LinearLayout) layout.findViewById(R.id.receipts);
+        this.receipts = (LinearLayout) this.layout.findViewById(R.id.receipts);
 
         // Onclick listeners
-        ((CalendarView) layout.findViewById(R.id.calendar)).setOnDateChangeListener(this);
+        ((CalendarView) this.layout.findViewById(R.id.calendar)).setOnDateChangeListener(this);
 
         // List today
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         this.listReceipts(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 
-        return layout;
-    }
-
-    @Override
-    public void refresh() {
-    }
-
-    @Override
-    public boolean fab() {
-        return false;
+        return this.layout;
     }
 
     @Override

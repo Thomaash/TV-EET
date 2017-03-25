@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +118,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
         switch (v.getId()) {
             case R.id.save:
-                Snackbar.make(this.layout, "Ukládá se…", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                this.info("Ukládá se…");
 
                 editor = Settings.prefs.edit();
                 this.saveString(editor, this.dic, "DIC");
@@ -212,11 +211,6 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
             this.keys.setVisibility(View.VISIBLE);
             this.nokeys.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public boolean fab() {
-        return false;
     }
 
     private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {

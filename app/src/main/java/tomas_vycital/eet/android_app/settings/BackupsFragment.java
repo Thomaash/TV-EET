@@ -3,8 +3,6 @@ package tomas_vycital.eet.android_app.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +26,13 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TimeZone;
 
+import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
-import tomas_vycital.eet.android_app.RefreshableFragment;
 import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.receipt.Receipts;
 
-public class BackupsFragment extends Fragment implements View.OnClickListener, RefreshableFragment {
+public class BackupsFragment extends BaseFragment implements View.OnClickListener {
     private Context context;
-    private View layout;
     private Items items;
 
     private RadioGroup backups;
@@ -181,11 +178,6 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         }
     }
 
-    @Override
-    public boolean fab() {
-        return false;
-    }
-
     private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {
         int count = 0;
         group.removeAllViews();
@@ -207,9 +199,5 @@ public class BackupsFragment extends Fragment implements View.OnClickListener, R
         }
 
         return count;
-    }
-
-    private void info(String text) {
-        Snackbar.make(this.layout, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 }

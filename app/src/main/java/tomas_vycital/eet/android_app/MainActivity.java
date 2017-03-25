@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -239,11 +238,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.receiptItemsFragment.refresh();
     }
 
-    private void showOnly(Fragment f) {
+    private void showOnly(BaseFragment f) {
         // Custom fragment change actions
-        RefreshableFragment rf = ((RefreshableFragment) f);
-        // rf.refresh();
-        if (rf.fab()) {
+        // f.refresh();
+        if (f.fab()) {
             this.fab.show();
         } else {
             this.fab.hide();
@@ -255,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ft.commit();
     }
 
-    private void showOnly(Fragment fragment, int itemID) {
+    private void showOnly(BaseFragment fragment, int itemID) {
         this.showOnly(fragment);
         this.navigationView.setCheckedItem(itemID);
     }

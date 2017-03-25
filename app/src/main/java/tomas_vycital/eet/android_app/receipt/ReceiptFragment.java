@@ -2,7 +2,6 @@ package tomas_vycital.eet.android_app.receipt;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,15 +76,15 @@ public class ReceiptFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.submit:
                 if (this.receipt.isEmpty()) {
-                    Snackbar.make(v, "Účtenka je prázdná", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Účtenka je prázdná");
                     return;
                 }
                 try {
                     this.receipt.submit(this.handler);
                 } catch (FileNotFoundException e) {
-                    Snackbar.make(v, "Nebyl nalezen certifikát (.p12)", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Nebyl nalezen certifikát (.p12)");
                 } catch (UnrecoverableKeyException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
-                    Snackbar.make(v, "Nepodařilo se nahlásit tržbu", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    this.info("Nepodařilo se nahlásit tržbu");
                 } catch (UnreadableKeyPassword unreadableKeyPassword) {
                     this.info("Nepodařilo se přečíst heslo ke klíči");
                 }
