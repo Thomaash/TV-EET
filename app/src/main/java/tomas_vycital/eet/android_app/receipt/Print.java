@@ -6,7 +6,7 @@ import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.printer.Printer;
 
 /**
- * Created by tom on 2.3.17.
+ * Handles printing in a separate thread
  */
 class Print implements Runnable {
     private final Receipt receipt;

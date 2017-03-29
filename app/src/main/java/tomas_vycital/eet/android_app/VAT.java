@@ -1,9 +1,10 @@
 package tomas_vycital.eet.android_app;
 
+import android.support.annotation.Nullable;
+
 /**
  * Contains all possible VAT values
  */
-
 public enum VAT {
     exempt(0, 0), basic(21, 1), reduced1(15, 2), reduced2(10, 3);
 
@@ -15,6 +16,7 @@ public enum VAT {
         this.id = id;
     }
 
+    @Nullable
     public static VAT fromID(int id) {
         for (VAT vat : VAT.values()) {
             if (vat.id == id) {
@@ -32,6 +34,7 @@ public enum VAT {
         return this.percentage / 100.0;
     }
 
+    @Override
     public String toString() {
         return this.percentage + "%";
     }

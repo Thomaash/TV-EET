@@ -6,6 +6,9 @@ import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EET;
 
+/**
+ * Submits a receipt in a separate thread
+ */
 class Submit implements Runnable {
     private final Receipt receipt;
     private final Handler handler;

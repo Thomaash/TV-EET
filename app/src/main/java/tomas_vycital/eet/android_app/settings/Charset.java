@@ -1,7 +1,10 @@
 package tomas_vycital.eet.android_app.settings;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 /**
- * Created by tom on 9.3.17.
+ * Allows charset conversion (string to byte[]) and diacritics removal, if the selected charset doesn't support all the letters (ASCII)
  */
 public enum Charset {
     ascii("ASCII"), utf8("UTF-8"), iso88592("ISO-8859-2"), windows1250("Windows-1250"), cp852("CP-852");
@@ -14,6 +17,13 @@ public enum Charset {
         this.charset = java.nio.charset.Charset.forName(this.str);
     }
 
+    /**
+     * Returns Charset instance based on the name of the charset
+     *
+     * @param str The charset name, the same as returned by Charset.getStr()
+     * @return Charset corresponding to the name or null if such charset doesn't exist
+     */
+    @Nullable
     public static Charset fromStr(String str) {
         for (Charset charset : Charset.values()) {
             if (charset.str.equals(str)) {
@@ -23,6 +33,12 @@ public enum Charset {
         return null;
     }
 
+    /**
+     * Removes Czech diacritics and replaces all other non-ASCII characters with space (ASCII 32)
+     *
+     * @param text The text to be converted to ASCII
+     * @return The text consisted only of ASCII characters (still standard Java string)
+     */
     private static String toASCII(String text) {
         return text
                 .replace("Á", "A")
@@ -59,10 +75,20 @@ public enum Charset {
                 ;
     }
 
+    /**
+     * @return The name of this encoding
+     */
     public String getStr() {
         return this.str;
     }
 
+    /**
+     * Converts supplied text to byte[] in specified encoding
+     *
+     * @param string The text to be converted
+     * @return The encoded bytes
+     */
+    @NonNull
     public byte[] toBytes(String string) {
         return this.charset.encode(this == Charset.ascii ? Charset.toASCII(string) : string).array();
     }
