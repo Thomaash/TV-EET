@@ -71,9 +71,11 @@ public class HistoryFragment extends BaseFragment implements CalendarView.OnDate
                             receipt.getPriceStr()
                     ).getView());
                 } catch (JSONException | ParseException ignored) {
+                    this.info("Nepodařilo se načíst účtenku z historie");
                 }
             }
         } catch (JSONException ignored) {
+            this.info("Nepodařilo se načíst účtenky z historie");
         }
     }
 }
