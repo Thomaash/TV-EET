@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "tomas.vycital.eet"
-        minSdkVersion 23
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 4
         versionName "1.1.1"
