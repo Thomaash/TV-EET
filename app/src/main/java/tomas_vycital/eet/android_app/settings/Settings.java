@@ -1,7 +1,9 @@
 package tomas_vycital.eet.android_app.settings;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,9 @@ import javax.crypto.NoSuchPaddingException;
 
 import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 
+/**
+ * Allows settings to be retrieved from anywhere in the app and saved from this package, items and last printer MAC can be saved from anywhere. has to be initialized with setup() before use.
+ */
 public class Settings {
     static final FilenameFilter keyFilter;
     static final FilenameFilter backupFilter;
@@ -62,9 +67,30 @@ public class Settings {
 
     public static void setup(SharedPreferences prefs) {
         Settings.prefs = prefs;
-        Settings.encryption = new Encryption();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.encryption = new Encryption23();
+        } else {
+            Settings.encryption = new EncryptionNone();
+        }
     }
 
+    private static String getString(String id) {
+        return Settings.prefs.getString(id, (String) Settings.defaults.get(id));
+    }
+
+    @NonNull
+    private static Integer getInteger(String id) {
+        return Settings.prefs.getInt(id, (Integer) Settings.defaults.get(id));
+    }
+
+    @NonNull
+    private static Boolean getBoolean(String id) {
+        return Settings.prefs.getBoolean(id, (Boolean) Settings.defaults.get(id));
+    }
+
+    /**
+     * @return Daňové identifikační číslo
+     */
     public static String getDIC() {
         return Settings.getString("DIC");
     }
@@ -113,18 +139,6 @@ public class Settings {
         return Server.fromID(Settings.prefs.getInt("server", (Integer) Settings.defaults.get("server")));
     }
 
-    private static String getString(String id) {
-        return Settings.prefs.getString(id, (String) Settings.defaults.get(id));
-    }
-
-    private static Integer getInteger(String id) {
-        return Settings.prefs.getInt(id, (Integer) Settings.defaults.get(id));
-    }
-
-    private static Boolean getBoolean(String id) {
-        return Settings.prefs.getBoolean(id, (Boolean) Settings.defaults.get(id));
-    }
-
     public static String getItems() {
         return Settings.getString("items");
     }
@@ -151,8 +165,8 @@ public class Settings {
 
     public static String getKeyPassword() throws UnreadableKeyPassword {
         try {
-            return Settings.encryption.decryptData(new Encryption.IVE(new JSONObject(Settings.getString("keyPassword"))));
-        } catch (UnrecoverableEntryException | NoSuchAlgorithmException | KeyStoreException | NoSuchPaddingException | NoSuchProviderException | IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | JSONException | InvalidAlgorithmParameterException | NullPointerException e) {
+            return Settings.encryption.decryptData(new IVE(new JSONObject(Settings.getString("keyPassword"))));
+        } catch (UnrecoverableEntryException | NoSuchAlgorithmException | KeyStoreException | NoSuchPaddingException | NoSuchProviderException | IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | JSONException | InvalidAlgorithmParameterException | NullPointerException | IllegalArgumentException /* e.g. IV is null */ e) {
             throw new UnreadableKeyPassword();
         }
     }
