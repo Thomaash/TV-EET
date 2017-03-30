@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,6 +176,12 @@ public class BackupsFragment extends BaseFragment implements View.OnClickListene
         if (backupButtons > 0) {
             this.restore.setEnabled(true);
         } else {
+            TextView info = new TextView(this.context);
+            info.setText("Nebyly nalezeny žádné zálohy.\n\n" +
+                    "Ujistěte se, že aplikace má oprávnění číst paměťovou kartu (může být nutné restartovat aplikaci).\n" +
+                    "Také se ujistěte, že jsou zálohy umístěny ve správné složce (TV EET/Backups); " +
+                    "tato složka je automaticky vytvořena při spuštění aplikace (může být nutné restartovat telefon aby byla vyditelná z počítače).\n");
+            this.backups.addView(info);
             this.restore.setEnabled(false);
         }
     }
