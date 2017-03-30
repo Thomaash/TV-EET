@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "tomas.vycital.eet"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 23
         vectorDrawables.useSupportLibrary = true
         versionCode 6

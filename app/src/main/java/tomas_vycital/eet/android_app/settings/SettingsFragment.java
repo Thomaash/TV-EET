@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -47,7 +47,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private EditText idProvoz;
     private RadioButton serverPlay;
     private RadioButton serverProd;
-    private Switch verifying;
+    private SwitchCompat verifying;
     private EditText codepage;
     private RadioButton charsetASCII;
     private RadioButton charsetUTF8;
@@ -84,7 +84,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.idProvoz = (EditText) this.layout.findViewById(R.id.id_provoz);
         this.serverPlay = (RadioButton) this.layout.findViewById(R.id.server_play);
         this.serverProd = (RadioButton) this.layout.findViewById(R.id.server_prod);
-        this.verifying = (Switch) this.layout.findViewById(R.id.verifying);
+        this.verifying = (SwitchCompat) this.layout.findViewById(R.id.verifying);
         this.codepage = (EditText) this.layout.findViewById(R.id.codepage);
         this.charsetASCII = (RadioButton) this.layout.findViewById(R.id.charset_ascii);
         this.charsetUTF8 = (RadioButton) this.layout.findViewById(R.id.charset_utf8);
@@ -266,7 +266,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void saveBoolean(SharedPreferences.Editor editor, Switch view, String prefID) {
+    private void saveBoolean(SharedPreferences.Editor editor, SwitchCompat view, String prefID) {
         editor.putBoolean(prefID, view.isChecked());
     }
 
