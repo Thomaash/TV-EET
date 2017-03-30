@@ -1,5 +1,6 @@
 package tomas_vycital.eet.android_app.history;
 
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,9 @@ class HistoryReceipt implements View.OnClickListener {
         this.ma = ma;
         this.button = new Button(this.ma);
         this.button.setText(HistoryReceipt.dateFormat.format(submitDate) + ": " + priceStr + " kč");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            this.button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        }
         this.button.setOnClickListener(this);
     }
 
