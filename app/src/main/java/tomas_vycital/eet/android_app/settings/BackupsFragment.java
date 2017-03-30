@@ -163,6 +163,7 @@ public class BackupsFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    @Override
     public void refresh() {
         // Continue only if the fragment is initialized
         if (this.getView() == null) {

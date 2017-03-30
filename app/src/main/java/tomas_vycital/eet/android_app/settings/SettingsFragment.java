@@ -199,6 +199,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.refresh();
     }
 
+    @Override
     public void refresh() {
         // Continue only if the fragment is initialized
         if (this.getView() == null) {
