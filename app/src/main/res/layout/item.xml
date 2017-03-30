@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="5dp">
-
-    <ImageView
-        android:id="@+id/imageView2"
+    android:layout_margin="@dimen/item_margin"
+    android:background="@drawable/item_background"
+    android:baselineAligned="false"
+    android:gravity="top|center"
+    android:orientation="horizontal"
+    android:padding="@dimen/item_padding"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height"
-        app:srcCompat="@drawable/side_nav_bar"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/item_background"
-        android:color="@android:color/transparent"
-        android:gravity="top|center"
-        android:orientation="horizontal">
-
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical|start"
+        >
         <TextView
             android:id="@+id/name"
-            android:layout_width="0px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
             android:color="@android:color/transparent"
             android:text="Name"
             android:textColor="?android:attr/textColorPrimaryInverse"
-            android:textSize="@dimen/item_text_size" />
-
+            android:textSize="@dimen/item_name_size"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:orientation="vertical"
+        >
         <TextView
             android:id="@+id/price"
-            android:layout_width="0px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:color="@android:color/transparent"
+            android:gravity="end"
             android:text="Price"
-            android:textAlignment="center"
+            android:textAlignment="viewEnd"
             android:textColor="?android:attr/textColorPrimaryInverse"
-            android:textSize="@dimen/item_text_size" />
-
+            android:textSize="@dimen/item_price_size"
+            />
         <TextView
-            android:id="@+id/vat"
-            android:layout_width="0px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/vat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:color="@android:color/transparent"
+            android:gravity="end"
             android:text="DPH"
-            android:textAlignment="center"
+            android:textAlignment="viewEnd"
             android:textColor="?android:attr/textColorPrimaryInverse"
-            android:textSize="@dimen/item_text_size" />
+            android:textSize="@dimen/item_vat_size"
+            />
     </LinearLayout>
-
-</FrameLayout>
+</LinearLayout>

@@ -9,6 +9,10 @@
     <dimen name="fab2_margin">96dp</dimen>
     <dimen name="fabN_margin">24dp</dimen>
     <dimen name="item_height">96dp</dimen>
-    <dimen name="item_text_size">15dp</dimen>
+    <dimen name="item_vat_size">13sp</dimen>
+    <dimen name="item_price_size">19sp</dimen>
+    <dimen name="item_name_size">31sp</dimen>
+    <dimen name="item_padding">8dp</dimen>
+    <dimen name="item_margin">3dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>
