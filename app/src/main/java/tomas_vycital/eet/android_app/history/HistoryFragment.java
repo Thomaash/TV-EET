@@ -1,5 +1,6 @@
 package tomas_vycital.eet.android_app.history;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +62,8 @@ public class HistoryFragment extends BaseFragment implements CalendarView.OnDate
 
     private void listReceipts(int year, int month, int day) {
         this.receipts.removeAllViews();
+
+        int added = 0;
         try {
             for (JSONObject jsonReceipt : Receipts.getReceipts(year, month, day)) {
                 try {
@@ -70,12 +74,22 @@ public class HistoryFragment extends BaseFragment implements CalendarView.OnDate
                             receipt.getSubmitTime(),
                             receipt.getPriceStr()
                     ).getView());
+                    ++added;
                 } catch (JSONException | ParseException ignored) {
                     this.info("Nepodařilo se načíst účtenku z historie");
                 }
             }
         } catch (JSONException ignored) {
             this.info("Nepodařilo se načíst účtenky z historie");
+        }
+
+        if (added == 0) {
+            TextView info = new TextView(this.ma);
+            info.setText("Tento den neobsahuje žádné účtenky");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                info.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            }
+            this.receipts.addView(info);
         }
     }
 }
