@@ -61,22 +61,22 @@ public class Receipts {
      * @param year  The year (e.g. 2017 for 2017 AD)
      * @param month The month (e.g. 1 for January)
      * @param day   The day (e.g. 1 for the first day in the month)
-     * @return Java array containing all receipts from the day in JSON objects
+     * @return List containing all receipts from the day in JSON objects
      * @throws JSONException Can by thrown only if the data in the db are corrupted
      */
     @NonNull
-    public static JSONObject[] getReceipts(int year, int month, int day) throws JSONException {
+    public static List<JSONObject> getReceipts(int year, int month, int day) throws JSONException {
         return Receipts.stringsToJSONs(Receipts.db.getDay(year, month, day));
     }
 
     /**
      * Returns all receipts from the history as an array of JSONs
      *
-     * @return Java array containing all receipts from the day in JSON objects
+     * @return List containing all receipts from the day in JSON objects
      * @throws JSONException Can by thrown only if the data in the db are corrupted
      */
     @NonNull
-    public static JSONObject[] getReceipts() throws JSONException {
+    public static List<JSONObject> getReceipts() throws JSONException {
         return Receipts.stringsToJSONs(Receipts.db.getAll());
     }
 
@@ -93,15 +93,15 @@ public class Receipts {
      * Converts JSON strings to JSON objects
      *
      * @param receipts Strings
-     * @return Objects
+     * @return JSONObjects
      * @throws JSONException Malformed strings
      */
     @NonNull
-    private static JSONObject[] stringsToJSONs(List<String> receipts) throws JSONException {
+    private static List<JSONObject> stringsToJSONs(List<String> receipts) throws JSONException {
         List<JSONObject> jsons = new ArrayList<>();
         for (String receipt : receipts) {
             jsons.add(new JSONObject(receipt));
         }
-        return jsons.toArray(new JSONObject[0]);
+        return jsons;
     }
 }
