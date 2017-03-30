@@ -98,11 +98,18 @@ public class BTPrinter implements Printer {
         }
 
         // Get UUID
-        ParcelUuid[] uuids = device.getUuids();
-        if (uuids.length < 1) {
-            throw new IOException();
+        UUID uuid;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            // Retrieve a UUID from the device
+            ParcelUuid[] uuids = device.getUuids();
+            if (uuids.length < 1) {
+                throw new IOException();
+            }
+            uuid = uuids[0].getUuid();
+        } else {
+            // API less than 15 doesn't support retrieving a UUID from the device, try the base UUID
+            uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
         }
-        UUID uuid = uuids[0].getUuid();
 
         // Set up a connection
         this.socket = device.createRfcommSocketToServiceRecord(uuid);

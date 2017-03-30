@@ -13,10 +13,6 @@ import java.util.Date;
 
 import tomas_vycital.eet.android_app.MainActivity;
 
-/**
- * Created by tom on 18.3.17.
- */
-
 class HistoryReceipt implements View.OnClickListener {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final Button button;
@@ -27,7 +23,6 @@ class HistoryReceipt implements View.OnClickListener {
         this.receipt = receipt;
         this.ma = ma;
         this.button = new Button(this.ma);
-        this.button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
         this.button.setText(HistoryReceipt.dateFormat.format(submitDate) + ": " + priceStr + " kč");
         this.button.setOnClickListener(this);
     }

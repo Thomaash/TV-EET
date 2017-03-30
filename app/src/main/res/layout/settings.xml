@@ -11,12 +11,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:orientation="horizontal"
         >
         <Button
             android:id="@+id/save"
-            style="?android:attr/buttonBarButtonStyle"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -44,7 +44,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/heading"
                     android:text="Záhlaví účtenky"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
             </TableRow>
             <TableRow
@@ -72,7 +72,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/footing"
                     android:text="Zápatí účtenky"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
             </TableRow>
             <TableRow
@@ -99,7 +99,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/dic"
                     android:text="DIČ"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <EditText
                     android:id="@+id/dic"
@@ -120,7 +120,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/receipt_width"
                     android:text="Šířka účtenky"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <EditText
                     android:id="@+id/receipt_width"
@@ -141,7 +141,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/id_pokl"
                     android:text="ID pokladny"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <EditText
                     android:id="@+id/id_pokl"
@@ -161,7 +161,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/id_provoz"
                     android:text="ID provozu"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <EditText
                     android:id="@+id/id_provoz"
@@ -181,7 +181,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/server"
                     android:text="Server"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <RadioGroup
                     android:id="@+id/server"
@@ -212,7 +212,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/verifying"
                     android:text="Ověřovací mód"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <Switch
                     android:id="@+id/verifying"
@@ -231,7 +231,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/key_password"
                     android:text="Heslo ke klíči"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
                 <EditText
                     android:id="@+id/key_password"
@@ -252,7 +252,7 @@
                     android:layout_span="2"
                     android:gravity="center_vertical"
                     android:text="Klíč"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
             </TableRow>
             <TableRow
@@ -293,7 +293,7 @@
                     android:gravity="center_vertical"
                     android:labelFor="@+id/codepage"
                     android:text="Kódování"
-                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     />
             </TableRow>
             <TableRow
