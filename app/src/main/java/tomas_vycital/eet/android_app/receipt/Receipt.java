@@ -117,7 +117,8 @@ public class Receipt implements ItemList {
         for (int i = 0; i < items.size(); ++i) {
             Item item = items.get(i);
             int amount = amounts.get(item.getName());
-            str += PrinterUtils.align(amount + " ks: " + item.getName(), negative + item.getPriceStr()) + "\n";
+            str += PrinterUtils.align(item.getName(), negative + item.getPriceRawStr(amount) + " kč") + "\n";
+            str += "  " + amount + " ks, " + negative + item.getPriceRawStr() + " kč/ks, " + item.getVAT().toString() + " DPH\n";
         }
 
         str += PrinterUtils.getSeparatorNl();

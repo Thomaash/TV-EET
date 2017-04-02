@@ -9,10 +9,6 @@ import java.text.DecimalFormat;
 
 import tomas_vycital.eet.android_app.VAT;
 
-/**
- * Created by tom on 18.2.17.
- */
-
 public class Item implements Comparable<Item> {
     public static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
@@ -26,7 +22,7 @@ public class Item implements Comparable<Item> {
         this.vat = vat;
     }
 
-    public Item(String name, String priceStr, VAT vat) {
+    Item(String name, String priceStr, VAT vat) {
         String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
         int price = Integer.valueOf(priceParts[0]) * 100;
         if (priceParts.length > 1) {
@@ -72,12 +68,16 @@ public class Item implements Comparable<Item> {
         return price;
     }
 
-    public String getPriceStr() {
+    String getPriceStr() {
         return Item.priceFormat.format(this.price / 100.0) + " kč";
     }
 
     public String getPriceRawStr() {
         return Item.priceFormat.format(this.price / 100.0);
+    }
+
+    public String getPriceRawStr(int amount) {
+        return Item.priceFormat.format(amount * this.price / 100.0);
     }
 
     public VAT getVAT() {
@@ -88,7 +88,7 @@ public class Item implements Comparable<Item> {
         return this.vat.getPercentage();
     }
 
-    public String getBrief() {
+    String getBrief() {
         return this.name + " (" + this.price / 100f + ",-)";
     }
 
