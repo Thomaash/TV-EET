@@ -93,6 +93,7 @@ public class Receipt implements ItemList {
         String str = Settings.getHeading() + "\n"
                 + PrinterUtils.getSeparatorNl()
                 + "DIČ: " + Settings.getDIC() + "\n"
+                // @todo - čas tržby
                 + PrinterUtils.getSeparatorNl();
         HashMap<String, Integer> amounts = new HashMap<>();
         List<Item> items = new ArrayList<>();
@@ -165,13 +166,14 @@ public class Receipt implements ItemList {
                 zaklDan.put(item.getVATPercentage(), zaklDan.get(item.getVATPercentage()) + item.getPrice());
             }
 
+            this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
                     .setPrvniZaslani(true)
                     .setCelkTrzba(celkTrzba * this.multiplier)
                     .setDan1((int) (zaklDan.get(1) * VAT.basic.get()) * this.multiplier)
                     .setDan2((int) (zaklDan.get(2) * VAT.reduced1.get()) * this.multiplier)
                     .setDan3((int) (zaklDan.get(3) * VAT.reduced2.get()) * this.multiplier)
-                    .setDatTrzby(new Date())
+                    .setDatTrzby(this.submitTime)
                     .setDicPopl(Settings.getDIC())
                     .setIdPokl(Settings.getIdPokl())
                     .setIdProvoz(Settings.getIdProvoz())
@@ -227,10 +229,6 @@ public class Receipt implements ItemList {
 
     public Date getSubmitTime() {
         return this.submitTime;
-    }
-
-    void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
     }
 
     JSONObject toJSON() throws JSONException {
