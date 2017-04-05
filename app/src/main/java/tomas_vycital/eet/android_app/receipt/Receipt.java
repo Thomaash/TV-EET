@@ -36,6 +36,7 @@ import tomas_vycital.eet.lib.EETReceipt;
  */
 public class Receipt implements ItemList {
     private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+    private static final SimpleDateFormat receiptDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private final Handler handler;
     private final List<Item> items;
     EETReceipt eetReceipt;
@@ -93,7 +94,7 @@ public class Receipt implements ItemList {
         String str = Settings.getHeading() + "\n"
                 + PrinterUtils.getSeparatorNl()
                 + "DIČ: " + Settings.getDIC() + "\n"
-                // @todo - čas tržby
+                + Receipt.receiptDateFormat.format(this.submitTime == null ? new Date() : this.submitTime) + "\n"
                 + PrinterUtils.getSeparatorNl();
         HashMap<String, Integer> amounts = new HashMap<>();
         List<Item> items = new ArrayList<>();
