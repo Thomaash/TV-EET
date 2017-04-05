@@ -35,7 +35,7 @@ import tomas_vycital.eet.lib.EETReceipt;
  * Holds bought items
  */
 public class Receipt implements ItemList {
-    private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+    private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
     private static final SimpleDateFormat receiptDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private final Handler handler;
     private final List<Item> items;
