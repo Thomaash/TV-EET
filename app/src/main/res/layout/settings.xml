@@ -118,6 +118,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:labelFor="@+id/ico"
+                    android:text="IČO"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    />
+                <EditText
+                    android:id="@+id/ico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:maxLines="1"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:labelFor="@+id/receipt_width"
                     android:text="Šířka účtenky"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"

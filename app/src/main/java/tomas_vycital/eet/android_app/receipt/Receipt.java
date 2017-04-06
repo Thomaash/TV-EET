@@ -99,6 +99,7 @@ public class Receipt implements ItemList {
         str += Settings.getHeading() + "\n";
         str += PrinterUtils.getSeparatorNl();
         str += "DIČ: " + Settings.getDIC() + "\n";
+        str += "IČO: " + Settings.getICO() + "\n";
         str += "Provozovna: " + Settings.getIdProvoz() + "\n";
         str += "Pokladna: " + Settings.getIdPokl() + "\n";
         str += "Č. účtenky: " + this.number + "\n";

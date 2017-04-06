@@ -38,26 +38,27 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private Context context;
     private BTPrinter printer;
 
-    private RadioGroup server;
+    private EditText codepage;
     private EditText dic;
-    private EditText heading;
     private EditText footing;
-    private EditText receiptWidth;
+    private EditText heading;
+    private EditText ico;
     private EditText idPokl;
     private EditText idProvoz;
+    private EditText keyPassword;
+    private EditText receiptWidth;
+    private RadioButton charsetASCII;
+    private RadioButton charsetCP852;
+    private RadioButton charsetISO88592;
+    private RadioButton charsetUTF8;
+    private RadioButton charsetWindows1250;
     private RadioButton serverPlay;
     private RadioButton serverProd;
-    private SwitchCompat verifying;
-    private EditText codepage;
-    private RadioButton charsetASCII;
-    private RadioButton charsetUTF8;
-    private RadioButton charsetISO88592;
-    private RadioButton charsetCP852;
-    private RadioButton charsetWindows1250;
-    private EditText keyPassword;
-    private RadioGroup keys;
-    private TextView nokeys;
     private RadioGroup charset;
+    private RadioGroup keys;
+    private RadioGroup server;
+    private SwitchCompat verifying;
+    private TextView nokeys;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -75,26 +76,27 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.layout = inflater.inflate(R.layout.settings, container, false);
 
         // Views
-        this.server = (RadioGroup) this.layout.findViewById(R.id.server);
+        this.charset = (RadioGroup) this.layout.findViewById(R.id.charset);
+        this.charsetASCII = (RadioButton) this.layout.findViewById(R.id.charset_ascii);
+        this.charsetCP852 = (RadioButton) this.layout.findViewById(R.id.charset_cp852);
+        this.charsetISO88592 = (RadioButton) this.layout.findViewById(R.id.charset_iso88592);
+        this.charsetUTF8 = (RadioButton) this.layout.findViewById(R.id.charset_utf8);
+        this.charsetWindows1250 = (RadioButton) this.layout.findViewById(R.id.charset_windows1250);
+        this.codepage = (EditText) this.layout.findViewById(R.id.codepage);
         this.dic = (EditText) this.layout.findViewById(R.id.dic);
-        this.heading = (EditText) this.layout.findViewById(R.id.heading);
         this.footing = (EditText) this.layout.findViewById(R.id.footing);
-        this.receiptWidth = (EditText) this.layout.findViewById(R.id.receipt_width);
+        this.heading = (EditText) this.layout.findViewById(R.id.heading);
+        this.ico = (EditText) this.layout.findViewById(R.id.ico);
         this.idPokl = (EditText) this.layout.findViewById(R.id.id_pokl);
         this.idProvoz = (EditText) this.layout.findViewById(R.id.id_provoz);
-        this.serverPlay = (RadioButton) this.layout.findViewById(R.id.server_play);
-        this.serverProd = (RadioButton) this.layout.findViewById(R.id.server_prod);
-        this.verifying = (SwitchCompat) this.layout.findViewById(R.id.verifying);
-        this.codepage = (EditText) this.layout.findViewById(R.id.codepage);
-        this.charsetASCII = (RadioButton) this.layout.findViewById(R.id.charset_ascii);
-        this.charsetUTF8 = (RadioButton) this.layout.findViewById(R.id.charset_utf8);
-        this.charsetISO88592 = (RadioButton) this.layout.findViewById(R.id.charset_iso88592);
-        this.charsetCP852 = (RadioButton) this.layout.findViewById(R.id.charset_cp852);
-        this.charsetWindows1250 = (RadioButton) this.layout.findViewById(R.id.charset_windows1250);
         this.keyPassword = (EditText) this.layout.findViewById(R.id.key_password);
         this.keys = (RadioGroup) this.layout.findViewById(R.id.keys);
         this.nokeys = (TextView) this.layout.findViewById(R.id.nokeys);
-        this.charset = (RadioGroup) this.layout.findViewById(R.id.charset);
+        this.receiptWidth = (EditText) this.layout.findViewById(R.id.receipt_width);
+        this.server = (RadioGroup) this.layout.findViewById(R.id.server);
+        this.serverPlay = (RadioButton) this.layout.findViewById(R.id.server_play);
+        this.serverProd = (RadioButton) this.layout.findViewById(R.id.server_prod);
+        this.verifying = (SwitchCompat) this.layout.findViewById(R.id.verifying);
 
         // Onclick listeners
         this.layout.findViewById(R.id.save).setOnClickListener(this);
@@ -119,14 +121,22 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.save:
                 this.info("Ukládá se…");
-
                 editor = Settings.prefs.edit();
-                this.saveString(editor, this.dic, "DIC");
-                this.saveString(editor, this.heading, "heading");
-                this.saveString(editor, this.footing, "footing");
+
+                // Simple
+                editor.putInt("codepage", this.getUnsavedCodepage());
+                editor.putString("charset", this.getUnsavedCharset().getStr());
+                editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
+                this.saveBoolean(editor, this.verifying, "verifying");
                 this.saveInteger(editor, this.receiptWidth, "receiptWidth");
+                this.saveString(editor, this.dic, "DIC");
+                this.saveString(editor, this.footing, "footing");
+                this.saveString(editor, this.heading, "heading");
+                this.saveString(editor, this.ico, "ICO");
                 this.saveString(editor, this.idPokl, "idPokl");
                 this.saveString(editor, this.idProvoz, "idProvoz");
+
+                // Server
                 switch (this.server.getCheckedRadioButtonId()) {
                     case R.id.server_play:
                         editor.putInt("server", Server.play.getID());
@@ -135,17 +145,15 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                         editor.putInt("server", Server.prod.getID());
                         break;
                 }
-                this.saveBoolean(editor, this.verifying, "verifying");
-                editor.putInt("codepage", this.getUnsavedCodepage());
-                editor.putString("charset", this.getUnsavedCharset().getStr());
+
+                // Password
                 try {
                     this.savePassword(editor, this.keyPassword, "keyPassword");
                 } catch (IOException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | UnrecoverableEntryException | NoSuchProviderException | NoSuchPaddingException | KeyStoreException | IllegalBlockSizeException | SignatureException | JSONException e) {
                     this.info("Nepodařilo se uložit heslo ke klíči");
                 }
-                editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
-                editor.apply();
 
+                editor.apply();
                 this.info("Uloženo");
 
                 this.refreshAll();
@@ -160,13 +168,18 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void refreshAll() {
-        // Settings values
+        // Simple
+        this.codepage.setText("" + Settings.getCodepage());
         this.dic.setText(Settings.getDIC());
-        this.heading.setText(Settings.getHeading());
         this.footing.setText(Settings.getFooting());
-        this.receiptWidth.setText(String.valueOf(Settings.getReceiptWidth()));
+        this.heading.setText(Settings.getHeading());
+        this.ico.setText(Settings.getICO());
         this.idPokl.setText(Settings.getIdPokl());
         this.idProvoz.setText(Settings.getIdProvoz());
+        this.receiptWidth.setText(String.valueOf(Settings.getReceiptWidth()));
+        this.verifying.setChecked(Settings.getVerifying());
+
+        // Server
         switch (Settings.getServer()) {
             case play:
                 this.serverPlay.setChecked(true);
@@ -175,8 +188,8 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 this.serverProd.setChecked(true);
                 break;
         }
-        this.verifying.setChecked(Settings.getVerifying());
-        this.codepage.setText("" + Settings.getCodepage());
+
+        // Charset
         switch (Settings.getCharset()) {
             case ascii:
                 this.charsetASCII.setChecked(true);

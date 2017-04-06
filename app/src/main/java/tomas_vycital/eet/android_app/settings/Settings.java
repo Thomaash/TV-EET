@@ -41,15 +41,16 @@ public class Settings {
 
     static {
         defaults = new HashMap<>();
+        defaults.put("charset", Charset.ascii.getStr());
+        defaults.put("codepage", 0);
         defaults.put("DIC", "→NUTNO ZADAT←");
-        defaults.put("heading", "");
         defaults.put("footing", "");
+        defaults.put("heading", "");
+        defaults.put("ICO", "");
+        defaults.put("keyFileName", null);
         defaults.put("receiptWidth", 32);
         defaults.put("server", Server.play.getID());
         defaults.put("verifying", true);
-        defaults.put("codepage", 0);
-        defaults.put("charset", Charset.ascii.getStr());
-        defaults.put("keyFileName", null);
 
         keyFilter = new FilenameFilter() {
             @Override
@@ -93,6 +94,13 @@ public class Settings {
      */
     public static String getDIC() {
         return Settings.getString("DIC");
+    }
+
+    /**
+     * @return Identifikační číslo osoby
+     */
+    public static String getICO() {
+        return Settings.getString("ICO");
     }
 
     public static String getHeading() {
