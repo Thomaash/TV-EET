@@ -91,25 +91,16 @@ public class Receipt implements ItemList {
     }
 
     String getReceiptStr() {
-        String negative = this.multiplier == 1 ? "" : "-";
-        String str = "";
+        // Prepare variables
         Date date = this.submitTime == null ? new Date() : this.submitTime;
-
-        str += Settings.getHeading() + "\n";
-        str += RSU.getSeparatorNl();
-        str += RSU.nvl("DIČ", Settings.getDIC());
-        str += RSU.nvl("IČO", Settings.getICO());
-        str += RSU.nvl("Provozovna", Settings.getIdProvoz());
-        str += RSU.nvl("Pokladna", Settings.getIdPokl());
-        str += RSU.nvl("Č. účtenky", String.valueOf(this.number));
-        str += RSU.nvl("Datum", Receipt.receiptDateFormat.format(date));
-        str += RSU.nvl("Čas", Receipt.receiptTimeFormat.format(date));
-        str += RSU.getSeparatorNl();
-
+        HashMap<String, Integer> amounts = new HashMap<>();
         int sum = 0;
         int[] vats = new int[VAT.values().length];
-        HashMap<String, Integer> amounts = new HashMap<>();
         List<Item> items = new ArrayList<>();
+        String negative = this.multiplier == 1 ? "" : "-";
+        String str = "";
+
+        // Prepare items and compute sums
         for (int i = 0; i < this.items.size(); ++i) {
             Item item = this.items.get(i);
             Integer current = amounts.get(item.getName());
@@ -123,51 +114,77 @@ public class Receipt implements ItemList {
             vats[item.getVAT().ordinal()] += item.getVATH();
         }
 
+        // User's custom heading
+        if (!RSU.isEmpty(Settings.getHeading())) {
+            str += Settings.getHeading() + "\n";
+            str += RSU.getSeparatorNl();
+        }
+
+        // Some mandatory values
+        str += RSU.align("DIČ", Settings.getDIC());
+        str += RSU.align("IČO", Settings.getICO());
+        str += "\n";
+        str += RSU.align("Provozovna", Settings.getIdProvoz());
+        str += RSU.align("Pokladna", Settings.getIdPokl());
+        str += RSU.align("Č. účtenky", String.valueOf(this.number));
+        str += "\n";
+        str += RSU.align("Datum", Receipt.receiptDateFormat.format(date));
+        str += RSU.align("Čas", Receipt.receiptTimeFormat.format(date));
+
+        str += RSU.getSeparatorNl();
+
+        // Items
         Collections.sort(items);
         for (int i = 0; i < items.size(); ++i) {
             Item item = items.get(i);
             int amount = amounts.get(item.getName());
-            str += RSU.align(item.getName(), negative + item.getPriceRawStr(amount) + " kč") + "\n";
+            str += RSU.align(item.getName(), negative + item.getPriceRawStr(amount) + " kč");
             str += "  " + amount + " ks, " + negative + item.getPriceRawStr() + " kč/ks, " + item.getVAT().toString() + " DPH\n";
         }
 
         str += RSU.getSeparatorNl();
 
+        // VAT sums for different rates
         int sumVAT = 0;
         for (VAT vat : VAT.values()) {
             int sumOneVAT = vats[vat.ordinal()];
             sumVAT += sumOneVAT;
 
             if (sumOneVAT > 0) {
-                str += RSU.align("       " + vat.getPaddedPercentage() + " DPH:", negative + Item.priceFormat.format(sumOneVAT / 100.0) + " kč\n");
+                str += RSU.align(vat.getPaddedPercentage() + " DPH", negative + Item.priceFormat.format(sumOneVAT / 100.0) + " kč");
             }
         }
 
         str += "\n";
 
-        str += RSU.align("Součet bez DPH:", negative + Item.priceFormat.format((sum - sumVAT) / 100.0) + " kč\n");
-        str += RSU.align("           DPH:", negative + Item.priceFormat.format(sumVAT / 100.0) + " kč\n");
-        str += RSU.align("        Součet:", negative + Item.priceFormat.format(sum / 100.0) + " kč\n");
+        // Sums
+        str += RSU.align("Součet bez DPH", negative + Item.priceFormat.format((sum - sumVAT) / 100.0) + " kč");
+        str += RSU.align("DPH", negative + Item.priceFormat.format(sumVAT / 100.0) + " kč");
+        str += RSU.align("Součet", negative + Item.priceFormat.format(sum / 100.0) + " kč");
 
+        // EET codes
         if (this.bkp != null && this.pkp != null) {
             str += "\n";
-            str += "BKP: " + this.bkp + "\n";
+            str += RSU.nvl("BKP", this.bkp);
             if (this.fik == null) {
-                str += "PKP: " + this.pkp + "\n";
+                str += RSU.nvl("PKP", this.pkp);
             } else {
-                str += "FIK: " + this.fik + "\n";
+                str += RSU.nvl("FIK", this.fik);
             }
-            str += "Režim tržby: " + Settings.getModeStr() + "\n";
+            str += RSU.nvl("Režim tržby", Settings.getModeStr());
         }
 
         str += RSU.getSeparatorNl();
 
+        // Company info
         str += Settings.getName() + "\n";
         str += Settings.getAddress() + "\n";
 
-        str += RSU.getSeparatorNl();
-
-        str += Settings.getFooting() + "\n";
+        // User's custom footing
+        if (!RSU.isEmpty(Settings.getFooting())) {
+            str += RSU.getSeparatorNl();
+            str += Settings.getFooting() + "\n";
+        }
 
         // Limit the receipt to the actual width of the physical receipt
         return str.replaceAll("(.{" + Settings.getReceiptWidth() + "})\\n?", "$1\n");

@@ -23,15 +23,19 @@ class RSU {
     }
 
     /**
-     * Aligns text using the physical receipt width as saved in the settings
+     * Aligns text using the physical receipt width as saved in the settings but always keeps all the texts, even if it exceeds the limit
      *
      * @param start The text at the left side of the receipt
      * @param end   The text at the right side of the receipt
-     * @return Aligned text, may be longer than the receipt is wide if the supplied texts do not fit in the available space, but they will always be divided by some space
+     * @return Aligned text or empty string if any argument is empty
      */
     static String align(String start, String end) {
+        if (RSU.isEmpty(start) || RSU.isEmpty(end)) {
+            return "";
+        }
+
         int space = Settings.getReceiptWidth() - start.length() - end.length();
-        return start + new String(new char[space < RSU.minSpace ? RSU.minSpace : space]).replace("\0", " ") + end;
+        return start + new String(new char[space < RSU.minSpace ? RSU.minSpace : space]).replace("\0", " ") + end + "\n";
     }
 
     /**
@@ -42,7 +46,7 @@ class RSU {
      * @return The constructed line or empty string
      */
     static String nvl(String name, String value) {
-        if (value == null || "".equals(value)) {
+        if (RSU.isEmpty(value)) {
             return "";
         }
 
@@ -56,10 +60,18 @@ class RSU {
      * @return The constructed line or empty string
      */
     static String nvl(String value) {
-        if (value == null || "".equals(value)) {
+        if (RSU.isEmpty(value)) {
             return "";
         }
 
         return value + "\n";
+    }
+
+    /**
+     * @param value String value to be tested
+     * @return True for null or empty string
+     */
+    static boolean isEmpty(String value) {
+        return value == null || "".equals(value);
     }
 }
