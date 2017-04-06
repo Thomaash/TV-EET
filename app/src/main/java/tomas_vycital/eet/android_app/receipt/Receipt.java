@@ -160,6 +160,12 @@ public class Receipt implements ItemList {
             }
             str += "Režim tržby: " + Settings.getModeStr() + "\n";
         }
+
+        str += PrinterUtils.getSeparatorNl();
+
+        str += Settings.getName() + "\n";
+        str += Settings.getAddress() + "\n";
+
         str += PrinterUtils.getSeparatorNl();
 
         str += Settings.getFooting() + "\n";

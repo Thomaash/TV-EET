@@ -38,6 +38,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private Context context;
     private BTPrinter printer;
 
+    private EditText address;
     private EditText codepage;
     private EditText dic;
     private EditText footing;
@@ -46,6 +47,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private EditText idPokl;
     private EditText idProvoz;
     private EditText keyPassword;
+    private EditText name;
     private EditText receiptWidth;
     private RadioButton charsetASCII;
     private RadioButton charsetCP852;
@@ -76,6 +78,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.layout = inflater.inflate(R.layout.settings, container, false);
 
         // Views
+        this.address = (EditText) this.layout.findViewById(R.id.address);
         this.charset = (RadioGroup) this.layout.findViewById(R.id.charset);
         this.charsetASCII = (RadioButton) this.layout.findViewById(R.id.charset_ascii);
         this.charsetCP852 = (RadioButton) this.layout.findViewById(R.id.charset_cp852);
@@ -91,6 +94,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.idProvoz = (EditText) this.layout.findViewById(R.id.id_provoz);
         this.keyPassword = (EditText) this.layout.findViewById(R.id.key_password);
         this.keys = (RadioGroup) this.layout.findViewById(R.id.keys);
+        this.name = (EditText) this.layout.findViewById(R.id.name);
         this.nokeys = (TextView) this.layout.findViewById(R.id.nokeys);
         this.receiptWidth = (EditText) this.layout.findViewById(R.id.receipt_width);
         this.server = (RadioGroup) this.layout.findViewById(R.id.server);
@@ -129,12 +133,14 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
                 this.saveBoolean(editor, this.verifying, "verifying");
                 this.saveInteger(editor, this.receiptWidth, "receiptWidth");
+                this.saveString(editor, this.address, "address");
                 this.saveString(editor, this.dic, "DIC");
                 this.saveString(editor, this.footing, "footing");
                 this.saveString(editor, this.heading, "heading");
                 this.saveString(editor, this.ico, "ICO");
                 this.saveString(editor, this.idPokl, "idPokl");
                 this.saveString(editor, this.idProvoz, "idProvoz");
+                this.saveString(editor, this.name, "name");
 
                 // Server
                 switch (this.server.getCheckedRadioButtonId()) {
@@ -169,6 +175,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
     private void refreshAll() {
         // Simple
+        this.address.setText(Settings.getAddress());
         this.codepage.setText("" + Settings.getCodepage());
         this.dic.setText(Settings.getDIC());
         this.footing.setText(Settings.getFooting());
@@ -176,6 +183,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.ico.setText(Settings.getICO());
         this.idPokl.setText(Settings.getIdPokl());
         this.idProvoz.setText(Settings.getIdProvoz());
+        this.name.setText(Settings.getName());
         this.receiptWidth.setText(String.valueOf(Settings.getReceiptWidth()));
         this.verifying.setChecked(Settings.getVerifying());
 

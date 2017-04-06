@@ -41,6 +41,7 @@ public class Settings {
 
     static {
         defaults = new HashMap<>();
+        defaults.put("address", "");
         defaults.put("charset", Charset.ascii.getStr());
         defaults.put("codepage", 0);
         defaults.put("DIC", "→NUTNO ZADAT←");
@@ -48,6 +49,7 @@ public class Settings {
         defaults.put("heading", "");
         defaults.put("ICO", "");
         defaults.put("keyFileName", null);
+        defaults.put("name", "");
         defaults.put("receiptWidth", 32);
         defaults.put("server", Server.play.getID());
         defaults.put("verifying", true);
@@ -109,6 +111,14 @@ public class Settings {
 
     public static String getFooting() {
         return Settings.getString("footing");
+    }
+
+    public static String getName() {
+        return Settings.getString("name");
+    }
+
+    public static String getAddress() {
+        return Settings.getString("address");
     }
 
     public static int getReceiptWidth() {
