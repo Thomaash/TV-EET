@@ -36,7 +36,8 @@ import tomas_vycital.eet.lib.EETReceipt;
  */
 public class Receipt implements ItemList {
     private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-    private static final SimpleDateFormat receiptDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private static final SimpleDateFormat receiptDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat receiptTimeFormat = new SimpleDateFormat("HH:mm:ss");
     private final Handler handler;
     private final List<Item> items;
     EETReceipt eetReceipt;
@@ -93,6 +94,7 @@ public class Receipt implements ItemList {
     String getReceiptStr() {
         String negative = this.multiplier == 1 ? "" : "-";
         String str = "";
+        Date date = this.submitTime == null ? new Date() : this.submitTime;
 
         str += Settings.getHeading() + "\n";
         str += PrinterUtils.getSeparatorNl();
@@ -100,7 +102,8 @@ public class Receipt implements ItemList {
         str += "Provozovna: " + Settings.getIdProvoz() + "\n";
         str += "Pokladna: " + Settings.getIdPokl() + "\n";
         str += "Č. účtenky: " + this.number + "\n";
-        str += Receipt.receiptDateFormat.format(this.submitTime == null ? new Date() : this.submitTime) + "\n";
+        str += "Datum: " + Receipt.receiptDateFormat.format(date) + "\n";
+        str += "Čas: " + Receipt.receiptTimeFormat.format(date) + "\n";
         str += PrinterUtils.getSeparatorNl();
 
         int sum = 0;
