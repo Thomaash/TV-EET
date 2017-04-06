@@ -45,6 +45,7 @@ public class Receipt implements ItemList {
     private String bkp;
     private String fik;
     private String pkp;
+    private long number;
 
     public Receipt(Handler handler) {
         this.items = new ArrayList<>();
@@ -91,17 +92,21 @@ public class Receipt implements ItemList {
 
     String getReceiptStr() {
         String negative = this.multiplier == 1 ? "" : "-";
-        String str = Settings.getHeading() + "\n"
-                + PrinterUtils.getSeparatorNl()
-                + "DIČ: " + Settings.getDIC() + "\n"
-                + Receipt.receiptDateFormat.format(this.submitTime == null ? new Date() : this.submitTime) + "\n"
-                + PrinterUtils.getSeparatorNl();
-        HashMap<String, Integer> amounts = new HashMap<>();
-        List<Item> items = new ArrayList<>();
+        String str = "";
+
+        str += Settings.getHeading() + "\n";
+        str += PrinterUtils.getSeparatorNl();
+        str += "DIČ: " + Settings.getDIC() + "\n";
+        str += "Provozovna: " + Settings.getIdProvoz() + "\n";
+        str += "Pokladna: " + Settings.getIdPokl() + "\n";
+        str += "Č. účtenky: " + this.number + "\n";
+        str += Receipt.receiptDateFormat.format(this.submitTime == null ? new Date() : this.submitTime) + "\n";
+        str += PrinterUtils.getSeparatorNl();
 
         int sum = 0;
         int[] vats = new int[VAT.values().length];
-
+        HashMap<String, Integer> amounts = new HashMap<>();
+        List<Item> items = new ArrayList<>();
         for (int i = 0; i < this.items.size(); ++i) {
             Item item = this.items.get(i);
             Integer current = amounts.get(item.getName());
@@ -192,7 +197,7 @@ public class Receipt implements ItemList {
                     .setIdPokl(Settings.getIdPokl())
                     .setIdProvoz(Settings.getIdProvoz())
                     .setOvereni(Settings.getVerifying())
-                    .setPoradCis(String.valueOf(System.currentTimeMillis()))
+                    .setPoradCis(String.valueOf(this.number))
                     .setRezim(0)
                     .setZaklDan1(zaklDan.get(1) * this.multiplier)
                     .setZaklDan2(zaklDan.get(2) * this.multiplier)
@@ -222,6 +227,8 @@ public class Receipt implements ItemList {
         this.bkp = null;
         this.pkp = null;
         this.fik = null;
+        this.number = System.currentTimeMillis();
+
         if (this.handler != null) {
             this.handler.sendEmptyMessage(Messages.receiptChanged.ordinal());
         }
