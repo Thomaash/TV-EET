@@ -99,8 +99,8 @@ public class Receipt implements ItemList {
         HashMap<String, Integer> amounts = new HashMap<>();
         List<Item> items = new ArrayList<>();
 
-        int sumWithVAT = 0;
-        int sumWithoutVAT = 0;
+        int sum = 0;
+        int[] vats = new int[VAT.values().length];
 
         for (int i = 0; i < this.items.size(); ++i) {
             Item item = this.items.get(i);
@@ -111,8 +111,8 @@ public class Receipt implements ItemList {
             }
 
             amounts.put(item.getName(), current + 1);
-            sumWithVAT += item.getPrice();
-            sumWithoutVAT += item.getPrice() * (1 - (float) item.getVATPercentage() / 100);
+            sum += item.getPrice();
+            vats[item.getVAT().ordinal()] += item.getVATH();
         }
 
         Collections.sort(items);
@@ -124,9 +124,22 @@ public class Receipt implements ItemList {
         }
 
         str += PrinterUtils.getSeparatorNl();
-        str += PrinterUtils.align("Součet bez DPH:", negative + Item.priceFormat.format(sumWithoutVAT / 100.0) + " kč\n");
-        str += PrinterUtils.align("           DPH:", negative + Item.priceFormat.format((sumWithVAT - sumWithoutVAT) / 100.0) + " kč\n");
-        str += PrinterUtils.align("        Součet:", negative + Item.priceFormat.format(sumWithVAT / 100.0) + " kč\n");
+
+        int sumVAT = 0;
+        for (VAT vat : VAT.values()) {
+            int sumOneVAT = vats[vat.ordinal()];
+            sumVAT += sumOneVAT;
+
+            if (sumOneVAT > 0) {
+                str += PrinterUtils.align("       " + vat.getPaddedPercentage() + " DPH:", negative + Item.priceFormat.format(sumOneVAT / 100.0) + " kč\n");
+            }
+        }
+
+        str += "\n";
+
+        str += PrinterUtils.align("Součet bez DPH:", negative + Item.priceFormat.format((sum - sumVAT) / 100.0) + " kč\n");
+        str += PrinterUtils.align("           DPH:", negative + Item.priceFormat.format(sumVAT / 100.0) + " kč\n");
+        str += PrinterUtils.align("        Součet:", negative + Item.priceFormat.format(sum / 100.0) + " kč\n");
 
         if (this.bkp != null && this.pkp != null) {
             str += "\n";

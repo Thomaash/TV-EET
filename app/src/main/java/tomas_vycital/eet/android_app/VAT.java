@@ -16,6 +16,12 @@ public enum VAT {
         this.id = id;
     }
 
+    /**
+     * Returns VAT enum value from ID
+     *
+     * @param id The same as returned by getID()
+     * @return Corresponding VAT enum value
+     */
     @Nullable
     public static VAT fromID(int id) {
         for (VAT vat : VAT.values()) {
@@ -26,20 +32,39 @@ public enum VAT {
         return null;
     }
 
+    /**
+     * @return Percents as int (3 for 3%, 89 for 89%…)
+     */
     public int getPercentage() {
         return this.percentage;
     }
 
+    /**
+     * @return Percents as double (0.03 for 3%, 0.89 for 89%…)
+     */
     public double get() {
         return this.percentage / 100.0;
     }
 
+    /**
+     * @return Percents as string (“3%”, “89%”…)
+     */
     @Override
     public String toString() {
         return this.percentage + "%";
     }
 
+    /**
+     * @return ID that won't be changed (for JSON etc.)
+     */
     public int getID() {
         return this.id;
+    }
+
+    /**
+     * @return Percents as string padded with spaces to 3 characters (“ 3%”, “89%”…)
+     */
+    public String getPaddedPercentage() {
+        return (this.percentage >= 10 ? "" : " ") + this.toString();
     }
 }

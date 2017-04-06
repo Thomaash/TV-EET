@@ -84,6 +84,10 @@ public class Item implements Comparable<Item> {
         return this.vat;
     }
 
+    public int getVATH() {
+        return (int) (this.price * this.vat.get());
+    }
+
     public int getVATPercentage() {
         return this.vat.getPercentage();
     }
