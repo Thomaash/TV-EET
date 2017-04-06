@@ -27,7 +27,6 @@ import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.ItemList;
 import tomas_vycital.eet.android_app.printer.Printer;
-import tomas_vycital.eet.android_app.printer.PrinterUtils;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EETReceipt;
 
@@ -97,15 +96,15 @@ public class Receipt implements ItemList {
         Date date = this.submitTime == null ? new Date() : this.submitTime;
 
         str += Settings.getHeading() + "\n";
-        str += PrinterUtils.getSeparatorNl();
-        str += "DIČ: " + Settings.getDIC() + "\n";
-        str += "IČO: " + Settings.getICO() + "\n";
-        str += "Provozovna: " + Settings.getIdProvoz() + "\n";
-        str += "Pokladna: " + Settings.getIdPokl() + "\n";
-        str += "Č. účtenky: " + this.number + "\n";
-        str += "Datum: " + Receipt.receiptDateFormat.format(date) + "\n";
-        str += "Čas: " + Receipt.receiptTimeFormat.format(date) + "\n";
-        str += PrinterUtils.getSeparatorNl();
+        str += RSU.getSeparatorNl();
+        str += RSU.nvl("DIČ", Settings.getDIC());
+        str += RSU.nvl("IČO", Settings.getICO());
+        str += RSU.nvl("Provozovna", Settings.getIdProvoz());
+        str += RSU.nvl("Pokladna", Settings.getIdPokl());
+        str += RSU.nvl("Č. účtenky", String.valueOf(this.number));
+        str += RSU.nvl("Datum", Receipt.receiptDateFormat.format(date));
+        str += RSU.nvl("Čas", Receipt.receiptTimeFormat.format(date));
+        str += RSU.getSeparatorNl();
 
         int sum = 0;
         int[] vats = new int[VAT.values().length];
@@ -128,11 +127,11 @@ public class Receipt implements ItemList {
         for (int i = 0; i < items.size(); ++i) {
             Item item = items.get(i);
             int amount = amounts.get(item.getName());
-            str += PrinterUtils.align(item.getName(), negative + item.getPriceRawStr(amount) + " kč") + "\n";
+            str += RSU.align(item.getName(), negative + item.getPriceRawStr(amount) + " kč") + "\n";
             str += "  " + amount + " ks, " + negative + item.getPriceRawStr() + " kč/ks, " + item.getVAT().toString() + " DPH\n";
         }
 
-        str += PrinterUtils.getSeparatorNl();
+        str += RSU.getSeparatorNl();
 
         int sumVAT = 0;
         for (VAT vat : VAT.values()) {
@@ -140,15 +139,15 @@ public class Receipt implements ItemList {
             sumVAT += sumOneVAT;
 
             if (sumOneVAT > 0) {
-                str += PrinterUtils.align("       " + vat.getPaddedPercentage() + " DPH:", negative + Item.priceFormat.format(sumOneVAT / 100.0) + " kč\n");
+                str += RSU.align("       " + vat.getPaddedPercentage() + " DPH:", negative + Item.priceFormat.format(sumOneVAT / 100.0) + " kč\n");
             }
         }
 
         str += "\n";
 
-        str += PrinterUtils.align("Součet bez DPH:", negative + Item.priceFormat.format((sum - sumVAT) / 100.0) + " kč\n");
-        str += PrinterUtils.align("           DPH:", negative + Item.priceFormat.format(sumVAT / 100.0) + " kč\n");
-        str += PrinterUtils.align("        Součet:", negative + Item.priceFormat.format(sum / 100.0) + " kč\n");
+        str += RSU.align("Součet bez DPH:", negative + Item.priceFormat.format((sum - sumVAT) / 100.0) + " kč\n");
+        str += RSU.align("           DPH:", negative + Item.priceFormat.format(sumVAT / 100.0) + " kč\n");
+        str += RSU.align("        Součet:", negative + Item.priceFormat.format(sum / 100.0) + " kč\n");
 
         if (this.bkp != null && this.pkp != null) {
             str += "\n";
@@ -161,12 +160,12 @@ public class Receipt implements ItemList {
             str += "Režim tržby: " + Settings.getModeStr() + "\n";
         }
 
-        str += PrinterUtils.getSeparatorNl();
+        str += RSU.getSeparatorNl();
 
         str += Settings.getName() + "\n";
         str += Settings.getAddress() + "\n";
 
-        str += PrinterUtils.getSeparatorNl();
+        str += RSU.getSeparatorNl();
 
         str += Settings.getFooting() + "\n";
 
