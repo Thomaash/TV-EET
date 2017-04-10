@@ -13,8 +13,18 @@ public enum Charset {
     private final java.nio.charset.Charset charset;
 
     Charset(String str) {
+        // Name
         this.str = str;
-        this.charset = java.nio.charset.Charset.forName(this.str);
+
+        // Charset
+        java.nio.charset.Charset charset;
+        try {
+            charset = java.nio.charset.Charset.forName(this.str);
+        } catch (java.nio.charset.UnsupportedCharsetException e) {
+            // Fallback to ASCII
+            charset = java.nio.charset.Charset.forName("ASCII");
+        }
+        this.charset = charset;
     }
 
     /**
