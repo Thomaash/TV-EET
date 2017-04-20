@@ -218,17 +218,18 @@ public class Receipt implements ItemList {
 
             for (int i = 0; i < this.items.size(); ++i) {
                 Item item = this.items.get(i);
+                VAT vat = item.getVAT();
                 celkTrzba += item.getPrice();
-                zaklDan.put(item.getVATPercentage(), zaklDan.get(item.getVATPercentage()) + item.getPrice());
+                zaklDan.put(vat.getID(), zaklDan.get(vat.getID()) + item.getPrice());
             }
 
             this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
                     .setPrvniZaslani(true)
                     .setCelkTrzba(celkTrzba * this.multiplier)
-                    .setDan1((int) (zaklDan.get(1) * VAT.basic.get()) * this.multiplier)
-                    .setDan2((int) (zaklDan.get(2) * VAT.reduced1.get()) * this.multiplier)
-                    .setDan3((int) (zaklDan.get(3) * VAT.reduced2.get()) * this.multiplier)
+                    .setDan1((int) (zaklDan.get(VAT.basic.getID()) * VAT.basic.get()) * this.multiplier)
+                    .setDan2((int) (zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get()) * this.multiplier)
+                    .setDan3((int) (zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get()) * this.multiplier)
                     .setDatTrzby(this.submitTime)
                     .setDicPopl(Settings.getDIC())
                     .setIdPokl(Settings.getIdPokl())
