@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,13 +16,14 @@ import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.VAT;
 
 public class EditItemFragment extends BaseFragment implements View.OnClickListener {
-    private TextView name;
-    private TextView price;
-    private RadioGroup vat;
+    private AutoCompleteTextView category;
     private RadioButton vatBasic;
     private RadioButton vatExempt;
     private RadioButton vatReduced1;
     private RadioButton vatReduced2;
+    private RadioGroup vat;
+    private TextView name;
+    private TextView price;
 
     private Button change;
     private Button add;
@@ -44,6 +47,7 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
         this.layout = inflater.inflate(R.layout.edit_item, container, false);
 
         // Views
+        this.category = (AutoCompleteTextView) this.layout.findViewById(R.id.category);
         this.name = (TextView) this.layout.findViewById(R.id.name);
         this.price = (TextView) this.layout.findViewById(R.id.price);
         this.vat = (RadioGroup) this.layout.findViewById(R.id.vat);
@@ -52,6 +56,12 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
         this.vatReduced1 = (RadioButton) this.layout.findViewById(R.id.vat_reduced1);
         this.vatReduced2 = (RadioButton) this.layout.findViewById(R.id.vat_reduced2);
 
+        // Categories autocompletion
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.select_dialog_singlechoice, this.items.getCategories());
+        this.category.setThreshold(0);
+        this.category.setAdapter(adapter);
+
+        // Buttons
         this.change = (Button) this.layout.findViewById(R.id.change);
         this.add = (Button) this.layout.findViewById(R.id.add);
         this.delete = (Button) this.layout.findViewById(R.id.delete);
@@ -116,7 +126,8 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
         return new Item(
                 this.name.getText().toString(),
                 this.price.getText().toString(),
-                vat
+                vat,
+                this.category.getText().toString()
         );
     }
 
@@ -127,13 +138,18 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
 
     private void updateViews() {
         if (this.currentItem == null) { // New item (empty fields)
+            // Inputs
             this.name.setText("");
             this.price.setText("");
             this.vat.clearCheck();
+            this.category.setText("");
+
+            // Buttons
             this.change.setEnabled(false);
             this.add.setEnabled(true);
             this.delete.setEnabled(false);
         } else { // Existing item
+            // Inputs
             this.name.setText(this.currentItem.getName());
             this.price.setText(this.currentItem.getPriceRawStr());
             switch (this.currentItem.getVAT()) {
@@ -149,6 +165,9 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
                 default:
                     this.vatExempt.toggle();
             }
+            this.category.setText(this.currentItem.getCategory());
+
+            // Buttons
             this.change.setEnabled(true);
             this.add.setEnabled(true);
             this.delete.setEnabled(true);

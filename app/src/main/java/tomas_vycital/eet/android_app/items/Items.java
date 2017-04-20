@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import tomas_vycital.eet.android_app.VAT;
 import tomas_vycital.eet.android_app.settings.Settings;
@@ -16,6 +17,7 @@ import tomas_vycital.eet.android_app.settings.Settings;
  */
 public class Items implements ItemList {
     private final List<Item> items;
+    private TreeSet<String> categories = new TreeSet<>();
 
     /**
      * Tries to load saved items, if if fails then uses example items
@@ -27,18 +29,18 @@ public class Items implements ItemList {
             this.loadSaved();
         } catch (JSONException | NullPointerException e) {
             // Example items
-            this.items.add(new Item("Example 1", 3899, VAT.basic));
-            this.items.add(new Item("Example 2", 3500, VAT.basic));
-            this.items.add(new Item("Example 3", 5000, VAT.basic));
-            this.items.add(new Item("Example 4", 6600, VAT.exempt));
-            this.items.add(new Item("Example 5", 5000, VAT.basic));
-            this.items.add(new Item("Example 6", 4500, VAT.basic));
-            this.items.add(new Item("Example 7", 1200, VAT.basic));
-            this.items.add(new Item("Example 8", 1350, VAT.reduced1));
-            this.items.add(new Item("Example 9", 1500, VAT.basic));
-            this.items.add(new Item("Example 10", 1100, VAT.basic));
-            this.items.add(new Item("Example 11", 4300, VAT.reduced2));
-            this.items.add(new Item("Example 12", 10000, VAT.basic));
+            this.addNS(new Item("Example 1", 3899, VAT.basic, "Odd"));
+            this.addNS(new Item("Example 2", 3500, VAT.basic, "Even"));
+            this.addNS(new Item("Example 3", 5000, VAT.basic, "Odd"));
+            this.addNS(new Item("Example 4", 6600, VAT.exempt, "Even"));
+            this.addNS(new Item("Example 5", 5000, VAT.basic, "Odd"));
+            this.addNS(new Item("Example 6", 4500, VAT.basic, "Even"));
+            this.addNS(new Item("Example 7", 1200, VAT.basic, "Odd"));
+            this.addNS(new Item("Example 8", 1350, VAT.reduced1, "Even"));
+            this.addNS(new Item("Example 9", 1500, VAT.basic, "Odd"));
+            this.addNS(new Item("Example 10", 1100, VAT.basic, "Even"));
+            this.addNS(new Item("Example 11", 4300, VAT.reduced2, "Odd"));
+            this.addNS(new Item("Example 12", 10000, VAT.basic, "Even"));
             Collections.sort(this.items);
         }
     }
@@ -52,7 +54,7 @@ public class Items implements ItemList {
     public void loadSaved() throws JSONException, NullPointerException {
         this.items.clear();
         for (Item item : this.fromJSON(Settings.getItems())) {
-            this.items.add(item);
+            this.addNS(item);
         }
         Collections.sort(this.items);
     }
@@ -74,9 +76,19 @@ public class Items implements ItemList {
      * @param item The item to be added
      */
     public void add(Item item) {
-        this.items.add(item);
+        this.addNS(item);
         Collections.sort(this.items);
         this.saveQ();
+    }
+
+    /**
+     * Adds an item to the list without sorting or saving it
+     *
+     * @param item The item to be added
+     */
+    private void addNS(Item item) {
+        this.items.add(item);
+        this.addCategory(item.getCategory());
     }
 
     /**
@@ -84,7 +96,7 @@ public class Items implements ItemList {
      *
      * @param item The item to be removed
      */
-    public void remove(Item item) {
+    void remove(Item item) {
         this.items.remove(item);
         this.saveQ();
     }
@@ -128,7 +140,7 @@ public class Items implements ItemList {
         JSONArray array = (JSONArray) object.get("items");
         List<Item> items = new ArrayList<>();
         for (int i = 0; i < array.length(); ++i) {
-            items.add(new Item((JSONObject) array.get(i)));
+            this.addNS(new Item((JSONObject) array.get(i)));
         }
         return items;
     }
@@ -151,5 +163,21 @@ public class Items implements ItemList {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Adds the category to the list if not already present
+     *
+     * @param category The category to be added
+     */
+    private void addCategory(String category) {
+        this.categories.add(category);
+    }
+
+    /**
+     * @return The list of all categories
+     */
+    String[] getCategories() {
+        return categories.toArray(new String[0]);
     }
 }

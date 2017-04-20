@@ -15,14 +15,16 @@ public class Item implements Comparable<Item> {
     private final int price;
     private final String name;
     private final VAT vat;
+    private final String category;
 
-    Item(String name, int price, VAT vat) {
+    Item(String name, int price, VAT vat, String category) {
         this.name = name;
         this.price = price;
         this.vat = vat;
+        this.category = category;
     }
 
-    Item(String name, String priceStr, VAT vat) {
+    Item(String name, String priceStr, VAT vat, String category) {
         String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
         int price = Integer.valueOf(priceParts[0]) * 100;
         if (priceParts.length > 1) {
@@ -44,12 +46,14 @@ public class Item implements Comparable<Item> {
         this.name = name;
         this.price = price;
         this.vat = vat;
+        this.category = category;
     }
 
     public Item(JSONObject object) throws JSONException {
         this.name = (String) object.get("name");
         this.price = (int) object.get("price");
         this.vat = VAT.fromID((Integer) object.get("VAT"));
+        this.category = (String) object.get("category");
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -57,6 +61,7 @@ public class Item implements Comparable<Item> {
         json.put("name", this.name);
         json.put("price", this.price);
         json.put("VAT", this.vat.getID());
+        json.put("category", this.category);
         return json;
     }
 
@@ -99,5 +104,9 @@ public class Item implements Comparable<Item> {
     @Override
     public int compareTo(@NonNull Item another) {
         return this.name.compareTo(another.name);
+    }
+
+    String getCategory() {
+        return this.category;
     }
 }
