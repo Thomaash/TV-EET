@@ -240,7 +240,7 @@ public class Receipt implements ItemList {
                     .setZaklDan1(zaklDan.get(VAT.basic.getID()) * this.multiplier)
                     .setZaklDan2(zaklDan.get(VAT.reduced1.getID()) * this.multiplier)
                     .setZaklDan3(zaklDan.get(VAT.reduced2.getID()) * this.multiplier)
-                    .setZaklNepodlDph(zaklDan.get(0) * this.multiplier)
+                    .setZaklNepodlDph(zaklDan.get(VAT.exempt.getID()) * this.multiplier)
                     .setP12(Settings.getKeyIS(), Settings.getKeyPassword().toCharArray())
             ;
         } else {
