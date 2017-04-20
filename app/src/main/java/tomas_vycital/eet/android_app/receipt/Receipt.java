@@ -237,9 +237,9 @@ public class Receipt implements ItemList {
                     .setOvereni(Settings.getVerifying())
                     .setPoradCis(String.valueOf(this.number))
                     .setRezim(0)
-                    .setZaklDan1(zaklDan.get(1) * this.multiplier)
-                    .setZaklDan2(zaklDan.get(2) * this.multiplier)
-                    .setZaklDan3(zaklDan.get(3) * this.multiplier)
+                    .setZaklDan1(zaklDan.get(VAT.basic.getID()) * this.multiplier)
+                    .setZaklDan2(zaklDan.get(VAT.reduced1.getID()) * this.multiplier)
+                    .setZaklDan3(zaklDan.get(VAT.reduced2.getID()) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(0) * this.multiplier)
                     .setP12(Settings.getKeyIS(), Settings.getKeyPassword().toCharArray())
             ;
