@@ -26,6 +26,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
+import tomas_vycital.eet.android_app.error.UnsupportedImportItemsVersion;
+import tomas_vycital.eet.android_app.items.Items;
 
 /**
  * Allows settings to be retrieved from anywhere in the app and saved from this package, items and last printer MAC can be saved from anywhere. has to be initialized with setup() before use.
@@ -48,6 +50,7 @@ public class Settings {
         defaults.put("footing", "");
         defaults.put("heading", "");
         defaults.put("ICO", "");
+        defaults.put("itemsImportURL", "https://pastebin.com/raw/L0EkXrPf");
         defaults.put("keyFileName", null);
         defaults.put("name", "");
         defaults.put("receiptWidth", 32);
@@ -186,6 +189,23 @@ public class Settings {
             return Settings.encryption.decryptData(new IVE(new JSONObject(Settings.getString("keyPassword"))));
         } catch (UnrecoverableEntryException | NoSuchAlgorithmException | KeyStoreException | NoSuchPaddingException | NoSuchProviderException | IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | JSONException | InvalidAlgorithmParameterException | NullPointerException | IllegalArgumentException /* e.g. IV is null */ e) {
             throw new UnreadableKeyPassword();
+        }
+    }
+
+    static String getItemsImportURL() {
+        return Settings.getString("itemsImportURL");
+    }
+
+    static void importItems(String json) throws JSONException, UnsupportedImportItemsVersion {
+        JSONObject obj = new JSONObject(json);
+        int version = obj.getInt("version");
+        switch (version) {
+            case 1:
+                new Items(json); // Throws an exception for invalid data
+                Settings.setItems(json);
+                break;
+            default:
+                throw new UnsupportedImportItemsVersion(version);
         }
     }
 }

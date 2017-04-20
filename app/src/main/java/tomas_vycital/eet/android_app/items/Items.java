@@ -59,6 +59,18 @@ public class Items implements ItemList {
     }
 
     /**
+     * Creates a new instance out of JSON string
+     *
+     * @param json JSON encoded data
+     */
+    public Items(String json) throws JSONException {
+        this.items = new ArrayList<>();
+        this.categories = new TreeSet<>();
+
+        this.fromJSON(json);
+    }
+
+    /**
      * Loads saved items from the settings
      *
      * @throws JSONException        Thrown if the saved items are not valid

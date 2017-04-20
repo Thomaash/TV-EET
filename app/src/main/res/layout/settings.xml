@@ -441,6 +441,47 @@
                     android:text="Vytisknout test"
                     />
             </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/codepage"
+                    android:text="Import zboží ze serveru"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <EditText
+                    android:id="@+id/items_import_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:layout_weight="1"
+                    android:inputType="textUri"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <Button
+                    android:id="@+id/import_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:layout_weight="0"
+                    android:text="Importovat zboží"
+                    />
+            </TableRow>
         </TableLayout>
     </ScrollView>
 </LinearLayout>

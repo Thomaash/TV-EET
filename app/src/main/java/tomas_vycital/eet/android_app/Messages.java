@@ -25,12 +25,16 @@ public enum Messages {
     /**
      * Removes all items and other non-permanent data from the receipt
      */
-    clearReceipt;
+    clearReceipt,
+    /**
+     * Refreshes available items list
+     */
+    itemsChanged;
 
     /**
-     * Generates new message out of an exception
+     * Generates new message to be shown to the user out of an exception
      *
-     * @param e The exception containing text to be shown to the user
+     * @param e The exception containing the text to be shown to the user
      * @return The message to be send to a handler
      */
     public static Message generateMessage(Exception e) {
@@ -38,5 +42,15 @@ public enum Messages {
         msg.obj = e;
         msg.what = Messages.exception.ordinal();
         return msg;
+    }
+
+    /**
+     * Generates new message to be shown to the user
+     *
+     * @param str The text to be shown to the user
+     * @return The message to be send to a handler
+     */
+    public static Message generateMessage(String str) {
+        return Messages.generateMessage(new Exception(str));
     }
 }

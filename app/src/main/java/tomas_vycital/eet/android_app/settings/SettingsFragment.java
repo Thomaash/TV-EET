@@ -3,6 +3,7 @@ package tomas_vycital.eet.android_app.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import tomas_vycital.eet.android_app.printer.BTPrinter;
 public class SettingsFragment extends BaseFragment implements View.OnClickListener {
     private Context context;
     private BTPrinter printer;
+    private Handler handler;
 
     private EditText address;
     private EditText codepage;
@@ -46,6 +48,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private EditText ico;
     private EditText idPokl;
     private EditText idProvoz;
+    private EditText itemsImportURL;
     private EditText keyPassword;
     private EditText name;
     private EditText receiptWidth;
@@ -66,9 +69,10 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         // Required empty public constructor
     }
 
-    public static SettingsFragment newInstance(BTPrinter printer) {
+    public static SettingsFragment newInstance(BTPrinter printer, Handler handler) {
         SettingsFragment fragment = new SettingsFragment();
         fragment.printer = printer;
+        fragment.handler = handler;
         return fragment;
     }
 
@@ -92,6 +96,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.ico = (EditText) this.layout.findViewById(R.id.ico);
         this.idPokl = (EditText) this.layout.findViewById(R.id.id_pokl);
         this.idProvoz = (EditText) this.layout.findViewById(R.id.id_provoz);
+        this.itemsImportURL = (EditText) this.layout.findViewById(R.id.items_import_url);
         this.keyPassword = (EditText) this.layout.findViewById(R.id.key_password);
         this.keys = (RadioGroup) this.layout.findViewById(R.id.keys);
         this.name = (EditText) this.layout.findViewById(R.id.name);
@@ -105,6 +110,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         // Onclick listeners
         this.layout.findViewById(R.id.save).setOnClickListener(this);
         this.layout.findViewById(R.id.codepage_test).setOnClickListener(this);
+        this.layout.findViewById(R.id.import_items).setOnClickListener(this);
 
         this.refreshAll();
 
@@ -140,6 +146,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 this.saveString(editor, this.ico, "ICO");
                 this.saveString(editor, this.idPokl, "idPokl");
                 this.saveString(editor, this.idProvoz, "idProvoz");
+                this.saveString(editor, this.itemsImportURL, "itemsImportURL");
                 this.saveString(editor, this.name, "name");
 
                 // Server
@@ -170,6 +177,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 } catch (IOException ignored) {
                 }
                 break;
+            case R.id.import_items:
+                new ImportItems(this.itemsImportURL.getText().toString(), this.handler);
+                break;
         }
     }
 
@@ -183,6 +193,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.ico.setText(Settings.getICO());
         this.idPokl.setText(Settings.getIdPokl());
         this.idProvoz.setText(Settings.getIdProvoz());
+        this.itemsImportURL.setText(Settings.getItemsImportURL());
         this.name.setText(Settings.getName());
         this.receiptWidth.setText(String.valueOf(Settings.getReceiptWidth()));
         this.verifying.setChecked(Settings.getVerifying());

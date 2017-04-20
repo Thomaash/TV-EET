@@ -44,6 +44,7 @@ import tomas_vycital.eet.android_app.settings.SettingsFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Receipt receipt;
     private BTPrinter printer;
+    private Items items;
 
     private NavigationView navigationView;
     private FloatingActionButton fab;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Receipts.setup(this);
 
         Handler handler = new MessageHandler(this);
-        Items items = new Items();
+        this.items = new Items();
         this.printer = new BTPrinter(handler);
         this.receipt = new Receipt(handler);
 
@@ -94,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.navigationView.setNavigationItemSelectedListener(this);
 
         // Fragments
-        this.availableItemsFragment = AvailableItemsFragment.newInstance(items, this.receipt, this);
+        this.availableItemsFragment = AvailableItemsFragment.newInstance(this.items, this.receipt, this);
         this.receiptItemsFragment = ReceiptItemsFragment.newInstance(this.receipt, this);
         this.receiptFragment = ReceiptFragment.newInstance(this.receipt, this.printer, handler);
         this.historyFragment = HistoryFragment.newInstance(this);
         this.printerFragment = PrinterFragment.newInstance(this.printer, handler);
-        this.settingsFragment = SettingsFragment.newInstance(this.printer);
-        this.backupsFragment = BackupsFragment.newInstance(items);
-        this.editItemFragment = EditItemFragment.newInstance(items);
+        this.settingsFragment = SettingsFragment.newInstance(this.printer, handler);
+        this.backupsFragment = BackupsFragment.newInstance(this.items);
+        this.editItemFragment = EditItemFragment.newInstance(this.items);
 
         // Default fragment (all items)
         this.showOnly(this.availableItemsFragment, R.id.menu_items);
@@ -160,6 +161,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case clearReceipt:
                 this.receipt.clear();
+                break;
+            case itemsChanged:
+                try {
+                    this.items.loadSaved();
+                } catch (JSONException ex) {
+                    this.handleMessage(Messages.generateMessage("Data v nastavení byla poškozena, obnovte zálohu"));
+                }
                 break;
         }
     }
