@@ -236,6 +236,66 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:labelFor="@+id/vat_basic"
+                    android:text="DPH základní"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    />
+                <EditText
+                    android:id="@+id/vat_basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/vat_reduced1"
+                    android:text="DPH snížená 1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    />
+                <EditText
+                    android:id="@+id/vat_reduced1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:labelFor="@+id/vat_reduced2"
+                    android:text="DPH snížená 2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    />
+                <EditText
+                    android:id="@+id/vat_reduced2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:labelFor="@+id/id_provoz"
                     android:text="ID provozu"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"

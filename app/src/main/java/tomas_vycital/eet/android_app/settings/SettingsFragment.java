@@ -33,6 +33,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
+import tomas_vycital.eet.android_app.VAT;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 
 public class SettingsFragment extends BaseFragment implements View.OnClickListener {
@@ -52,6 +53,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private EditText keyPassword;
     private EditText name;
     private EditText receiptWidth;
+    private EditText vat1;
+    private EditText vat2;
+    private EditText vat3;
     private RadioButton charsetASCII;
     private RadioButton charsetCP852;
     private RadioButton charsetISO88592;
@@ -105,6 +109,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.server = (RadioGroup) this.layout.findViewById(R.id.server);
         this.serverPlay = (RadioButton) this.layout.findViewById(R.id.server_play);
         this.serverProd = (RadioButton) this.layout.findViewById(R.id.server_prod);
+        this.vat1 = (EditText) this.layout.findViewById(R.id.vat_basic);
+        this.vat2 = (EditText) this.layout.findViewById(R.id.vat_reduced1);
+        this.vat3 = (EditText) this.layout.findViewById(R.id.vat_reduced2);
         this.verifying = (SwitchCompat) this.layout.findViewById(R.id.verifying);
 
         // Onclick listeners
@@ -139,6 +146,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 editor.putString("keyFileName", this.getRadioGroupValue(this.keys));
                 this.saveBoolean(editor, this.verifying, "verifying");
                 this.saveInteger(editor, this.receiptWidth, "receiptWidth");
+                this.saveInteger(editor, this.vat1, "VAT1");
+                this.saveInteger(editor, this.vat2, "VAT2");
+                this.saveInteger(editor, this.vat3, "VAT3");
                 this.saveString(editor, this.address, "address");
                 this.saveString(editor, this.dic, "DIC");
                 this.saveString(editor, this.footing, "footing");
@@ -196,6 +206,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         this.itemsImportURL.setText(Settings.getItemsImportURL());
         this.name.setText(Settings.getName());
         this.receiptWidth.setText(String.valueOf(Settings.getReceiptWidth()));
+        this.vat1.setText(Settings.getVAT(VAT.basic) + "");
+        this.vat2.setText(Settings.getVAT(VAT.reduced1) + "");
+        this.vat3.setText(Settings.getVAT(VAT.reduced2) + "");
         this.verifying.setChecked(Settings.getVerifying());
 
         // Server

@@ -2,17 +2,17 @@ package tomas_vycital.eet.android_app;
 
 import android.support.annotation.Nullable;
 
+import tomas_vycital.eet.android_app.settings.Settings;
+
 /**
  * Contains all possible VAT values
  */
 public enum VAT {
-    exempt(0, 0), basic(21, 1), reduced1(15, 2), reduced2(10, 3);
+    exempt(0), basic(1), reduced1(2), reduced2(3);
 
-    private final int percentage;
     private final int id;
 
-    VAT(int percentage, int id) {
-        this.percentage = percentage;
+    VAT(int id) {
         this.id = id;
     }
 
@@ -36,14 +36,14 @@ public enum VAT {
      * @return Percents as int (3 for 3%, 89 for 89%…)
      */
     public int getPercentage() {
-        return this.percentage;
+        return Settings.getVAT(this);
     }
 
     /**
      * @return Percents as double (0.03 for 3%, 0.89 for 89%…)
      */
     public double get() {
-        return this.percentage / 100.0;
+        return this.getPercentage() / 100.0;
     }
 
     /**
@@ -51,7 +51,7 @@ public enum VAT {
      */
     @Override
     public String toString() {
-        return this.percentage + "%";
+        return this.getPercentage() + "%";
     }
 
     /**
@@ -65,6 +65,6 @@ public enum VAT {
      * @return Percents as string padded with spaces to 3 characters (“ 3%”, “89%”…)
      */
     public String getPaddedPercentage() {
-        return (this.percentage >= 10 ? "" : " ") + this.toString();
+        return (this.getPercentage() >= 10 ? "" : " ") + this.toString();
     }
 }

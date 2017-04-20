@@ -25,6 +25,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import tomas_vycital.eet.android_app.VAT;
 import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 import tomas_vycital.eet.android_app.error.UnsupportedImportItemsVersion;
 import tomas_vycital.eet.android_app.items.Items;
@@ -47,6 +48,10 @@ public class Settings {
         defaults.put("charset", Charset.ascii.getStr());
         defaults.put("codepage", 0);
         defaults.put("DIC", "→NUTNO ZADAT←");
+        defaults.put("VAT0", 0);
+        defaults.put("VAT1", 21);
+        defaults.put("VAT2", 15);
+        defaults.put("VAT3", 10);
         defaults.put("footing", "");
         defaults.put("heading", "");
         defaults.put("ICO", "");
@@ -206,6 +211,19 @@ public class Settings {
                 break;
             default:
                 throw new UnsupportedImportItemsVersion(version);
+        }
+    }
+
+    public static int getVAT(VAT vat) {
+        switch (vat) {
+            case reduced2:
+                return Settings.getInteger("VAT3");
+            case reduced1:
+                return Settings.getInteger("VAT2");
+            case basic:
+                return Settings.getInteger("VAT1");
+            default:
+                return Settings.getInteger("VAT0");
         }
     }
 }
