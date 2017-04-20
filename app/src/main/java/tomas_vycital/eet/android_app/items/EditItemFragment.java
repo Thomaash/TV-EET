@@ -1,6 +1,9 @@
 package tomas_vycital.eet.android_app.items;
 
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +14,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.VAT;
 
 public class EditItemFragment extends BaseFragment implements View.OnClickListener {
     private AutoCompleteTextView category;
+    private GridLayout colors;
     private RadioButton vatBasic;
     private RadioButton vatExempt;
     private RadioButton vatReduced1;
@@ -24,6 +31,7 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
     private RadioGroup vat;
     private TextView name;
     private TextView price;
+    private List<RadioButton> colorRBs;
 
     private Button change;
     private Button add;
@@ -48,6 +56,7 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
 
         // Views
         this.category = (AutoCompleteTextView) this.layout.findViewById(R.id.category);
+        this.colors = (GridLayout) this.layout.findViewById(R.id.colors);
         this.name = (TextView) this.layout.findViewById(R.id.name);
         this.price = (TextView) this.layout.findViewById(R.id.price);
         this.vat = (RadioGroup) this.layout.findViewById(R.id.vat);
@@ -60,6 +69,33 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.select_dialog_singlechoice, this.items.getCategories());
         this.category.setThreshold(0);
         this.category.setAdapter(adapter);
+
+        // Colors
+        this.colorRBs = new ArrayList<>();
+        for (ItemColor color : ItemColor.values()) {
+            RadioButton rb = new RadioButton(this.getContext());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // Set the color properly
+                rb.setButtonTintList(new ColorStateList(
+                        new int[][]{
+                                new int[]{-android.R.attr.state_enabled},
+                                new int[]{android.R.attr.state_enabled}
+                        },
+                        new int[]{
+                                color.getInt(),
+                                color.getInt()
+                        }
+                ));
+            } else {
+                // Fallback to background on old devices
+                rb.setBackgroundColor(color.getInt());
+            }
+            rb.setTag(R.id.colorRBs, tags.colorRB);
+            rb.setTag(R.id.colorRB_colorID, color.getID());
+            rb.setOnClickListener(this);
+            this.colorRBs.add(rb);
+            this.colors.addView(rb);
+        }
 
         // Buttons
         this.change = (Button) this.layout.findViewById(R.id.change);
@@ -98,6 +134,16 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
                 this.edit(null);
                 this.info("Položka byla smazána");
                 break;
+            default:
+                switch ((tags) v.getTag(R.id.colorRBs)) {
+                    case colorRB:
+                        for (RadioButton rb : this.colorRBs) {
+                            if (v != rb) {
+                                rb.setChecked(false);
+                            }
+                        }
+                        break;
+                }
         }
     }
 
@@ -122,11 +168,18 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
             default: // R.id.vat_exempt;
                 vat = VAT.exempt;
         }
+        ItemColor color = ItemColor.color13;
+        for (RadioButton rb : this.colorRBs) {
+            if (rb.isChecked()) {
+                color = ItemColor.fromID((int) rb.getTag(R.id.colorRB_colorID));
+            }
+        }
 
         return new Item(
                 this.name.getText().toString(),
                 this.price.getText().toString(),
                 vat,
+                color,
                 this.category.getText().toString()
         );
     }
@@ -142,6 +195,9 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
             this.name.setText("");
             this.price.setText("");
             this.vat.clearCheck();
+            for (RadioButton rb : this.colorRBs) {
+                rb.setChecked(false);
+            }
             this.category.setText("");
 
             // Buttons
@@ -165,6 +221,9 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
                 default:
                     this.vatExempt.toggle();
             }
+            for (RadioButton rb : this.colorRBs) {
+                rb.setChecked((int) rb.getTag(R.id.colorRB_colorID) == this.currentItem.getColor().getID());
+            }
             this.category.setText(this.currentItem.getCategory());
 
             // Buttons
@@ -182,5 +241,9 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
         }
 
         this.updateViews();
+    }
+
+    private enum tags {
+        colorRB
     }
 }

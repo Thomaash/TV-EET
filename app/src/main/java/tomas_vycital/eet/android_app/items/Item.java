@@ -15,15 +15,16 @@ public class Item implements Comparable<Item> {
     private int price;
     private String name;
     private VAT vat;
+    private ItemColor color;
     private String category;
 
     private String searchString;
 
-    Item(String name, int price, VAT vat, String category) {
-        this.setUp(name, price, vat, category);
+    Item(String name, int price, VAT vat, ItemColor color, String category) {
+        this.setUp(name, price, vat, color, category);
     }
 
-    Item(String name, String priceStr, VAT vat, String category) {
+    Item(String name, String priceStr, VAT vat, ItemColor color, String category) {
         String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
         int price = Integer.valueOf(priceParts[0]) * 100;
         if (priceParts.length > 1) {
@@ -42,14 +43,15 @@ public class Item implements Comparable<Item> {
             price += Integer.valueOf(priceParts[1]);
         }
 
-        this.setUp(name, price, vat, category);
+        this.setUp(name, price, vat, color, category);
     }
 
     public Item(JSONObject object) throws JSONException {
         this.setUp(
                 (String) object.get("name"),
                 (int) object.get("price"),
-                VAT.fromID((Integer) object.get("VAT")),
+                VAT.fromID((int) object.get("VAT")),
+                ItemColor.fromID((int) object.get("color")),
                 (String) object.get("category")
         );
     }
@@ -59,14 +61,16 @@ public class Item implements Comparable<Item> {
         json.put("name", this.name);
         json.put("price", this.price);
         json.put("VAT", this.vat.getID());
+        json.put("color", this.color.getID());
         json.put("category", this.category);
         return json;
     }
 
-    private void setUp(String name, int price, VAT vat, String category) {
+    private void setUp(String name, int price, VAT vat, ItemColor color, String category) {
         this.name = name;
         this.price = price;
         this.vat = vat;
+        this.color = color;
         this.category = category;
 
         this.searchString = name.toLowerCase() + "" + category.toLowerCase();
@@ -102,6 +106,10 @@ public class Item implements Comparable<Item> {
 
     public int getVATPercentage() {
         return this.vat.getPercentage();
+    }
+
+    public ItemColor getColor() {
+        return this.color;
     }
 
     String getBrief() {

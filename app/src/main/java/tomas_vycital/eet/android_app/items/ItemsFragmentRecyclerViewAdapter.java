@@ -64,6 +64,7 @@ class ItemsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ItemsFragmen
             this.name.setText(item.getName());
             this.price.setText(item.getPriceStr());
             this.vat.setText(item.getVAT().toString());
+            this.view.setBackgroundColor(item.getColor().getInt());
         }
     }
 }

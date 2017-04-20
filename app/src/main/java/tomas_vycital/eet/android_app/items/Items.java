@@ -31,18 +31,18 @@ public class Items implements ItemList {
             this.loadSaved();
         } catch (JSONException | NullPointerException e) {
             // Example items
-            this.addNS(new Item("Example 1", 3899, VAT.basic, "Odd"));
-            this.addNS(new Item("Example 2", 3500, VAT.basic, "Even"));
-            this.addNS(new Item("Example 3", 5000, VAT.basic, "Odd"));
-            this.addNS(new Item("Example 4", 6600, VAT.exempt, "Even"));
-            this.addNS(new Item("Example 5", 5000, VAT.basic, "Odd"));
-            this.addNS(new Item("Example 6", 4500, VAT.basic, "Even"));
-            this.addNS(new Item("Example 7", 1200, VAT.basic, "Odd"));
-            this.addNS(new Item("Example 8", 1350, VAT.reduced1, "Even"));
-            this.addNS(new Item("Example 9", 1500, VAT.basic, "Odd"));
-            this.addNS(new Item("Example 10", 1100, VAT.basic, "Even"));
-            this.addNS(new Item("Example 11", 4300, VAT.reduced2, "Odd"));
-            this.addNS(new Item("Example 12", 10000, VAT.basic, "Even"));
+            this.addNS(new Item("Example 01", 3899, VAT.basic, ItemColor.color0, "Odd"));
+            this.addNS(new Item("Example 02", 3500, VAT.basic, ItemColor.color2, "Even"));
+            this.addNS(new Item("Example 03", 5000, VAT.basic, ItemColor.color4, "Odd"));
+            this.addNS(new Item("Example 04", 6600, VAT.exempt, ItemColor.color6, "Even"));
+            this.addNS(new Item("Example 05", 5000, VAT.basic, ItemColor.color8, "Odd"));
+            this.addNS(new Item("Example 06", 4500, VAT.basic, ItemColor.color10, "Even"));
+            this.addNS(new Item("Example 07", 1200, VAT.basic, ItemColor.color12, "Odd"));
+            this.addNS(new Item("Example 08", 1350, VAT.reduced1, ItemColor.color14, "Even"));
+            this.addNS(new Item("Example 09", 1500, VAT.basic, ItemColor.color16, "Odd"));
+            this.addNS(new Item("Example 10", 1100, VAT.basic, ItemColor.color18, "Even"));
+            this.addNS(new Item("Example 11", 4300, VAT.reduced2, ItemColor.color20, "Odd"));
+            this.addNS(new Item("Example 12", 10000, VAT.basic, ItemColor.color22, "Even"));
             Collections.sort(this.items);
         }
     }
