@@ -225,23 +225,23 @@ public class Receipt implements ItemList {
 
             this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
-                    .setPrvniZaslani(true)
                     .setCelkTrzba(celkTrzba * this.multiplier)
-                    .setDan1((int) (zaklDan.get(VAT.basic.getID()) * VAT.basic.get()) * this.multiplier)
-                    .setDan2((int) (zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get()) * this.multiplier)
-                    .setDan3((int) (zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get()) * this.multiplier)
+                    .setDan1((int) Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get() * this.multiplier))
+                    .setDan2((int) Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get() * this.multiplier))
+                    .setDan3((int) Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get() * this.multiplier))
                     .setDatTrzby(this.submitTime)
                     .setDicPopl(Settings.getDIC())
                     .setIdPokl(Settings.getIdPokl())
                     .setIdProvoz(Settings.getIdProvoz())
                     .setOvereni(Settings.getVerifying())
+                    .setP12(Settings.getKeyIS(), Settings.getKeyPassword().toCharArray())
                     .setPoradCis(String.valueOf(this.number))
+                    .setPrvniZaslani(true)
                     .setRezim(0)
                     .setZaklDan1(zaklDan.get(VAT.basic.getID()) * this.multiplier)
                     .setZaklDan2(zaklDan.get(VAT.reduced1.getID()) * this.multiplier)
                     .setZaklDan3(zaklDan.get(VAT.reduced2.getID()) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(VAT.exempt.getID()) * this.multiplier)
-                    .setP12(Settings.getKeyIS(), Settings.getKeyPassword().toCharArray())
             ;
         } else {
             this.eetReceipt.setPrvniZaslani(false);
