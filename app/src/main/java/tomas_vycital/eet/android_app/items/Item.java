@@ -12,16 +12,15 @@ import tomas_vycital.eet.android_app.VAT;
 public class Item implements Comparable<Item> {
     public static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
-    private final int price;
-    private final String name;
-    private final VAT vat;
-    private final String category;
+    private int price;
+    private String name;
+    private VAT vat;
+    private String category;
+
+    private String searchString;
 
     Item(String name, int price, VAT vat, String category) {
-        this.name = name;
-        this.price = price;
-        this.vat = vat;
-        this.category = category;
+        this.setUp(name, price, vat, category);
     }
 
     Item(String name, String priceStr, VAT vat, String category) {
@@ -43,17 +42,16 @@ public class Item implements Comparable<Item> {
             price += Integer.valueOf(priceParts[1]);
         }
 
-        this.name = name;
-        this.price = price;
-        this.vat = vat;
-        this.category = category;
+        this.setUp(name, price, vat, category);
     }
 
     public Item(JSONObject object) throws JSONException {
-        this.name = (String) object.get("name");
-        this.price = (int) object.get("price");
-        this.vat = VAT.fromID((Integer) object.get("VAT"));
-        this.category = (String) object.get("category");
+        this.setUp(
+                (String) object.get("name"),
+                (int) object.get("price"),
+                VAT.fromID((Integer) object.get("VAT")),
+                (String) object.get("category")
+        );
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -63,6 +61,15 @@ public class Item implements Comparable<Item> {
         json.put("VAT", this.vat.getID());
         json.put("category", this.category);
         return json;
+    }
+
+    private void setUp(String name, int price, VAT vat, String category) {
+        this.name = name;
+        this.price = price;
+        this.vat = vat;
+        this.category = category;
+
+        this.searchString = name.toLowerCase() + "" + category.toLowerCase();
     }
 
     public String getName() {
@@ -108,5 +115,9 @@ public class Item implements Comparable<Item> {
 
     String getCategory() {
         return this.category;
+    }
+
+    boolean match(String str) {
+        return this.searchString.contains(str);
     }
 }

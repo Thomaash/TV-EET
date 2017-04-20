@@ -17,13 +17,15 @@ import tomas_vycital.eet.android_app.settings.Settings;
  */
 public class Items implements ItemList {
     private final List<Item> items;
-    private TreeSet<String> categories = new TreeSet<>();
+    private final TreeSet<String> categories;
 
     /**
      * Tries to load saved items, if if fails then uses example items
      */
     public Items() {
         this.items = new ArrayList<>();
+        this.categories = new TreeSet<>();
+
         try {
             // Saved items
             this.loadSaved();
@@ -43,6 +45,17 @@ public class Items implements ItemList {
             this.addNS(new Item("Example 12", 10000, VAT.basic, "Even"));
             Collections.sort(this.items);
         }
+    }
+
+    /**
+     * Creates a new instance out of existing data
+     *
+     * @param items      A list of items
+     * @param categories A tree set of categories
+     */
+    public Items(List<Item> items, TreeSet<String> categories) {
+        this.items = items;
+        this.categories = categories;
     }
 
     /**
@@ -112,6 +125,26 @@ public class Items implements ItemList {
     }
 
     /**
+     * Creates a new instance with filtered items
+     *
+     * @param str A string to search for
+     * @return Filtered items
+     */
+    @Override
+    public Items filter(String str) {
+        String testString = str.toLowerCase();
+        List<Item> filtered = new ArrayList<>();
+
+        for (Item item : this.items) {
+            if (item.match(testString)) {
+                filtered.add(item);
+            }
+        }
+
+        return new Items(filtered, this.categories);
+    }
+
+    /**
      * Converts the internal list of items into JSON object
      *
      * @return JSONObject containing all the items
@@ -177,7 +210,8 @@ public class Items implements ItemList {
     /**
      * @return The list of all categories
      */
-    String[] getCategories() {
+    @Override
+    public String[] getCategories() {
         return categories.toArray(new String[0]);
     }
 }

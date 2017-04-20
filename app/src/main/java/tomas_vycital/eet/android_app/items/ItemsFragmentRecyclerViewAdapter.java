@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import tomas_vycital.eet.android_app.R;
 
-public class ItemsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ItemsFragmentRecyclerViewAdapter.ViewHolder> {
-    private final ItemList items;
+class ItemsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ItemsFragmentRecyclerViewAdapter.ViewHolder> {
     private final ItemsListenerFactory clicks;
+    private ItemList items;
 
-    public ItemsFragmentRecyclerViewAdapter(ItemList items, ItemsListenerFactory clicks) {
+    ItemsFragmentRecyclerViewAdapter(ItemList items, ItemsListenerFactory clicks) {
         this.items = items;
         this.clicks = clicks;
     }
@@ -33,6 +33,12 @@ public class ItemsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Items
     @Override
     public int getItemCount() {
         return this.items.size();
+    }
+
+    public void setItems(ItemList filtered) {
+        this.items = filtered;
+        this.clicks.setItems(filtered);
+        this.notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

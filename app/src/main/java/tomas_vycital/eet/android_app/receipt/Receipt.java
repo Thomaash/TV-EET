@@ -26,6 +26,7 @@ import tomas_vycital.eet.android_app.VAT;
 import tomas_vycital.eet.android_app.error.UnreadableKeyPassword;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.ItemList;
+import tomas_vycital.eet.android_app.items.Items;
 import tomas_vycital.eet.android_app.printer.Printer;
 import tomas_vycital.eet.android_app.settings.Settings;
 import tomas_vycital.eet.lib.EETReceipt;
@@ -193,6 +194,16 @@ public class Receipt implements ItemList {
     @Override
     public int size() {
         return this.items.size();
+    }
+
+    @Override
+    public ItemList filter(String str) {
+        return (new Items(this.items, null)).filter(str);
+    }
+
+    @Override
+    public String[] getCategories() {
+        return new String[0];
     }
 
     @Override

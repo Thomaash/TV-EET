@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -26,12 +27,11 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import tomas_vycital.eet.android_app.history.HistoryFragment;
-import tomas_vycital.eet.android_app.items.AvailableItemsListenerFactory;
+import tomas_vycital.eet.android_app.items.AvailableItemsFragment;
 import tomas_vycital.eet.android_app.items.EditItemFragment;
 import tomas_vycital.eet.android_app.items.Item;
 import tomas_vycital.eet.android_app.items.Items;
-import tomas_vycital.eet.android_app.items.ItemsFragment;
-import tomas_vycital.eet.android_app.items.ReceiptItemsListenerFactory;
+import tomas_vycital.eet.android_app.items.ReceiptItemsFragment;
 import tomas_vycital.eet.android_app.printer.BTPrinter;
 import tomas_vycital.eet.android_app.printer.PrinterFragment;
 import tomas_vycital.eet.android_app.receipt.Receipt;
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private MenuItem price;
 
-    private ItemsFragment availableItemsFragment;
-    private ItemsFragment receiptItemsFragment;
+    private AvailableItemsFragment availableItemsFragment;
+    private ReceiptItemsFragment receiptItemsFragment;
     private ReceiptFragment receiptFragment;
     private HistoryFragment historyFragment;
     private PrinterFragment printerFragment;
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.navigationView.setNavigationItemSelectedListener(this);
 
         // Fragments
-        this.availableItemsFragment = ItemsFragment.newInstance(items, new AvailableItemsListenerFactory(items, this.receipt, this));
-        this.receiptItemsFragment = ItemsFragment.newInstance(this.receipt, new ReceiptItemsListenerFactory(this.receipt, this));
+        this.availableItemsFragment = AvailableItemsFragment.newInstance(items, this.receipt, this);
+        this.receiptItemsFragment = ReceiptItemsFragment.newInstance(this.receipt, this);
         this.receiptFragment = ReceiptFragment.newInstance(this.receipt, this.printer, handler);
         this.historyFragment = HistoryFragment.newInstance(this);
         this.printerFragment = PrinterFragment.newInstance(this.printer, handler);
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.menu_items:

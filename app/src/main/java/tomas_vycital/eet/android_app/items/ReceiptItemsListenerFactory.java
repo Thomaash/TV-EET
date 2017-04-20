@@ -6,15 +6,11 @@ import android.view.View;
 import tomas_vycital.eet.android_app.MainActivity;
 import tomas_vycital.eet.android_app.receipt.Receipt;
 
-/**
- * Created by tom on 21.3.17.
- */
-
-public class ReceiptItemsListenerFactory implements ItemsListenerFactory {
+class ReceiptItemsListenerFactory implements ItemsListenerFactory {
     private final Receipt receipt;
     private final MainActivity ma;
 
-    public ReceiptItemsListenerFactory(Receipt receipt, MainActivity ma) {
+    ReceiptItemsListenerFactory(Receipt receipt, MainActivity ma) {
         this.receipt = receipt;
         this.ma = ma;
     }
@@ -39,5 +35,10 @@ public class ReceiptItemsListenerFactory implements ItemsListenerFactory {
                 return true;
             }
         };
+    }
+
+    @Override
+    public void setItems(ItemList filtered) {
+
     }
 }
