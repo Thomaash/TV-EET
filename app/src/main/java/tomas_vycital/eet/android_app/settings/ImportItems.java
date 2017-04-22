@@ -33,7 +33,9 @@ class ImportItems implements Runnable {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
             int responseCode = con.getResponseCode();
-            this.handler.sendMessage(Messages.generateMessage(new Exception("Response Code : " + responseCode)));
+            if (responseCode != 200) {
+                this.handler.sendMessage(Messages.generateMessage("Chyba komunikace (" + responseCode + ")"));
+            }
 
             Settings.importItems((new Scanner(con.getInputStream())).useDelimiter("\\A").next());
 
