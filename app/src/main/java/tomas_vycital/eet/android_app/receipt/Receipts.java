@@ -18,7 +18,7 @@ public class Receipts {
     private static DBHelper db;
 
     /**
-     * Adds receipt to the history (sets submit time to present time)
+     * Adds receipt to the history
      *
      * @param receipt The receipt to be saved
      * @throws JSONException As long as there is no bug in the code this should never be thrown

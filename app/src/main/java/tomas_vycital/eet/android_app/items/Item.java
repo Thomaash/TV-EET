@@ -73,15 +73,20 @@ public class Item implements Comparable<Item> {
         this.color = color;
         this.category = category;
 
-        this.searchString = name.toLowerCase() + "" + category.toLowerCase();
+        this.searchString = ""
+                + this.name.toLowerCase() + "\t"
+                + this.category.toLowerCase() + "\t"
+                + this.vat.toString().toLowerCase() + "\t"
+                + this.getPriceStr().toLowerCase()
+        ;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getPrice() {
-        return price;
+        return this.price;
     }
 
     String getPriceStr() {
