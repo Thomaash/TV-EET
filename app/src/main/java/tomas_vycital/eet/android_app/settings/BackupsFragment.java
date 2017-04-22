@@ -19,7 +19,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.Writer;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -27,7 +26,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TimeZone;
-import java.util.TreeSet;
 
 import tomas_vycital.eet.android_app.BaseFragment;
 import tomas_vycital.eet.android_app.R;
@@ -174,7 +172,7 @@ public class BackupsFragment extends BaseFragment implements View.OnClickListene
         }
 
         // Radio buttons
-        int backupButtons = this.generateRadioButtons(this.backups, Settings.backupsDir, Settings.backupFilter, null);
+        int backupButtons = this.generateRadioButtons(this.backups, Settings.backupsDir, Settings.backupFilter, null, Collections.reverseOrder());
         if (backupButtons > 0) {
             this.restore.setEnabled(true);
         } else {
@@ -186,28 +184,5 @@ public class BackupsFragment extends BaseFragment implements View.OnClickListene
             this.backups.addView(info);
             this.restore.setEnabled(false);
         }
-    }
-
-    private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {
-        group.removeAllViews();
-        File dir = new File(dirStr);
-        dir.mkdirs();
-        File[] files = dir.listFiles(filter);
-        TreeSet<String> backups = new TreeSet<>(Collections.reverseOrder()); // Automatically sorts the newest at the top
-        if (files != null) {
-            for (File file : files) {
-                backups.add(file.getName());
-            }
-            for (String backup : backups) {
-                RadioButton radioButton = new RadioButton(this.context);
-                radioButton.setText(backup);
-                group.addView(radioButton);
-                if (backup.equals(oldName)) {
-                    radioButton.setChecked(true);
-                }
-            }
-        }
-
-        return backups.size();
     }
 }

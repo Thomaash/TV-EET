@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -252,34 +250,11 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         }
 
         // Radio buttons
-        int keyButtons = this.generateRadioButtons(this.keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName());
+        int keyButtons = this.generateRadioButtons(this.keys, Settings.keysDir, Settings.keyFilter, Settings.getKeyName(), null);
         if (keyButtons > 0) {
             this.keys.setVisibility(View.VISIBLE);
             this.nokeys.setVisibility(View.GONE);
         }
-    }
-
-    private int generateRadioButtons(RadioGroup group, String dirStr, FilenameFilter filter, String oldName) {
-        int count = 0;
-        group.removeAllViews();
-        File dir = new File(dirStr);
-        dir.mkdirs();
-        File[] files = dir.listFiles(filter);
-        if (files != null) {
-            for (File file : files) {
-                String name = file.getName();
-                RadioButton radioButton = new RadioButton(this.context);
-                radioButton.setText(name);
-                group.addView(radioButton);
-                if (name.equals(oldName)) {
-                    radioButton.setChecked(true);
-                }
-
-                ++count;
-            }
-        }
-
-        return count;
     }
 
     @Nullable
