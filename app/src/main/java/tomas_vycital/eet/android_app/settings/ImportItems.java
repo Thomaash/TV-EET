@@ -35,6 +35,7 @@ class ImportItems implements Runnable {
             int responseCode = con.getResponseCode();
             if (responseCode != 200) {
                 this.handler.sendMessage(Messages.generateMessage("Chyba komunikace (" + responseCode + ")"));
+                return;
             }
 
             Settings.importItems((new Scanner(con.getInputStream())).useDelimiter("\\A").next());
