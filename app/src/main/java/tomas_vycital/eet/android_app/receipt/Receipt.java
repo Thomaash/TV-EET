@@ -223,12 +223,16 @@ public class Receipt implements ItemList {
                 zaklDan.put(vat.getID(), zaklDan.get(vat.getID()) + item.getPrice());
             }
 
+            int tax1 = (int) Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get());
+            int tax2 = (int) Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get());
+            int tax3 = (int) Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get());
+
             this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
                     .setCelkTrzba(celkTrzba * this.multiplier)
-                    .setDan1((int) Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get() * this.multiplier))
-                    .setDan2((int) Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get() * this.multiplier))
-                    .setDan3((int) Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get() * this.multiplier))
+                    .setDan1(tax1 * this.multiplier)
+                    .setDan2(tax2 * this.multiplier)
+                    .setDan3(tax3 * this.multiplier)
                     .setDatTrzby(this.submitTime)
                     .setDicPopl(Settings.getDIC())
                     .setIdPokl(Settings.getIdPokl())
@@ -238,9 +242,9 @@ public class Receipt implements ItemList {
                     .setPoradCis(String.valueOf(this.number))
                     .setPrvniZaslani(true)
                     .setRezim(0)
-                    .setZaklDan1(zaklDan.get(VAT.basic.getID()) * this.multiplier)
-                    .setZaklDan2(zaklDan.get(VAT.reduced1.getID()) * this.multiplier)
-                    .setZaklDan3(zaklDan.get(VAT.reduced2.getID()) * this.multiplier)
+                    .setZaklDan1((zaklDan.get(VAT.basic.getID()) - tax1) * this.multiplier)
+                    .setZaklDan2((zaklDan.get(VAT.reduced1.getID()) - tax2) * this.multiplier)
+                    .setZaklDan3((zaklDan.get(VAT.reduced2.getID()) - tax3) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(VAT.exempt.getID()) * this.multiplier)
             ;
         } else {
