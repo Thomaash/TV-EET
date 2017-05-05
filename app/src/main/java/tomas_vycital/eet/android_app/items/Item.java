@@ -12,7 +12,7 @@ import tomas_vycital.eet.android_app.VAT;
 public class Item implements Comparable<Item> {
     public static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
-    private int price;
+    private long price;
     private String name;
     private VAT vat;
     private ItemColor color;
@@ -20,13 +20,13 @@ public class Item implements Comparable<Item> {
 
     private String searchString;
 
-    Item(String name, int price, VAT vat, ItemColor color, String category) {
+    Item(String name, long price, VAT vat, ItemColor color, String category) {
         this.setUp(name, price, vat, color, category);
     }
 
     Item(String name, String priceStr, VAT vat, ItemColor color, String category) {
         String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
-        int price = Integer.valueOf(priceParts[0]) * 100;
+        long price = Integer.valueOf(priceParts[0]) * 100;
         if (priceParts.length > 1) {
             switch (priceParts[1].length()) {
                 case 0:
@@ -49,7 +49,7 @@ public class Item implements Comparable<Item> {
     public Item(JSONObject object) throws JSONException {
         this.setUp(
                 (String) object.get("name"),
-                (int) object.get("price"),
+                (long) object.get("price"),
                 VAT.fromID((int) object.get("VAT")),
                 ItemColor.fromID((int) object.get("color")),
                 (String) object.get("category")
@@ -66,7 +66,7 @@ public class Item implements Comparable<Item> {
         return json;
     }
 
-    private void setUp(String name, int price, VAT vat, ItemColor color, String category) {
+    private void setUp(String name, long price, VAT vat, ItemColor color, String category) {
         this.name = name;
         this.price = price;
         this.vat = vat;
@@ -85,7 +85,7 @@ public class Item implements Comparable<Item> {
         return this.name;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return this.price;
     }
 

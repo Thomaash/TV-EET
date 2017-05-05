@@ -2,7 +2,7 @@ package tomas_vycital.eet.android_app.receipt;
 
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.SparseIntArray;
+import android.util.SparseArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -213,8 +213,8 @@ public class Receipt implements ItemList {
 
     void submit(Handler handler) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, UnreadableKeyPassword, IOException {
         if (this.eetReceipt == null) {
-            int celkTrzba = 0;
-            SparseIntArray zaklDan = new SparseIntArray();
+            long celkTrzba = 0;
+            SparseArray<Long> zaklDan = new SparseArray<>();
 
             for (int i = 0; i < this.items.size(); ++i) {
                 Item item = this.items.get(i);
@@ -223,9 +223,9 @@ public class Receipt implements ItemList {
                 zaklDan.put(vat.getID(), zaklDan.get(vat.getID()) + item.getPrice());
             }
 
-            int tax1 = (int) Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get());
-            int tax2 = (int) Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get());
-            int tax3 = (int) Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get());
+            long tax1 = Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get());
+            long tax2 = Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get());
+            long tax3 = Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get());
 
             this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
