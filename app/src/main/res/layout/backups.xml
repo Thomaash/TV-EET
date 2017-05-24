@@ -16,18 +16,12 @@
         >
         <Button
             android:id="@+id/backup"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Zálohovat"
             />
         <Button
             android:id="@+id/restore"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:enabled="false"
             android:text="Obnovit"
             />

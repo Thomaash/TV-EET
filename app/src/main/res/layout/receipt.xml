@@ -15,26 +15,17 @@
         >
         <Button
             android:id="@+id/clear"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Vyprázdnit"
             />
         <Button
             android:id="@+id/submit"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Nahlásit"
             />
         <Button
             android:id="@+id/print"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Vytisknout"
             />
     </LinearLayout>

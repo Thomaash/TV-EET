@@ -15,26 +15,17 @@
         >
         <Button
             android:id="@+id/scan"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Vyhledat"
             />
         <Button
             android:id="@+id/test"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Otestovat"
             />
         <Button
             android:id="@+id/disconnect"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Odpojit"
             />
     </LinearLayout>

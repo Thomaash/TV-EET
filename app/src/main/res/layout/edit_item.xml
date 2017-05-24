@@ -17,26 +17,17 @@
         >
         <Button
             android:id="@+id/change"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Změň"
             />
         <Button
             android:id="@+id/add"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Přidej"
             />
         <Button
             android:id="@+id/delete"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Vymaž"
             />
     </LinearLayout>

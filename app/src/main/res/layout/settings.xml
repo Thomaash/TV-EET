@@ -16,10 +16,7 @@
         >
         <Button
             android:id="@+id/save"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.White"
             android:text="Uložit"
             />
     </LinearLayout>
