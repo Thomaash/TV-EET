@@ -52,6 +52,8 @@ class ImportItems implements Runnable {
             this.handler.sendMessage(Messages.generateMessage("Byla přijata nečitelná data"));
         } catch (UnsupportedImportItemsVersion e) {
             this.handler.sendMessage(Messages.generateMessage("Stažená data mají nepodporovanou verzi: " + e.getVersion()));
+        } catch (Exception e) {
+            this.handler.sendMessage(Messages.generateMessage("Zboží se nepodařilo importovat"));
         }
     }
 }
