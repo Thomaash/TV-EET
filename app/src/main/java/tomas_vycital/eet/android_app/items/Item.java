@@ -48,11 +48,11 @@ public class Item implements Comparable<Item> {
 
     public Item(JSONObject object) throws JSONException {
         this.setUp(
-                (String) object.get("name"),
-                (long) object.get("price"),
-                VAT.fromID((int) object.get("VAT")),
-                ItemColor.fromID((int) object.get("color")),
-                (String) object.get("category")
+                object.getString("name"),
+                object.getLong("price"),
+                VAT.fromID(object.getInt("VAT")),
+                ItemColor.fromID(object.getInt("color")),
+                object.getString("category")
         );
     }
 
