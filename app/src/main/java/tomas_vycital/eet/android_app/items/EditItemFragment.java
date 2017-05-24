@@ -3,6 +3,7 @@ package tomas_vycital.eet.android_app.items;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tomas_vycital.eet.android_app.BaseFragment;
+import tomas_vycital.eet.android_app.Messages;
 import tomas_vycital.eet.android_app.R;
 import tomas_vycital.eet.android_app.VAT;
+import tomas_vycital.eet.android_app.error.BadUserInput;
 
 public class EditItemFragment extends BaseFragment implements View.OnClickListener {
     private AutoCompleteTextView category;
@@ -40,13 +43,16 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
     private Items items;
     private Item currentItem;
 
+    private Handler handler;
+
     public EditItemFragment() {
         // Required empty public constructor
     }
 
-    public static EditItemFragment newInstance(Items items) {
+    public static EditItemFragment newInstance(Items items, Handler handler) {
         EditItemFragment fragment = new EditItemFragment();
         fragment.items = items;
+        fragment.handler = handler;
         return fragment;
     }
 
@@ -148,12 +154,16 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void createSetAndAddItem() {
-        Item item = this.createItem();
-        this.items.add(item);
-        this.edit(item);
+        try {
+            Item item = this.createItem();
+            this.items.add(item);
+            this.edit(item);
+        } catch (BadUserInput e) {
+            this.handler.sendMessage(Messages.generateMessage(e));
+        }
     }
 
-    private Item createItem() {
+    private Item createItem() throws BadUserInput {
         VAT vat;
         switch (this.vat.getCheckedRadioButtonId()) {
             case R.id.vat_basic:

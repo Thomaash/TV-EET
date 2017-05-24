@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 
 import tomas_vycital.eet.android_app.VAT;
+import tomas_vycital.eet.android_app.error.BadUserInput;
 
 public class Item implements Comparable<Item> {
     public static final DecimalFormat priceFormat = new DecimalFormat("0.00");
@@ -24,25 +25,37 @@ public class Item implements Comparable<Item> {
         this.setUp(name, price, vat, color, category);
     }
 
-    Item(String name, String priceStr, VAT vat, ItemColor color, String category) {
-        String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
-        long price = Integer.valueOf(priceParts[0]) * 100;
-        if (priceParts.length > 1) {
-            switch (priceParts[1].length()) {
-                case 0:
-                    priceParts[1] = "0";
-                    break;
-                case 1:
-                    priceParts[1] += "0";
-                    break;
-                case 2:
-                    break;
-                default:
-                    priceParts[1] = priceParts[1].substring(0, 2);
-            }
-            price += Integer.valueOf(priceParts[1]);
+    Item(String name, String priceStr, VAT vat, ItemColor color, String category) throws BadUserInput {
+        // Name
+        if (name.length() < 1) {
+            throw new BadUserInput("Název nesmí být prázdný");
         }
 
+        // Price
+        long price;
+        try {
+            String[] priceParts = priceStr.replaceAll("[^\\d,.]", "").split("[,.]");
+            price = Integer.valueOf(priceParts[0]) * 100;
+            if (priceParts.length > 1) {
+                switch (priceParts[1].length()) {
+                    case 0:
+                        priceParts[1] = "0";
+                        break;
+                    case 1:
+                        priceParts[1] += "0";
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        priceParts[1] = priceParts[1].substring(0, 2);
+                }
+                price += Integer.valueOf(priceParts[1]);
+            }
+        } catch (Exception e) {
+            throw new BadUserInput("Cena není v platném formátu, správný formát: 9999,99");
+        }
+
+        // Create a new item
         this.setUp(name, price, vat, color, category);
     }
 

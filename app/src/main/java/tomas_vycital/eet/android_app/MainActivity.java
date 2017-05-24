@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.printerFragment = PrinterFragment.newInstance(this.printer, handler);
         this.settingsFragment = SettingsFragment.newInstance(this.printer, handler);
         this.backupsFragment = BackupsFragment.newInstance(this.items);
-        this.editItemFragment = EditItemFragment.newInstance(this.items);
+        this.editItemFragment = EditItemFragment.newInstance(this.items, handler);
 
         // Default fragment (all items)
         this.showOnly(this.availableItemsFragment, R.id.menu_items);
