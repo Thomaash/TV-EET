@@ -29,16 +29,24 @@ enum ItemColor {
     color20(20, Color.HSVToColor(new float[]{300, 1, ItemColor.defaultValue})),
     color21(21, Color.HSVToColor(new float[]{315, 1, ItemColor.defaultValue})),
     color22(22, Color.HSVToColor(new float[]{330, 1, ItemColor.defaultValue})),
-    color23(23, Color.HSVToColor(new float[]{345, 1, ItemColor.defaultValue}));
+    color23(23, Color.HSVToColor(new float[]{345, 1, ItemColor.defaultValue})),
+    color24(24, Color.BLACK),
+    color25(25, Color.HSVToColor(new float[]{0, 0, .1f})),
+    color26(26, Color.HSVToColor(new float[]{0, 0, .2f})),
+    color27(27, Color.HSVToColor(new float[]{0, 0, .3f})),
+    color28(28, Color.HSVToColor(new float[]{0, 0, .4f})),
+    color29(29, Color.HSVToColor(new float[]{0, 0, .5f})),
+    color30(30, Color.HSVToColor(new float[]{0, 0, .6f})),
+    color31(31, Color.HSVToColor(new float[]{0, 0, .7f}));
 
     private static final float defaultValue = 0.8f;
 
     private final int id;
-    private final int color;
+    private final int foreground;
 
-    ItemColor(int id, int color) {
+    ItemColor(int id, int foreground) {
         this.id = id;
-        this.color = color;
+        this.foreground = foreground;
     }
 
     public static ItemColor fromID(int id) {
@@ -47,7 +55,7 @@ enum ItemColor {
                 return color;
             }
         }
-        return null;
+        return ItemColor.color24;
     }
 
     public int getID() {
@@ -55,6 +63,6 @@ enum ItemColor {
     }
 
     public int getInt() {
-        return this.color;
+        return this.foreground;
     }
 }

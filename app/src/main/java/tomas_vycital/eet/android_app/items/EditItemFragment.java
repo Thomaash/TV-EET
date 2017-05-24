@@ -168,7 +168,7 @@ public class EditItemFragment extends BaseFragment implements View.OnClickListen
             default: // R.id.vat_exempt;
                 vat = VAT.exempt;
         }
-        ItemColor color = ItemColor.color13;
+        ItemColor color = ItemColor.color24;
         for (RadioButton rb : this.colorRBs) {
             if (rb.isChecked()) {
                 color = ItemColor.fromID((int) rb.getTag(R.id.colorRB_colorID));
