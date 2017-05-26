@@ -35,9 +35,9 @@ class ItemsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ItemsFragmen
         return this.items.size();
     }
 
-    public void setItems(ItemList filtered) {
-        this.items = filtered;
-        this.clicks.setItems(filtered);
+    public void setItems(ItemList items) {
+        this.items = items;
+        this.clicks.setItems(items);
         this.notifyDataSetChanged();
     }
 

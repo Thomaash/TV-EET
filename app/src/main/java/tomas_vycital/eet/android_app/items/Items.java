@@ -139,16 +139,17 @@ public class Items implements ItemList {
     /**
      * Creates a new instance with filtered items
      *
-     * @param str A string to search for
+     * @param search   A string to search for
+     * @param category Category name
      * @return Filtered items
      */
     @Override
-    public Items filter(String str) {
-        String testString = str.toLowerCase();
+    public Items filter(String search, String category) {
+        String testString = search.toLowerCase();
         List<Item> filtered = new ArrayList<>();
 
         for (Item item : this.items) {
-            if (item.match(testString)) {
+            if (item.match(testString) && (category == null || category.equals(item.getCategory()))) {
                 filtered.add(item);
             }
         }

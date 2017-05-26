@@ -197,8 +197,8 @@ public class Receipt implements ItemList {
     }
 
     @Override
-    public ItemList filter(String str) {
-        return (new Items(this.items, null)).filter(str);
+    public ItemList filter(String search, String category) {
+        return (new Items(this.items, null)).filter(search, category);
     }
 
     @Override

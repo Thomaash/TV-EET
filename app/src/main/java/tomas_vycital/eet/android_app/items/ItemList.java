@@ -5,7 +5,7 @@ public interface ItemList {
 
     int size();
 
-    ItemList filter(String str);
+    ItemList filter(String search, String category);
 
     String[] getCategories();
 }
