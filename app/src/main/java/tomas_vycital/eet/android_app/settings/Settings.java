@@ -55,7 +55,7 @@ public class Settings {
         defaults.put("footing", "");
         defaults.put("heading", "");
         defaults.put("ICO", "");
-        defaults.put("itemsImportURL", "https://pastebin.com/raw/L0EkXrPf");
+        defaults.put("itemsImportURL", "https://pastebin.com/raw/eUZbZjTt");
         defaults.put("keyFileName", null);
         defaults.put("name", "");
         defaults.put("receiptWidth", 32);
