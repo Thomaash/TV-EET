@@ -9,6 +9,8 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/scroll_past_fab"
     app:layoutManager="LinearLayoutManager"
     tools:context="tomas_vycital.eet.android_app.items.ReceiptItemsFragment"
     tools:listitem="@layout/item"
