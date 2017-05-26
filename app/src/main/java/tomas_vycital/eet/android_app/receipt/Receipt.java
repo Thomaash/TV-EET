@@ -72,6 +72,14 @@ public class Receipt implements ItemList {
         }
     }
 
+    private static long calculateTax(Long price, double rate) {
+        return Math.round((price == null ? 0 : price) * rate);
+    }
+
+    private static long calculateBase(Long price, long tax) {
+        return (price == null ? 0 : price) - tax;
+    }
+
     public void add(Item item) {
         this.changed();
         this.items.add(item);
@@ -220,12 +228,13 @@ public class Receipt implements ItemList {
                 Item item = this.items.get(i);
                 VAT vat = item.getVAT();
                 celkTrzba += item.getPrice();
-                zaklDan.put(vat.getID(), zaklDan.get(vat.getID()) + item.getPrice());
+                Long oldPrice = zaklDan.get(vat.getID());
+                zaklDan.put(vat.getID(), (oldPrice == null ? 0 : zaklDan.get(vat.getID())) + item.getPrice());
             }
 
-            long tax1 = Math.round(zaklDan.get(VAT.basic.getID()) * VAT.basic.get());
-            long tax2 = Math.round(zaklDan.get(VAT.reduced1.getID()) * VAT.reduced1.get());
-            long tax3 = Math.round(zaklDan.get(VAT.reduced2.getID()) * VAT.reduced2.get());
+            long tax1 = Receipt.calculateTax(zaklDan.get(VAT.basic.getID()), VAT.basic.get());
+            long tax2 = Receipt.calculateTax(zaklDan.get(VAT.reduced1.getID()), VAT.reduced1.get());
+            long tax3 = Receipt.calculateTax(zaklDan.get(VAT.reduced2.getID()), VAT.reduced2.get());
 
             this.submitTime = new Date();
             this.eetReceipt = (new EETReceipt())
@@ -242,9 +251,9 @@ public class Receipt implements ItemList {
                     .setPoradCis(String.valueOf(this.number))
                     .setPrvniZaslani(true)
                     .setRezim(0)
-                    .setZaklDan1((zaklDan.get(VAT.basic.getID()) - tax1) * this.multiplier)
-                    .setZaklDan2((zaklDan.get(VAT.reduced1.getID()) - tax2) * this.multiplier)
-                    .setZaklDan3((zaklDan.get(VAT.reduced2.getID()) - tax3) * this.multiplier)
+                    .setZaklDan1(Receipt.calculateBase(zaklDan.get(VAT.basic.getID()), tax1) * this.multiplier)
+                    .setZaklDan2(Receipt.calculateBase(zaklDan.get(VAT.reduced1.getID()), tax2) * this.multiplier)
+                    .setZaklDan3(Receipt.calculateBase(zaklDan.get(VAT.reduced2.getID()), tax3) * this.multiplier)
                     .setZaklNepodlDph(zaklDan.get(VAT.exempt.getID()) * this.multiplier)
             ;
         } else {
